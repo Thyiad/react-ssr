@@ -72,8 +72,10 @@ npm install -D babel-loader @babel/core @babel/preset-env @babel/preset-react @b
 安装eslint及prettier：
 
 ```bash
-npm install -D eslint prettier eslint-plugin-prettier eslint-config-prettier
+npm install -D eslint prettier eslint-plugin-prettier eslint-config-prettier eslint-plugin-react  
 ```
+
+> 因为是react项目，所以除了eslint和prettier还装了eslint-plugin-react
 
 新增.eslintrc，填入以下内容：
 
@@ -88,6 +90,43 @@ npm install -D eslint prettier eslint-plugin-prettier eslint-config-prettier
 eslint和prettier此处不做具体展开，请自行google，仅稍微说明一下eslint：
 eslint里有config和plugin两个概念，config配置规则（指定plugin对应的规则），plugin则定义具体的规则校验逻辑。
 所以eslint-plugin-prettier默认的配置是要定义plugin以及rule，里面嵌套的recommended则直接定义了config，所以直接可以把plugin:prettier/recommended扔到extends中来使用
+
+上面配置之后，你会发现写ts，会提示各种语法错误，显然不识别ts的语法，所以我们还需要添加ts的支持：
+
+``` bash
+npm i -D @typescript-eslint/parser @typescript-eslint/eslint-plugin
+```
+
+最终的.eslintrc如下：
+
+``` json
+{
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaVersion": 2020, // Allows for the parsing of modern ECMAScript features
+        "sourceType": "module", // Allows for the use of imports
+        "ecmaFeatures": {
+            "jsx": true
+        }
+    },
+    "plugins": [
+        "@typescript-eslint"
+    ],
+    "extends": [
+        "plugin:react/recommended",
+        "plugin:@typescript-eslint/recommended",
+        "prettier/@typescript-eslint",
+        "plugin:prettier/recommended"
+    ],
+    "env": {
+        "browser": true,
+        "node": true
+    }
+}
+```
+
+> 更完善的格式化流程，还要配置husky和lint-staged，此处不做展开，可参考以下两篇文章：[robertcooper](https://www.robertcooper.me/using-eslint-and-prettier-in-a-typescript-project)、[掘金](https://juejin.im/post/5d1d5fe96fb9a07eaf2bae29)
+> 有没有感觉很头大，这么多东西要配置。。
 
 ### html插件
 

@@ -5,9 +5,12 @@
   "main": "index.js",
   "scripts": {
     "bb": "babel --extensions .ts ./src -d ./dist",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint src --fix --ext .ts,.tsx"
   },
   "dependencies": {
+    "@typescript-eslint/eslint-plugin": "^3.2.0",
+    "@typescript-eslint/parser": "^3.2.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   },
@@ -26,6 +29,7 @@
     "eslint": "^7.2.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.3",
+    "eslint-plugin-react": "^7.20.0",
     "prettier": "^2.0.5",
     "sass": "^1.26.8",
     "sass-loader": "^8.0.2",
