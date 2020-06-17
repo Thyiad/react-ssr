@@ -36,18 +36,30 @@ npm install -S -D webpack webpack-cli webpack-dev-server
 ``` bash
 npm i -S react react-dom
 ```
+再安装一下声明文件
+``` bash
+npm i -D @types/react @types/react-dom
+```
 
-### sass
+### css
 css扩展是不可缺少的，我用sass最多，所以先安装sass相关依赖：
 
 ``` bash
-npm install -S -D sass sass-loader css-loader style-loader
+npm install -S -D sass sass-loader css-loader style-loader mini-css-extract-plugin postcss-loader postcss-import postcss-preset-env postcss-pxtorem cssnano
 ```
 
 - sass即为dart-sass，以前一般使用node-sass，安装中可能碰到各种问题，dart-sass能完美兼容并且避免这些问题
 - sass-loader用来把sass翻译成css
 - css-loader用来读取css文件（仅读取）
-- style-loader会把css用style标签包起来，放到header中
+- style-loader会把css用style标签包起来，放到header中，适用devlopment环境
+- mini-css-extract-plugin与style-loader作用类似，区别是使用link标签作为独立的文件引入，适用production环境
+- postcss-loader用来添加浏览器css兼容性代码
+> 后面4个都是postcss的插件，作用如下：
+> - postcss-import用来处理css中的@import指令
+> - postcss-preset-env跟babel类似，把新css语法转换为旧css语法
+> - postcss-px2rem用来把px自动转换成rem
+> - cssnano用来压缩代码
+
 
 ### babel
 
@@ -128,9 +140,174 @@ npm i -D @typescript-eslint/parser @typescript-eslint/eslint-plugin
 > 更完善的格式化流程，还要配置husky和lint-staged，此处不做展开，可参考以下两篇文章：[robertcooper](https://www.robertcooper.me/using-eslint-and-prettier-in-a-typescript-project)、[掘金](https://juejin.im/post/5d1d5fe96fb9a07eaf2bae29)
 > 有没有感觉很头大，这么多东西要配置。。
 
-### html插件
+### 其他loader、plugin
 
 ``` bash
-npm install -S -D html-webpack-plugin html-loader
+npm install -S -D url-loader html-webpack-plugin case-sensitive-paths-webpack-plugin clean-webpack-plugin
+```
+- url-loader用来处理其他文件的import/require，例如图片（把这些文件转发到生成目录，并解析成对应的url）
+    > url-loader内置了file-loader，可以设置指定大小以下文件转为DataURI
+- html-webpack-plugin用来生成一个html文件
+- case-sensitive-paths-webpack-plugin用来做路径大小写严格判断（mac上大小写不敏感，window和linux大小写敏感）
+- clean-webpack-plugin用来在每次打包之前清空目标目录（webpack的默认行为是增量，不清空）
+
+截止到目前为止，webpack的全部配置为两个文件：
+- module-rules.js
+    > loaders较多，所以单独写了一个文件
+``` js
+const isDev = process.env.NODE_ENV === 'development';
+const miniCssExtract = require('mini-css-extract-plugin');
+const postcssImport = require('postcss-import');
+const postcssPresetEnv = require('postcss-preset-env');
+const cssnano = require('cssnano');
+const pix2rem = require('postcss-pxtorem');
+const sass = require('sass');
+
+const cssLoaders = [
+    isDev ? 'style-loader' : miniCssExtract.loader,
+    'css-loader',
+    {
+        loader: 'postcss-loader',
+        options: {
+            ident: 'postcss',
+            plugins: (loader) => {
+                const targetPlugins = [
+                    postcssImport({ root: loader.resourcePath }),
+                    pix2rem({ propList: ['*'], rootValue: 100 }),
+                    postcssPresetEnv(),
+                ]
+
+                if (!isDev) {
+                    targetPlugins.push(cssnano());
+                }
+
+                return targetPlugins;
+            }
+        },
+    },
+]
+
+module.exports = () => {
+    return [
+        {
+            test: /\.(js|jsx|ts|tsx)$/,
+            exclude: /mode_modules/,
+            use: [
+                {
+                    loader: 'babel-loader',
+                    options: {
+                        cacheDirectory: true,
+                    }
+                }
+            ]
+        },
+        {
+            test: /\.css$/,
+            use: cssLoaders,
+        },
+        {
+            test: /\.scss$/,
+            use: [
+                ...cssLoaders,
+                {
+                    loader: 'sass-loader',
+                    options: {
+                        implementation: sass,
+                    }
+                }
+            ],
+        },
+        {
+            test: /\.(png|jpg|jpeg|gif|svg|ttf)$/,
+            exclude: /node_modules/,
+            use: [
+                {
+                    loader: 'url-loader',
+                    options: {
+                        limit: 5*1024,  // 5kb
+                    },
+                }
+            ],
+        }
+    ]
+}
 ```
 
+- webpack.client.js
+``` js
+const webpack = require('webpack');
+const path = require('path');
+const cwd = process.cwd();
+const fs = require('fs');
+const moduleRules = require('./module-rules');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const CaseSensitivePathPlugin = require('case-sensitive-paths-webpack-plugin');
+
+const isDev = process.env.NODE_ENV === 'development';
+console.log('env is: '+process.env.NODE_ENV);
+
+const plugins = [
+    new webpack.ProgressPlugin(),
+    new webpack.DefinePlugin({
+        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+        'process.env.DEPLOY_ENV': JSON.stringify(process.env.DEPLOY_ENV),
+    }),
+    new CleanWebpackPlugin(),
+    new CaseSensitivePathPlugin(),
+    new HtmlWebpackPlugin({
+        template: path.resolve(cwd, 'webpack/index.html'),
+        filename: 'index.html',
+    }),
+];
+if(isDev){
+    plugins.push(new webpack.HotModuleReplacementPlugin());
+    plugins.push(new webpack.NamedModulesPlugin());
+}
+
+
+module.exports = {
+    entry: path.resolve(cwd, 'src/client/app'),
+    output: {
+        path: path.resolve(cwd, 'dist/client'),
+        filename: isDev ? 'js/[name].[hash].js': 'js/[name].[contentHash].js',
+        chunkFilename: isDev ? 'chunks/[name].[hash].js' : 'chunks/[name].[contentHash].js',
+        publicPath: '/',
+    },
+    // mode: process.env.NODE_ENV,  // 由 --mode参数指定
+    resolve: {
+        extensions: ['.ts', '.tsx', '.scss', '.js', '.jsx', '.sass'],
+        alias: {
+            "@client": path.resolve(cwd, 'src/client'),
+            "@server": path.resolve(cwd, 'src/server'),
+        }
+    },
+    module: {
+        rules: moduleRules(),
+    },
+    plugins,
+    watch: isDev,
+    devServer: isDev ? {
+        contentBase: path.resolve(cwd, 'src/client'),
+        compress: true,
+        host: '0.0.0.0',
+        port: 8080,
+        hot: true,
+        open: true,
+        watchOptions: {
+            ignored: /node_modules/,    // 监听过多文件会占用cpu、内存，so，可以忽略掉部分文件
+            aggregateTimeout: 200,  // 默认200，文件变更后延时多久rebuild
+            poll: false,    // 默认false，如果不采用watch，那么可以采用poll（轮询）
+        },
+    } : undefined,
+    devtool: isDev ? "inline-source-map": undefined,
+};
+```
+- package.json中添加了以下两个命令：
+``` js
+{
+    "dev": "cross-env NODE_ENV=development DEPLOY_ENV=dev webpack-dev-server --mode=development --config webpack/webpack.client.js",
+    "prd": "cross-env NODE_ENV=production DEPLOY_ENV=prd node_modules/.bin/webpack --mode=production --config webpack/webpack.client.js",
+}
+```
+接下来跑跑命令就能看到打包出来的
