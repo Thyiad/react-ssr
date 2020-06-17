@@ -151,7 +151,11 @@ npm install -S -D url-loader html-webpack-plugin case-sensitive-paths-webpack-pl
 - case-sensitive-paths-webpack-plugin用来做路径大小写严格判断（mac上大小写不敏感，window和linux大小写敏感）
 - clean-webpack-plugin用来在每次打包之前清空目标目录（webpack的默认行为是增量，不清空）
 
-截止到目前为止，webpack的全部配置为两个文件：
+### 开发调试
+
+开发环境我们需要热更新，需要修改代码自动保存，这就需要用到我们之前安装的webpack-dev-server了，按照文档描述，配置devServer即可
+
+最终结果，截止到目前为止，webpack的全部配置为以下两个文件：
 - module-rules.js
     > loaders较多，所以单独写了一个文件
 ``` js
@@ -310,4 +314,10 @@ module.exports = {
     "prd": "cross-env NODE_ENV=production DEPLOY_ENV=prd node_modules/.bin/webpack --mode=production --config webpack/webpack.client.js",
 }
 ```
-接下来跑跑命令就能看到打包出来的
+
+OK，开发和生产打包就都已经搞定了
+
+## 小结
+
+从0配置spa前端项目，到这里这就已经完成了，整体来看，配置的东西的确很多，但也都是作为工程化所需要的东西。
+说到底，也是因为前端没有一个统一的、完善的环境工具，对于后端来说，比方说.net，一个visual studio搞定一切，美滋滋，哪有这么多事。。

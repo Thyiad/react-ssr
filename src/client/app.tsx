@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { render } from 'react-dom';
+import './app.scss';
 
 const aaa = () => {
     console.log('12345');
@@ -7,7 +8,11 @@ const aaa = () => {
 };
 
 const App: FC = () => {
-    return <div onClick={aaa}>app.tsx content3278238699987dfdflalalalal31</div>;
+    return (
+        <div className="high" onClick={aaa}>
+            app.tsx content3278238699987dfdflalalalal31
+        </div>
+    );
 };
 
 render(<App />, document.getElementById('root'));
