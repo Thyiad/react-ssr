@@ -1,0 +1,80 @@
+@mixin c_border($selector, $color, $direction: 'all', $radius: 0px, $notSetPosition: 1, $index: 0) {
+    #{$selector} {
+      @if $direction == 'tb' {
+        border-top: 1px solid $color;
+        border-bottom: 1px solid $color;
+      } @else if $direction == 'top' {
+        border-top: 1px solid $color;
+      } @else if $direction == 'left' {
+        border-left: 1px solid $color;
+      } @else if $direction == 'bottom' {
+        border-bottom: 1px solid $color;
+      } @else if $direction == 'right' {
+        border-right: 1px solid $color;
+      } @else if $direction == 'blr' {
+        border-left: 1px solid $color;
+        border-bottom: 1px solid $color;
+        border-right: 1px solid $color;
+      } @else if $direction == 'bl' {
+        border-left: 1px solid $color;
+        border-bottom: 1px solid $color;
+      } @else if $direction == 'lr' {
+        border-left: 1px solid $color;
+        border-right: 1px solid $color;
+      } @else {
+        border: 1px solid $color;
+      }
+    }
+    @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
+      #{$selector} {
+        @if $notSetPosition > 0 {
+          position: relative;
+        }
+        border-radius: $radius;
+        border: none;
+      }
+    }
+    @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
+      #{$selector}:before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 200%;
+        height: 200%;
+        @if $notSetPosition > 0 {
+          z-index: $index;
+        }
+        @if $direction == 'tb' {
+          border-top: 1px solid $color;
+          border-bottom: 1px solid $color;
+        } @else if $direction == 'top' {
+          border-top: 1px solid $color;
+        } @else if $direction == 'left' {
+          border-left: 1px solid $color;
+        } @else if $direction == 'bottom' {
+          border-bottom: 1px solid $color;
+        } @else if $direction == 'right' {
+          border-right: 1px solid $color;
+        } @else if $direction == 'blr' {
+          border-left: 1px solid $color;
+          border-bottom: 1px solid $color;
+          border-right: 1px solid $color;
+        } @else if $direction == 'bl' {
+          border-left: 1px solid $color;
+          border-bottom: 1px solid $color;
+        } @else if $direction == 'lr' {
+          border-left: 1px solid $color;
+          border-right: 1px solid $color;
+        } @else {
+          border: 1px solid $color; /*no*/
+        }
+        border-radius: $radius * 2;
+        transform-origin: 0 0;
+        transform: scale(0.5);
+        box-sizing: border-box;
+        background-color: transparent;
+        pointer-events: none;
+      }
+    }
+  }

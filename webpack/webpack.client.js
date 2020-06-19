@@ -3,6 +3,7 @@ const path = require('path');
 const cwd = process.cwd();
 const fs = require('fs');
 const moduleRules = require('./module-rules');
+const envConfig = require('./env-config');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CaseSensitivePathPlugin = require('case-sensitive-paths-webpack-plugin');
@@ -53,8 +54,8 @@ module.exports = {
     devServer: isDev ? {
         contentBase: path.resolve(cwd, 'src/client'),
         compress: true,
-        host: '0.0.0.0',
-        port: 8080,
+        host: envConfig.host,
+        port: envConfig.port,
         hot: true,
         open: true,
         watchOptions: {

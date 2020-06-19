@@ -1,0 +1,19 @@
+.basic-layout{
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    &-l-menu{
+        background-color: rgba(0, 0, 0, 0.65);
+        width: 200px;
+    }
+    &-r{
+        flex: 1;
+        &-header{
+            height: 60px;
+        }
+        &-main{
+            margin: 20px 16px;
+            background-color: #FFF;
+        }
+    }
+}
