@@ -21,7 +21,7 @@ tags:
 ``` bash
 npm i -S react-router-dom
 ```
-react-router-dom是基于react-router的库，里面加入了再浏览器运行环境下的一些功能，例如：Link、BrowserRouter、HashRouter。而其他的一些组件则是直接从react-router中导出的，例如：Switch、Route等等。
+react-router-dom是基于react-router的库，里面加入了一些在浏览器运行环境下的功能，例如：Link、BrowserRouter、HashRouter。而其他的一些组件则是直接从react-router中导出的，例如：Switch、Route等等。
 
 ### 路由及布局
 
