@@ -53,6 +53,7 @@ module.exports = {
     watch: isDev,
     devServer: isDev ? {
         contentBase: path.resolve(cwd, 'src/client'),
+        historyApiFallback: true,
         compress: true,
         host: envConfig.host,
         port: envConfig.port,

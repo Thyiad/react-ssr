@@ -19,11 +19,23 @@ tags:
 ### react-router
 先安装依赖：
 ``` bash
-npm i -S react-router-dom
+npm i -S react-router-dom react-helmet
 ```
 react-router-dom是基于react-router的库，里面加入了一些在浏览器运行环境下的功能，例如：Link、BrowserRouter、HashRouter。而其他的一些组件则是直接从react-router中导出的，例如：Switch、Route等等。
+react-helmet用来动态改变title
 
 ### 路由及布局
+
+### 其他
+写了几个基础页面后，发现报这种错：
+``` bash
+Module not found: Error: Can't resolve 'core-js/modules/es.array.slice' 
+```
+看了一下package.json，果然，遗漏安装core-js了，因为@babel/preset-env依赖core-js，会跑到当前项目下去寻找core-js
+因为用到的是core-js3，所以我们安装core-js3：
+```bash
+npm i core-js@3
+```
 
 
 ## 小结

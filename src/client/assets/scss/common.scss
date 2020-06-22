@@ -1,29 +1,32 @@
-@import './mixin.scss';
+@import "./mixin.scss";
+
+html,
+body,
 #root {
-    height: 100%;
-    background-color: #f0f2f5;
+  height: 100%;
+  background-color: #f0f2f5;
+}
+.ellipsis-line {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.overflow-hidden {
+  overflow: hidden;
+}
+.ellipsis-multi {
+  display: -webkit-box;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  &.line-3 {
+    -webkit-line-clamp: 3;
   }
-  .ellipsis-line {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  &.line-4 {
+    -webkit-line-clamp: 4;
   }
-  .overflow-hidden {
-    overflow: hidden;
+  &.line-5 {
+    -webkit-line-clamp: 5;
   }
-  .ellipsis-multi {
-    display: -webkit-box;
-    text-overflow: ellipsis;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    overflow: hidden;
-    &.line-3 {
-      -webkit-line-clamp: 3;
-    }
-    &.line-4 {
-      -webkit-line-clamp: 4;
-    }
-    &.line-5 {
-      -webkit-line-clamp: 5;
-    }
-  }
+}
