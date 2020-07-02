@@ -19,5 +19,8 @@
     "env": {
         "browser": true,
         "node": true
+    },
+    "rules": {
+        "@typescript-eslint/ban-ts-comment": 0
     }
 }

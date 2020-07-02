@@ -1,10 +1,11 @@
 import React, { FC, useState } from 'react';
 import './BasicLayout.scss';
 import allRoutes from '@client/route';
-import { useHistory, Switch } from 'react-router-dom';
+import { useHistory, Switch, useParams } from 'react-router-dom';
 import RouteWithSubRoutes from '../components/RouteWithSubRoutes';
 
 const BasicLayout: FC<RoutePageProps> = (props) => {
+    // eslint-disable-next-line react/prop-types
     const { routes } = props;
     const [openMenus, setOpenMenus] = useState<string[]>([]);
     const history = useHistory();

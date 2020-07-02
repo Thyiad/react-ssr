@@ -1,6 +1,7 @@
 import BasicLayout from './layout/BasicLayout';
 import Home from './pages/home/index';
 import About from './pages/about/index';
+import Todo from './pages/todo/index';
 import NotFound from './pages/404/index';
 import Login from './pages/login/index';
 
@@ -32,6 +33,13 @@ const routes: RouteProps[] = [
                 path: '/about',
                 exact: true,
                 component: About,
+            },
+            {
+                title: 'todo',
+                name: 'todo',
+                path: '/todo',
+                exact: true,
+                component: Todo,
             },
             {
                 title: 'not found',

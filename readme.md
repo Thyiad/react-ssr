@@ -25,8 +25,12 @@ react-router-dom是基于react-router的库，里面加入了一些在浏览器�
 react-helmet用来动态改变title
 
 ### 路由及布局
+路由及布局，就跟我们平时写的react应用是一样的，先写个最简单的就行，就不详细展开了，具体看代码即可，主要新增了3个文件：
+- routes.js 定义路由
+- layout 定义布局
+- RouteWithSubRoutes react-router的嵌套路由组件
 
-### 其他
+### 插曲
 写了几个基础页面后，发现报这种错：
 ``` bash
 Module not found: Error: Can't resolve 'core-js/modules/es.array.slice' 
@@ -37,5 +41,40 @@ Module not found: Error: Can't resolve 'core-js/modules/es.array.slice'
 npm i core-js@3
 ```
 
+### redux
+接下来就是全局状态管理，以往我们都是用redux及react-redux，不过在有了useReducer和useContext之后，已经可以替代了
+> 在hooks之前createContext配合Context.Consumer也能读取全局状态，只不过很不方便，[这篇文章](https://medium.com/@Whien/%E9%80%8F%E9%81%8E-react-usecontext-%E8%88%87-usereducer-%E4%BE%86%E5%81%9A-global-state-manager-bed30fb1f08b)讲的不错
+
+简单来说，使用useReducer和useContext来接管redux，主要有3步，示例代码如下：
+1. createContext创建一个全局context
+```js const Store = createContext(initState);```
+
+2. 使用上一步的context，导出Provider组件，value中传入useReducer的state及dispatch
+``` ts
+const [state, dispatch] = useReducer(reducer, initState);
+return <Store.Provider value={{state, dispatch}}>
+</Store.Provider>
+```
+接下来就是传统的写法了，dispatch(action())，显然每个页面都这么写的话，还是挺繁琐的
+如果能像vue那样mapAction，直接调用action，那就方便多了
+>redux4中有一个bindActionCreators，跟mapAction作用类似传入action和dispatch，返回一个直接调用的action
+而且代码多了之后，肯定是需要拆分reducer及action的，所以我们可以这样进行拆分：
+- 建一个reducers文件夹
+- 一个业务对应一个reducer文件，每个文件里定义actions、reducers
+- 新增一个builder文件，遍历处理，将actions用dispatch包一层，reducers则简单合并，最后导出新的actions、一个新的root reducer
+
+结构如下：
+``` bash
+- redux
+    - reducers
+        - global.ts
+        - todo.ts
+        - index.ts
+    - builder.ts
+    - store.tsx
+```
+
+3. 创建一个useRedux hooks，快捷使用state、dispatch
+const {state, dispatch, actions} = useContext(Store);
 
 ## 小结
