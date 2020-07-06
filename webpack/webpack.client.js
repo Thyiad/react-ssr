@@ -33,7 +33,7 @@ if(isDev){
 module.exports = {
     entry: path.resolve(cwd, 'src/app'),
     output: {
-        path: path.resolve(cwd, 'dist/client'),
+        path: path.resolve(cwd, 'dist'),
         filename: isDev ? 'js/[name].[hash].js': 'js/[name].[contentHash].js',
         chunkFilename: isDev ? 'chunks/[name].[hash].js' : 'chunks/[name].[contentHash].js',
         publicPath: '/',
@@ -51,7 +51,7 @@ module.exports = {
     plugins,
     watch: isDev,
     devServer: isDev ? {
-        contentBase: path.resolve(cwd, 'src/client'),
+        contentBase: path.resolve(cwd, 'src'),
         historyApiFallback: true,
         compress: true,
         host: envConfig.host,
