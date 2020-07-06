@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import './BasicLayout.scss';
-import allRoutes from '@client/route';
+import allRoutes from '@/route';
 import { useHistory, Switch, useParams } from 'react-router-dom';
 import RouteWithSubRoutes from '../components/RouteWithSubRoutes';
 

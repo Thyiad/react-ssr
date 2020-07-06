@@ -1,5 +1,5 @@
 import React, { FC, useEffect } from 'react';
-import { useRedux } from '@client/hooks/useRedux';
+import { useRedux } from '@/hooks/useRedux';
 import './index.scss';
 
 const todo: React.FC<RoutePageProps> = () => {

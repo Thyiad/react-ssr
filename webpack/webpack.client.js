@@ -31,7 +31,7 @@ if(isDev){
 
 
 module.exports = {
-    entry: path.resolve(cwd, 'src/client/app'),
+    entry: path.resolve(cwd, 'src/app'),
     output: {
         path: path.resolve(cwd, 'dist/client'),
         filename: isDev ? 'js/[name].[hash].js': 'js/[name].[contentHash].js',
@@ -42,8 +42,7 @@ module.exports = {
     resolve: {
         extensions: ['.ts', '.tsx', '.scss', '.js', '.jsx', '.sass'],
         alias: {
-            "@client": path.resolve(cwd, 'src/client'),
-            "@server": path.resolve(cwd, 'src/server'),
+            "@": path.resolve(cwd, 'src'),
         }
     },
     module: {
