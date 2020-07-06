@@ -7,6 +7,7 @@ const envConfig = require('./env-config');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CaseSensitivePathPlugin = require('case-sensitive-paths-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const isDev = process.env.NODE_ENV === 'development';
 console.log('env is: '+process.env.NODE_ENV);
@@ -27,6 +28,11 @@ const plugins = [
 if(isDev){
     plugins.push(new webpack.HotModuleReplacementPlugin());
     plugins.push(new webpack.NamedModulesPlugin());
+}else{
+    plugins.push(new MiniCssExtractPlugin({
+        filename: '[name].[contenthash].css',
+        chunkFilename: '[id].[contenthash].css',
+    }));
 }
 
 
