@@ -77,4 +77,7 @@ return <Store.Provider value={{state, dispatch}}>
 3. 创建一个useRedux hooks，快捷使用state、dispatch
 const {state, dispatch, actions} = useContext(Store);
 
+更具体的代码就不一行行展示了，在tag-v2中可以详细查看
+
 ## 小结
+可以看到，createContext+useContext+useReducer这3个react内置的api，已经足够应对小型项目的全局状态管理了
