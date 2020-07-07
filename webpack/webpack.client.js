@@ -30,8 +30,8 @@ if(isDev){
     plugins.push(new webpack.NamedModulesPlugin());
 }else{
     plugins.push(new MiniCssExtractPlugin({
-        filename: '[name].[contenthash].css',
-        chunkFilename: '[id].[contenthash].css',
+        filename: 'css/[name].[contenthash].css',
+        chunkFilename: 'chunks/[id].[contenthash].css',
     }));
 }
 
