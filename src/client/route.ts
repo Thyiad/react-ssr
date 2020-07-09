@@ -40,6 +40,7 @@ const routes: RouteProps[] = [
                 path: '/todo',
                 exact: true,
                 component: Todo,
+                isSSR: true,
             },
             {
                 title: 'not found',

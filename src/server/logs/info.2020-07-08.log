@@ -1,0 +1,25 @@
+[2020-07-08T14:57:32.644] [INFO] info - App is running: http://localhost:8089 
+[2020-07-08T14:58:31.597] [INFO] info - App is running: http://localhost:8089 
+[2020-07-08T14:58:54.898] [INFO] info - Response time 2ms, request info {"method":"GET","url":"/","host":"localhost:8089","query":{},"userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36"} 
+[2020-07-08T14:59:15.920] [INFO] info - Response time 0ms, request info {"method":"GET","url":"/api/getList","host":"localhost:8089","query":{},"userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36"} 
+[2020-07-08T15:00:02.364] [INFO] info - App is running: http://localhost:8089 
+[2020-07-08T15:00:07.290] [INFO] info - Response time 3ms, request info {"method":"GET","url":"/getList","host":"localhost:8089","query":{},"userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36"} 
+[2020-07-08T15:01:08.823] [INFO] info - App is running: http://localhost:8089 
+[2020-07-08T15:46:13.820] [INFO] info - App is running: http://localhost:8089 
+[2020-07-08T15:50:55.191] [INFO] info - App is running: http://localhost:8089 
+[2020-07-08T17:38:30.723] [INFO] info - App is running: http://localhost:8089 
+[2020-07-08T17:38:57.365] [INFO] info - Response time 18ms, request info {"method":"GET","url":"/todo","host":"localhost:8089","query":{},"userAgent":"vscode-restclient"} 
+[2020-07-08T17:39:46.667] [INFO] info - Response time 0ms, request info {"method":"GET","url":"/user/login","host":"localhost:8089","query":{},"userAgent":"vscode-restclient"} 
+[2020-07-08T17:39:50.550] [INFO] info - Response time 0ms, request info {"method":"GET","url":"/user/login","host":"localhost:8089","query":{},"userAgent":"vscode-restclient"} 
+[2020-07-08T17:39:51.878] [INFO] info - Response time 0ms, request info {"method":"GET","url":"/user/login","host":"localhost:8089","query":{},"userAgent":"vscode-restclient"} 
+[2020-07-08T17:39:52.841] [INFO] info - Response time 0ms, request info {"method":"GET","url":"/user/login","host":"localhost:8089","query":{},"userAgent":"vscode-restclient"} 
+[2020-07-08T17:40:19.737] [INFO] info - Response time 2ms, request info {"method":"GET","url":"/todo","host":"localhost:8089","query":{},"userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36"} 
+[2020-07-08T17:43:29.924] [INFO] info - App is running: http://localhost:8089 
+[2020-07-08T17:43:41.979] [INFO] info - App is running: http://localhost:8089 
+[2020-07-08T17:45:17.643] [INFO] info - App is running: http://localhost:8089 
+[2020-07-08T17:47:01.189] [INFO] info - App is running: http://localhost:8089 
+[2020-07-08T17:57:53.878] [INFO] info - App is running: http://localhost:8089 
+[2020-07-08T17:59:19.455] [INFO] info - App is running: http://localhost:8089 
+[2020-07-08T18:00:42.764] [INFO] info - App is running: http://localhost:8089 
+[2020-07-08T18:00:54.152] [INFO] info - App is running: http://localhost:8089 
+[2020-07-08T18:00:54.809] [INFO] info - Response time 6ms, request info {"method":"GET","url":"/xx","host":"localhost:8089","query":{},"userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36"} 
