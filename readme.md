@@ -36,6 +36,10 @@ npm i -D @types/koa @types/koa__router @types/koa-bodyparser @types/chalk
 ```
 
 如果是普通nodejs，我们可以用nodemon+ts-node来调试：
+``` bash
+npm i ts-node
+// nodemon很多地方用的上，所以直接全局安装吧
+```
 ``` js
 "devServer": "nodemon --watch src -e ts,tsx,js,json --exec node --inspect=127.0.0.1:9229 -r ts-node/register ./src/server/app.ts",
 ```
@@ -51,3 +55,37 @@ npm i -D @types/koa @types/koa__router @types/koa-bodyparser @types/chalk
 
 所以我们需要用webpack来进行打包，解决这些问题
 
+webpack-node-externals、webpack-manifest-plugin、ignore-loader
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+server css如何打包处理
+    server端不处理css，由client端处理css
+server如何引入client打包出来的boudle
+    client端生成manifest, server端引入manifest中的文件路径
+splitChunks
+
+koa和webpack如何一起启动
+    client: webpack watch, output to dist/client
+    server: recompile_complete, process.spawn, node dist/server/main.js
+如何热更新
+
+
+
+
+
+
+ssr
+docx
+ppt

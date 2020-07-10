@@ -8,7 +8,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CaseSensitivePathPlugin = require('case-sensitive-paths-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const ManifestPlugin = require('webpack-manifest-plugin');
+const nodeExternals = require('webpack-node-externals');
 
 const isDev = process.env.NODE_ENV === 'development';
 console.log('NODE_ENV is: '+process.env.NODE_ENV);
@@ -21,11 +21,6 @@ const plugins = [
     }),
     new CleanWebpackPlugin(),
     new CaseSensitivePathPlugin(),
-    new HtmlWebpackPlugin({
-        template: path.resolve(cwd, 'webpack/index.html'),
-        filename: 'index.html',
-    }),
-    new ManifestPlugin(),
 ];
 if(isDev){
     plugins.push(new webpack.HotModuleReplacementPlugin());
@@ -37,16 +32,18 @@ if(isDev){
     }));
 }
 
-
 module.exports = {
-    target: 'web',
-    entry: path.resolve(cwd, 'src/client/app'),
+    target: 'node',
+    entry: path.resolve(cwd, 'src/server/app'),
     output: {
-        path: path.resolve(cwd, 'dist/client'),
-        filename: isDev ? 'js/[name].[hash].js': 'js/[name].[contentHash].js',
+        path: path.resolve(cwd, 'dist/server'),
+        filename: isDev ? '[name].js': '[name].[contentHash].js',
         chunkFilename: isDev ? 'chunks/[name].[hash].js' : 'chunks/[name].[contentHash].js',
         publicPath: '/',
     },
+    externals: [
+        nodeExternals()
+    ],
     // mode: process.env.NODE_ENV,  // 由 --mode参数指定
     resolve: {
         extensions: ['.ts', '.tsx', '.scss', '.js', '.jsx', '.sass'],
@@ -56,7 +53,7 @@ module.exports = {
         }
     },
     module: {
-        rules: moduleRules(),
+        rules: moduleRules(true),
     },
     plugins,
     watch: isDev,
@@ -75,15 +72,4 @@ module.exports = {
         },
     } : undefined,
     devtool: isDev ? "inline-source-map": undefined,
-    optimization: {
-        splitChunks: {
-            cacheGroups: {
-                libs: {
-                    test: /node_modules/, // 指定是node_modules下的第三方包
-                    chunks: 'initial',
-                    name: 'vendor' // 打包后的文件名，任意命名
-                }
-            }
-        }
-    }
-};
+}

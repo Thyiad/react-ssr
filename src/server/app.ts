@@ -18,6 +18,7 @@ render(app, {
     debug: config.isDev,
 });
 
+app.use(serve(path.join(config.baseDir, '/dist/client')));
 app.use(loggerMiddle());
 app.use(bodyParser());
 app.use(router.routes());

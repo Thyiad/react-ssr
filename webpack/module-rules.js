@@ -30,7 +30,7 @@ const cssLoaders = [
     },
 ]
 
-module.exports = () => {
+module.exports = (isServer) => {
     return [
         {
             test: /\.(js|jsx|ts|tsx)$/,
@@ -46,11 +46,11 @@ module.exports = () => {
         },
         {
             test: /\.css$/,
-            use: cssLoaders,
+            use: isServer ? ["ignore-loader"] : cssLoaders,
         },
         {
             test: /\.scss$/,
-            use: [
+            use: isServer ? ["ignore-loader"] : [
                 ...cssLoaders,
                 {
                     loader: 'sass-loader',
