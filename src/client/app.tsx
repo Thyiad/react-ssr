@@ -3,6 +3,7 @@ import { render, hydrate } from 'react-dom';
 import { BrowserRouter, Switch } from 'react-router-dom';
 import routes from './route';
 import AppContainer from './components/AppContainer';
+import { loadableReady } from '@loadable/component';
 import '@client/assets/scss/common.scss';
 import './app.scss';
 
@@ -15,4 +16,6 @@ const App: FC = () => {
     );
 };
 
-hydrate(<App />, document.getElementById('root'));
+loadableReady(() => {
+    hydrate(<App />, document.getElementById('root'));
+});

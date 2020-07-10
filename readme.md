@@ -79,7 +79,7 @@ splitChunks
 koa和webpack如何一起启动
     client: webpack watch, output to dist/client
     server: recompile_complete, process.spawn, node dist/server/main.js
-如何热更新
+如何热更新, 自动刷新页面
 
 
 

@@ -18,13 +18,12 @@ export const IndexTemplate = `<!DOCTYPE html>
   <meta name="x5-fullscreen" content="true" />
   <script>(function (designWidth, maxWidth) { var doc = document, win = window, docEl = doc.documentElement, tid; function refreshRem() { var width = docEl.getBoundingClientRect().width; maxWidth = maxWidth || 540; width > maxWidth && (width = maxWidth); var rem = (width * 100) / designWidth; docEl.style.fontSize = rem + "px"; var actualSize = parseFloat(window.getComputedStyle(document.documentElement)["font-size"]); if (actualSize !== rem && actualSize > 0 && Math.abs(actualSize - rem) > 1) { var remScaled = rem * rem / actualSize; docEl.style.fontSize = remScaled + "px" } } refreshRem(); win.addEventListener("resize", function () { clearTimeout(tid); tid = setTimeout(refreshRem, 300) }, false); win.addEventListener("pageshow", function (e) { if (e.persisted) { clearTimeout(tid); tid = setTimeout(refreshRem, 300) } }, false); if (doc.readyState === "complete") { doc.body.style.fontSize = "16px" } else { doc.addEventListener("DOMContentLoaded", function (e) { doc.body.style.fontSize = "16px" }, false) } })(750, 750);</script>
   <title></title>
+  {{@linkTags}}
+  {{@styleTags}}
 </head>
 
 <body>
   <div id="root">{{@html}}</div>
-  {{@bodyScript}}
-  {{s1}}
-  {{s2}}
+  {{@scriptTags}}
 </body>
-
 </html>`;

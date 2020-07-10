@@ -7,35 +7,27 @@ import { IndexTemplate } from '@server/utils/template';
 import artTemplate from 'art-template';
 import fs from 'fs';
 import { jsonParse } from '@client/utils/stringify';
-import { Helmet } from 'react-helmet';
+import { ChunkExtractor } from '@loadable/server';
 
-let manifest: any = null;
-const manifestPath = `${process.cwd()}/dist/client/manifest.json`;
+const statsFile = `${process.cwd()}/dist/client/loadable-stats.json`;
 
 export const render = async (ctx: Context, router: RouteProps) => {
-    if (manifest == null) {
-        const jsonContent: string = await fs.readFileSync(manifestPath, 'utf-8');
-        console.log(jsonContent);
-        manifest = jsonParse(jsonContent);
-    }
-    console.log(manifest);
     if (router.isSSR) {
-        const jsx = (
+        const extractor = new ChunkExtractor({ statsFile });
+        const jsx = extractor.collectChunks(
             <StaticRouter location={ctx.url} context={{}}>
                 <AppContainer />
-            </StaticRouter>
+            </StaticRouter>,
         );
-        const s1 = Helmet.renderStatic();
         const html = renderToString(jsx);
-        const s2 = Helmet.renderStatic();
+        const scriptTags = extractor.getScriptTags(); // or extractor.getScriptElements();
+        const linkTags = extractor.getLinkTags(); // or extractor.getLinkElements();
+        const styleTags = extractor.getStyleTags(); // or extractor.getStyleElements();
         const renderData = {
             html,
-            bodyScript: `
-            <script type="text/javascript" src="${manifest['vendor.js']}">
-            </script><script type="text/javascript" src="${manifest['main.js']}"></script>
-            `,
-            s1,
-            s2,
+            scriptTags,
+            linkTags,
+            styleTags,
         };
         const templateStr = artTemplate.render(IndexTemplate, renderData);
         ctx.type = 'html';

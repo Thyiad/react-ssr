@@ -4,11 +4,11 @@ const cwd = process.cwd();
 const fs = require('fs');
 const moduleRules = require('./module-rules');
 const envConfig = require('./env-config');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CaseSensitivePathPlugin = require('case-sensitive-paths-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const nodeExternals = require('webpack-node-externals');
+const LoadablePlugin = require('@loadable/webpack-plugin');
 
 const isDev = process.env.NODE_ENV === 'development';
 console.log('NODE_ENV is: '+process.env.NODE_ENV);
@@ -21,6 +21,7 @@ const plugins = [
     }),
     new CleanWebpackPlugin(),
     new CaseSensitivePathPlugin(),
+    new LoadablePlugin(),
 ];
 if(isDev){
     plugins.push(new webpack.HotModuleReplacementPlugin());
