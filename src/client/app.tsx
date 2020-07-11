@@ -8,13 +8,15 @@ import '@client/assets/scss/common.scss';
 import './app.scss';
 
 const App: FC = () => {
-    console.log('in app.tsx render..........');
+    console.log('in app.tsx render..........11111');
     return (
         <BrowserRouter>
             <AppContainer />
         </BrowserRouter>
     );
 };
+
+// render(<App />, document.getElementById('root'));
 
 loadableReady(() => {
     hydrate(<App />, document.getElementById('root'));

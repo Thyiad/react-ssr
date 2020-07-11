@@ -7,7 +7,7 @@ const envConfig = require('./env-config');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CaseSensitivePathPlugin = require('case-sensitive-paths-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-// const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 // const ManifestPlugin = require('webpack-manifest-plugin');
 const LoadablePlugin = require('@loadable/webpack-plugin');
 
@@ -22,10 +22,10 @@ const plugins = [
     }),
     new CleanWebpackPlugin(),
     new CaseSensitivePathPlugin(),
-    // new HtmlWebpackPlugin({
-    //     template: path.resolve(cwd, 'webpack/index.html'),
-    //     filename: 'index.html',
-    // }),
+    new HtmlWebpackPlugin({
+        template: path.resolve(cwd, 'webpack/index.html'),
+        filename: 'index.html',
+    }),
     // new ManifestPlugin(),
     new LoadablePlugin(),
 ];
@@ -62,20 +62,20 @@ module.exports = {
     },
     plugins,
     watch: isDev,
-    // devServer: isDev ? {
-    //     contentBase: path.resolve(cwd, 'src/client'),
-    //     historyApiFallback: true,
-    //     compress: true,
-    //     host: envConfig.host,
-    //     port: envConfig.port,
-    //     hot: true,
-    //     open: true,
-    //     watchOptions: {
-    //         ignored: /node_modules/,    // 监听过多文件会占用cpu、内存，so，可以忽略掉部分文件
-    //         aggregateTimeout: 200,  // 默认200，文件变更后延时多久rebuild
-    //         poll: false,    // 默认false，如果不采用watch，那么可以采用poll（轮询）
-    //     },
-    // } : undefined,
+    devServer: isDev ? {
+        contentBase: path.resolve(cwd, 'src/client'),
+        historyApiFallback: true,
+        compress: true,
+        host: envConfig.host,
+        port: envConfig.port,
+        hot: true,
+        open: true,
+        watchOptions: {
+            ignored: /node_modules/,    // 监听过多文件会占用cpu、内存，so，可以忽略掉部分文件
+            aggregateTimeout: 200,  // 默认200，文件变更后延时多久rebuild
+            poll: false,    // 默认false，如果不采用watch，那么可以采用poll（轮询）
+        },
+    } : undefined,
     devtool: isDev ? "inline-source-map": undefined,
     optimization: {
         splitChunks: {

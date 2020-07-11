@@ -8,6 +8,7 @@ import artTemplate from 'art-template';
 import fs from 'fs';
 import { jsonParse } from '@client/utils/stringify';
 import { ChunkExtractor } from '@loadable/server';
+import config from '@server/config';
 
 const statsFile = `${process.cwd()}/dist/client/loadable-stats.json`;
 
