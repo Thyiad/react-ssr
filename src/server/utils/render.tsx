@@ -11,30 +11,38 @@ import { ChunkExtractor } from '@loadable/server';
 import config from '@server/config';
 
 const statsFile = `${process.cwd()}/dist/client/loadable-stats.json`;
+let extractor = new ChunkExtractor({ statsFile });
+
+export const renderHtml = async (ctx: Context, isSSR: boolean): Promise<string> => {
+    if (config.isDev) {
+        extractor = new ChunkExtractor({ statsFile });
+    }
+
+    const jsx = isSSR
+        ? extractor.collectChunks(
+              <StaticRouter location={ctx.url} context={{}}>
+                  <AppContainer />
+              </StaticRouter>,
+          )
+        : extractor.collectChunks(<StaticRouter location={ctx.url} context={{}} />);
+    const html = renderToString(jsx);
+    const scriptTags = extractor.getScriptTags(); // or extractor.getScriptElements();
+    const linkTags = extractor.getLinkTags(); // or extractor.getLinkElements();
+    const styleTags = extractor.getStyleTags(); // or extractor.getStyleElements();
+    // todo: 如果需要提前获取数据，需要 await 获取数据
+    // todo: 如果是客户端渲染，获取数据由客户端自行获取
+    const renderData = {
+        html,
+        scriptTags,
+        linkTags,
+        styleTags,
+    };
+    const templateStr = artTemplate.render(IndexTemplate, renderData);
+    return templateStr;
+};
 
 export const render = async (ctx: Context, router: RouteProps) => {
-    if (router.isSSR) {
-        const extractor = new ChunkExtractor({ statsFile });
-        const jsx = extractor.collectChunks(
-            <StaticRouter location={ctx.url} context={{}}>
-                <AppContainer />
-            </StaticRouter>,
-        );
-        const html = renderToString(jsx);
-        const scriptTags = extractor.getScriptTags(); // or extractor.getScriptElements();
-        const linkTags = extractor.getLinkTags(); // or extractor.getLinkElements();
-        const styleTags = extractor.getStyleTags(); // or extractor.getStyleElements();
-        const renderData = {
-            html,
-            scriptTags,
-            linkTags,
-            styleTags,
-        };
-        const templateStr = artTemplate.render(IndexTemplate, renderData);
-        ctx.type = 'html';
-        ctx.body = templateStr;
-    } else {
-        ctx.type = 'html';
-        ctx.body = '<p>csr</p>' + router.path;
-    }
+    const templateStr = await renderHtml(ctx, router.isSSR);
+    ctx.type = 'html';
+    ctx.body = templateStr;
 };

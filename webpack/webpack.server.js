@@ -10,9 +10,6 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const nodeExternals = require('webpack-node-externals');
 const LoadablePlugin = require('@loadable/webpack-plugin');
 
-const isDev = process.env.NODE_ENV === 'development';
-console.log('NODE_ENV is: '+process.env.NODE_ENV);
-
 const plugins = [
     new webpack.ProgressPlugin(),
     new webpack.DefinePlugin({
@@ -45,7 +42,6 @@ module.exports = {
     externals: [
         nodeExternals()
     ],
-    // mode: process.env.NODE_ENV,  // 由 --mode参数指定
     resolve: {
         extensions: ['.ts', '.tsx', '.scss', '.js', '.jsx', '.sass'],
         alias: {
@@ -63,7 +59,7 @@ module.exports = {
         historyApiFallback: true,
         compress: true,
         host: envConfig.host,
-        port: envConfig.port,
+        port: envConfig.clientPort,
         hot: true,
         open: true,
         watchOptions: {

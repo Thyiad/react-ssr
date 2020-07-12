@@ -3,7 +3,6 @@ import bodyParser from 'koa-bodyparser';
 import serve from 'koa-static';
 // @ts-ignore
 import render from 'koa-art-template';
-import chalk from 'chalk';
 import config from './config';
 import path from 'path';
 import { loggerMiddle } from './middleware/logger';
@@ -25,8 +24,7 @@ app.use(router.routes());
 app.use(router.allowedMethods());
 
 app.listen(config.port, () => {
-    logger.info(`App is running: http://localhost:${config.port}`);
-    chalk.blue(`App is running: http://localhost:${config.port}`);
+    console.log(`Server is is running: http://localhost:${config.port}`);
 });
 
 app.context.onerror = function (err) {

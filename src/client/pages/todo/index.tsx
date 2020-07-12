@@ -13,7 +13,7 @@ const todo: React.FC<RoutePageProps> = () => {
     return (
         <div className="todo-page">
             <p>{state.name}</p>
-            <p className="doing">doing item is : {state.doingItem}</p>
+            <p className="doing">doing item is: {state.doingItem}</p>
             <button
                 onClick={() => {
                     actions.todo.setTodoList([...state.todoList, 'newToDo']);

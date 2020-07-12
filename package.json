@@ -9,7 +9,8 @@
     "prd-client": "cross-env NODE_ENV=production DEPLOY_ENV=prd node_modules/.bin/webpack --mode=production --config webpack/webpack.client.js",
     "dev-server": "cross-env NODE_ENV=development DEPLOY_ENV=dev node_modules/.bin/webpack --mode=development --config webpack/webpack.server.js",
     "prd-server": "cross-env NODE_ENV=production DEPLOY_ENV=prd node_modules/.bin/webpack --mode=production --config webpack/webpack.server.js",
-    "dev": "nodemon ./dist/server/main.js",
+    "dev": "node webpack/dev.js",
+    "build": "node webpack/build.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "nodemon": "nodemon --watch src -e ts,tsx,js,json --exec node --inspect=127.0.0.1:9229 -r ts-node/register ./src/server/app.ts",
     "lint": "eslint src --fix --ext .ts,.tsx"
@@ -69,13 +70,16 @@
     "html-webpack-plugin": "^4.3.0",
     "ignore-loader": "^0.1.2",
     "mini-css-extract-plugin": "^0.9.0",
+    "node-dev": "^5.0.0",
     "postcss-import": "^12.0.1",
     "postcss-loader": "^3.0.0",
     "postcss-preset-env": "^6.7.0",
     "postcss-pxtorem": "^5.1.1",
     "prettier": "^2.0.5",
+    "react-dev-utils": "^10.2.1",
     "sass": "^1.26.8",
     "sass-loader": "^8.0.2",
+    "start-server-webpack-plugin": "^2.2.5",
     "style-loader": "^1.2.1",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.3",
@@ -84,7 +88,8 @@
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.11.0",
     "webpack-manifest-plugin": "^2.2.0",
-    "webpack-node-externals": "^2.3.0"
+    "webpack-node-externals": "^2.3.0",
+    "webpackbar": "^4.0.0"
   },
   "author": "Thyiad",
   "license": "ISC"

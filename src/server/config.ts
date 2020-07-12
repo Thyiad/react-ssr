@@ -1,7 +1,4 @@
-console.log('server config process.env.NODE_ENV is: ', process.env.NODE_ENV);
-console.log('process.cwd() is: ', process.cwd());
-
-const isDev = true;
+const isDev = process.env.NODE_ENV === 'development';
 export default {
     isDev,
     baseDir: process.cwd(),

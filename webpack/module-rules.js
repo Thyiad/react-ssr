@@ -1,4 +1,3 @@
-const isDev = process.env.NODE_ENV === 'development';
 const miniCssExtract = require('mini-css-extract-plugin');
 const postcssImport = require('postcss-import');
 const postcssPresetEnv = require('postcss-preset-env');
@@ -6,31 +5,36 @@ const cssnano = require('cssnano');
 const pix2rem = require('postcss-pxtorem');
 const sass = require('sass');
 
-const cssLoaders = [
-    isDev ? 'style-loader' : miniCssExtract.loader,
-    'css-loader',
-    {
-        loader: 'postcss-loader',
-        options: {
-            ident: 'postcss',
-            plugins: (loader) => {
-                const targetPlugins = [
-                    postcssImport({ root: loader.resourcePath }),
-                    pix2rem({ propList: ['*'], rootValue: 100 }),
-                    postcssPresetEnv(),
-                ]
+module.exports = (isServer, isDev) => {
+    const cssLoaders = [
+        isDev ? "style-loader" : miniCssExtract.loader,
+        // {
+        //     loader: miniCssExtract.loader,
+        //     options: {
+        //         hmr: isDev,
+        //     }
+        // },
+        'css-loader',
+        {
+            loader: 'postcss-loader',
+            options: {
+                ident: 'postcss',
+                plugins: (loader) => {
+                    const targetPlugins = [
+                        postcssImport({ root: loader.resourcePath }),
+                        pix2rem({ propList: ['*'], rootValue: 100 }),
+                        postcssPresetEnv(),
+                    ]
 
-                if (!isDev) {
-                    targetPlugins.push(cssnano());
+                    if (!isDev) {
+                        targetPlugins.push(cssnano());
+                    }
+
+                    return targetPlugins;
                 }
-
-                return targetPlugins;
-            }
+            },
         },
-    },
-]
-
-module.exports = (isServer) => {
+    ];
     return [
         {
             test: /\.(js|jsx|ts|tsx)$/,
@@ -67,10 +71,10 @@ module.exports = (isServer) => {
                 {
                     loader: 'url-loader',
                     options: {
-                        limit: 5*1024,  // 5kb
+                        limit: 5 * 1024,  // 5kb
                     },
                 }
             ],
-        }
+        },
     ]
 }
