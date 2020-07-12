@@ -1,9 +1,11 @@
+import loadable from '@loadable/component';
+
 import BasicLayout from './layout/BasicLayout';
-import Home from './pages/home/index';
-import About from './pages/about/index';
-import Todo from './pages/todo/index';
-import NotFound from './pages/404/index';
-import Login from './pages/login/index';
+const Home = loadable(() => import(/* webpackChunkName: "home" */ './pages/home/index'));
+const About = loadable(() => import(/* webpackChunkName: "about" */ './pages/about/index'));
+const Todo = loadable(() => import(/* webpackChunkName: "todo" */ './pages/todo/index'));
+const NotFound = loadable(() => import(/* webpackChunkName: "404" */ './pages/404/index'));
+const Login = loadable(() => import(/* webpackChunkName: "login" */ './pages/login/index'));
 
 const routes: RouteProps[] = [
     {
