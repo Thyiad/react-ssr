@@ -6,7 +6,7 @@
   "scripts": {
     "bb": "babel --extensions .ts ./src -d ./dist",
     "dev": "cross-env NODE_ENV=development DEPLOY_ENV=dev webpack-dev-server --mode=development --config webpack/webpack.client.js",
-    "prd": "cross-env NODE_ENV=production DEPLOY_ENV=prd node_modules/.bin/webpack --mode=production --config webpack/webpack.client.js",
+    "build": "cross-env NODE_ENV=production DEPLOY_ENV=prd node_modules/.bin/webpack --mode=production --config webpack/webpack.client.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint src --fix --ext .ts,.tsx"
   },
@@ -30,11 +30,13 @@
     "@babel/preset-env": "^7.10.2",
     "@babel/preset-react": "^7.10.1",
     "@babel/preset-typescript": "^7.10.1",
+    "@types/loadable__component": "^5.13.0",
     "@types/react": "^16.9.36",
     "@types/react-dom": "^16.9.8",
     "@types/react-helmet": "^6.0.0",
     "babel-loader": "^8.1.0",
     "case-sensitive-paths-webpack-plugin": "^2.3.0",
+    "chalk": "^4.1.0",
     "clean-webpack-plugin": "^3.0.0",
     "cross-env": "^7.0.2",
     "css-loader": "^3.5.3",

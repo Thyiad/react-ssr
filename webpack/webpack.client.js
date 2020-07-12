@@ -57,6 +57,7 @@ module.exports = {
     plugins,
     watch: isDev,
     devServer: isDev ? {
+        logLevel: 'warn', //不想看到那个complied successfully
         contentBase: path.resolve(cwd, 'src'),
         historyApiFallback: true,
         compress: true,
