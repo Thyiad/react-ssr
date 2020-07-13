@@ -71,6 +71,17 @@ module.exports = () => {
                     },
                 }
             ],
-        }
+        },
+        {
+            test: /\.(json|mp4)$/,
+            use: [
+                {
+                    loader: 'file-loader',
+                    options: {
+                        emitFile: !isServer,
+                    },
+                }
+            ],
+        },
     ]
 }
