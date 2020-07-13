@@ -68,6 +68,8 @@ module.exports = () => {
                     loader: 'url-loader',
                     options: {
                         limit: 5*1024,  // 5kb
+                        name: 'media/[name].[contentHash].[ext]',
+                        emitFile: true,
                     },
                 }
             ],
@@ -78,7 +80,8 @@ module.exports = () => {
                 {
                     loader: 'file-loader',
                     options: {
-                        emitFile: !isServer,
+                        name: 'media/[name].[contentHash].[ext]',
+                        emitFile: true,
                     },
                 }
             ],
