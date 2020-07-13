@@ -72,6 +72,18 @@ module.exports = (isServer, isDev) => {
                     loader: 'url-loader',
                     options: {
                         limit: 5 * 1024,  // 5kb
+                        emitFile: !isServer,
+                    },
+                }
+            ],
+        },
+        {
+            test: /\.(json|mp4)$/,
+            use: [
+                {
+                    loader: 'file-loader',
+                    options: {
+                        emitFile: !isServer,
                     },
                 }
             ],
