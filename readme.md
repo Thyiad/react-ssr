@@ -6,6 +6,9 @@
     > 采用 cookie 存储 token 到上级域名，在这个文件中修改 cookie key 及登录页面的 url
 -   constant/systemInfo.ts
     > 页面常量在此处修改，比如系统名称、著作权等等
+-   开启 rem 需要放开注释
+    > webpack/module-rules.js 的 pix2rem
+    > webpack/index.html 中 rem 的 script 节点
 
 ### 已完成
 
