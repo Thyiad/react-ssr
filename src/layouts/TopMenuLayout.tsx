@@ -22,7 +22,7 @@ const TopMenuLayout: FC<RoutePageProps> = (props) => {
     const history = useHistory();
     const { routes } = props;
     const { state, actions } = useRedux();
-    useRole(history, state.currentUserinfo?.role);
+    const { isFirstRender, checkRole } = useRole(history, state.currentUserinfo?.role);
 
     useEffect(() => {
         const accessKey = Cookies.get(LOGIN_COOKIE_KEY);
@@ -57,6 +57,11 @@ const TopMenuLayout: FC<RoutePageProps> = (props) => {
         // 如果用户信息为空，显示loading
         if (!state.currentUserinfo) {
             return <PageLoading />;
+        }
+
+        if (isFirstRender.current) {
+            checkRole(history, state.currentUserinfo.role);
+            isFirstRender.current = false;
         }
 
         return (

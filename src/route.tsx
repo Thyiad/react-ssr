@@ -5,7 +5,6 @@ import UserLayout from './layouts/UserLayout';
 import LeftMenuLayout from './layouts/LeftMenuLayout';
 import TopMenuLayout from './layouts/TopMenuLayout';
 const Login = loadable(() => import(/* webpackChunkName: "login" */ './pages/login/index'));
-const Todo = loadable(() => import(/* webpackChunkName: "todo" */ './pages/todo/index'));
 const Table = loadable(() => import(/* webpackChunkName: "table" */ './pages/table/index'));
 const NotFound = loadable(() => import(/* webpackChunkName: "404" */ './pages/404/index'));
 const NoPermission = loadable(() => import(/* webpackChunkName: "403" */ './pages/403/index'));
@@ -44,6 +43,12 @@ const routes: RouteProps[] = [
         component: NoPermission,
     },
     {
+        title: '404',
+        path: '/404',
+        name: '404',
+        component: NotFound,
+    },
+    {
         title: '',
         path: '/',
         name: 'homeLayout',
@@ -55,18 +60,9 @@ const routes: RouteProps[] = [
                 name: 'home',
                 path: '/',
                 exact: true,
-                redirect: '/todo',
-                component: Todo,
+                redirect: '/table',
+                component: Table,
                 hideInMenu: true,
-                icon: <HomeOutlined />,
-            },
-            {
-                title: '待办事项',
-                name: 'todo',
-                path: '/todo',
-                exact: true,
-                component: Todo,
-                icon: <TableOutlined />,
             },
             {
                 title: '列表示例',
@@ -75,16 +71,17 @@ const routes: RouteProps[] = [
                 exact: true,
                 component: Table,
                 icon: <TableOutlined />,
-                roles: ['a'],
+            },
+            {
+                title: '',
+                name: 'homeNotFound',
+                path: '*',
+                exact: true,
+                redirect: '/404',
+                component: NotFound,
+                hideInMenu: true,
             },
         ],
-    },
-    {
-        title: 'not found',
-        name: 'not found',
-        path: '*',
-        component: NotFound,
-        hideInMenu: true,
     },
 ];
 

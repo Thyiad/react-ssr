@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect, useMemo, useCallback } from 'react';
+import React, { FC, useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { useHistory, Switch, useParams, useLocation, matchPath } from 'react-router-dom';
 import { Layout, Menu } from 'antd';
 import { useRedux } from '@/hooks/useRedux';
@@ -27,19 +27,13 @@ const LeftMenuLayout: FC<RoutePageProps> = (props) => {
     const history = useHistory();
     const { routes } = props;
     const { state, actions } = useRedux();
-    useRole(history, state.currentUserinfo?.role);
+    const { isFirstRender, checkRole } = useRole(history, state.currentUserinfo?.role);
 
     const [collapsed, setCollapsed] = useState(false);
 
     const initActiveMenu: string = useMemo(() => {
-        const findedRoute = routes?.find((route) => matchPath(window.location.pathname, route));
+        const findedRoute = getMatchRoute();
         if (findedRoute) {
-            if (findedRoute.routes) {
-                const nextFindedRoute = routes?.find((route) => matchPath(window.location.pathname, route));
-                if (nextFindedRoute) {
-                    return nextFindedRoute.redirect || nextFindedRoute.path;
-                }
-            }
             return findedRoute.redirect || findedRoute.path;
         }
         return '';
@@ -70,6 +64,11 @@ const LeftMenuLayout: FC<RoutePageProps> = (props) => {
         // 如果用户信息为空，显示loading
         if (!state.currentUserinfo) {
             return <PageLoading />;
+        }
+
+        if (isFirstRender.current) {
+            checkRole(history, state.currentUserinfo.role);
+            isFirstRender.current = false;
         }
 
         return (

@@ -5,7 +5,7 @@ export default {
         startYear: 2012,
         website: 'https://www.thyiad.top',
         ownerName: 'Thyiad',
-        beian: '沪ICP备13021235号-1',
+        beian: '沪ICP备1123455号-1',
     },
     login: {
         title: 'CMS',

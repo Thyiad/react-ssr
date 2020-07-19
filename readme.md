@@ -1,24 +1,21 @@
-### todo
+### 注意
 
--   [x] ant design
--   [x] husky、quick prettie
--   [x] utils
-    > like axios
--   [x] basic layout
-    > 未获取到用户信息时，显示 loading OK
-    > cookie 为空时，跳转到登录页 OK
-    > state 添加用户信息 OK
-    > logo、标题
-    > 左侧菜单
-    > 头像、悬浮菜单
-    > layout 调整，改为嵌套子路由
-    > copyright 公共组件
-    > 用户登录、注册 layout
-    > 多一个顶部菜单 layout
-    > 菜单区分权限
-    > 无权限时跳转到 403
-    > 测试跳转到无权限页时，跳转是否正常
-    > table 页面示例
+使用修改点：
+
+-   constant/index.ts
+    > 采用 cookie 存储 token 到上级域名，在这个文件中修改 cookie key 及登录页面的 url
+-   constant/systemInfo.ts
+    > 页面常量在此处修改，比如系统名称、著作权等等
+
+### 已完成
+
+-   [x] 集成 antd
+-   [x] husky、quick prettie、commitlint 验证提交
+-   [x] utils 工具类封装
+-   [x] 基础布局封装
+    > 左侧菜单布局、顶部菜单布局、注册/登录布局
+-   [x] 权限控制
+-   [x] 集成 ant design pro table
 
 ### 提交规范
 
