@@ -10,7 +10,7 @@ const CaseSensitivePathPlugin = require('case-sensitive-paths-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const isDev = process.env.NODE_ENV === 'development';
-console.log('env is: ' + process.env.NODE_ENV);
+console.log('开始构建，环境为: ' + process.env.NODE_ENV);
 
 const plugins = [
     new webpack.ProgressPlugin(),
@@ -59,14 +59,16 @@ module.exports = {
     watch: isDev,
     devServer: isDev
         ? {
-              logLevel: 'warn', //不想看到那个complied successfully
+              //   logLevel: 'warn', //不想看到那个complied successfully
               contentBase: path.resolve(cwd, 'src'),
               historyApiFallback: true,
               compress: true,
               host: envConfig.host,
               port: envConfig.port,
               hot: true,
-              open: true,
+              open: false,
+              quiet: true,
+              overlay: true,
               watchOptions: {
                   ignored: /node_modules/, // 监听过多文件会占用cpu、内存，so，可以忽略掉部分文件
                   aggregateTimeout: 200, // 默认200，文件变更后延时多久rebuild
@@ -74,5 +76,6 @@ module.exports = {
               },
           }
         : undefined,
-    devtool: isDev ? 'inline-source-map' : undefined,
+    // devtool: isDev ? 'cheap-module-source-map' : 'source-map',
+    devtool: isDev ? 'cheap-module-source-map' : undefined,
 };

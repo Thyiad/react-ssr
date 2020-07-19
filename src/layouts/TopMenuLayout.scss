@@ -1,0 +1,34 @@
+.top-menu-layout {
+    height: 100%;
+    &-header {
+        background-color: #fff;
+        padding: 0 24px !important;
+        display: flex;
+        align-items: center;
+        .sider-logo {
+            position: relative;
+            height: 64px;
+            line-height: 64px;
+            overflow: hidden;
+            transition: all 0.3s;
+            margin-right: 24px;
+            img {
+                display: inline-block;
+                width: 32px;
+                vertical-align: middle;
+            }
+            span {
+                display: inline-block;
+                margin: 0 0 0 12px;
+                color: #fff;
+                font-weight: 600;
+                font-size: 20px;
+                vertical-align: middle;
+            }
+        }
+    }
+    &-content {
+        margin: 24px;
+        min-height: 280px;
+    }
+}

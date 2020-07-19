@@ -16,19 +16,19 @@ const cssLoaders = [
             plugins: (loader) => {
                 const targetPlugins = [
                     postcssImport({ root: loader.resourcePath }),
-                    pix2rem({ propList: ['*'], rootValue: 100 }),
+                    // pix2rem({ propList: ['*'], rootValue: 100 }),
                     postcssPresetEnv(),
-                ]
+                ];
 
                 if (!isDev) {
                     targetPlugins.push(cssnano());
                 }
 
                 return targetPlugins;
-            }
+            },
         },
     },
-]
+];
 
 module.exports = () => {
     return [
@@ -40,9 +40,9 @@ module.exports = () => {
                     loader: 'babel-loader',
                     options: {
                         cacheDirectory: true,
-                    }
-                }
-            ]
+                    },
+                },
+            ],
         },
         {
             test: /\.css$/,
@@ -56,8 +56,22 @@ module.exports = () => {
                     loader: 'sass-loader',
                     options: {
                         implementation: sass,
-                    }
-                }
+                    },
+                },
+            ],
+        },
+        {
+            test: /\.less$/,
+            use: [
+                ...cssLoaders,
+                {
+                    loader: 'less-loader',
+                    options: {
+                        lessOptions: {
+                            javascriptEnabled: true,
+                        },
+                    },
+                },
             ],
         },
         {
@@ -67,11 +81,11 @@ module.exports = () => {
                 {
                     loader: 'url-loader',
                     options: {
-                        limit: 5*1024,  // 5kb
+                        limit: 5 * 1024, // 5kb
                         name: 'media/[name].[contentHash].[ext]',
                         emitFile: true,
                     },
-                }
+                },
             ],
         },
         {
@@ -83,8 +97,8 @@ module.exports = () => {
                         name: 'media/[name].[contentHash].[ext]',
                         emitFile: true,
                     },
-                }
+                },
             ],
         },
-    ]
-}
+    ];
+};

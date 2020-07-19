@@ -1,3 +1,5 @@
+import { IState, IAction } from '../data';
+
 export const actions = {
     setDoingItem: (item: string): IAction => {
         return {

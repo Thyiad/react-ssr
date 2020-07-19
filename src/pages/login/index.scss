@@ -1,0 +1,7 @@
+.login-main {
+    width: 368px;
+    margin: 0 auto;
+    @media screen and (max-width: 576px) {
+        width: 95%;
+    }
+}
