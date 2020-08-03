@@ -5,16 +5,18 @@ const cssnano = require('cssnano');
 const pix2rem = require('postcss-pxtorem');
 const sass = require('sass');
 
-module.exports = (isServer, isDev) => {
-    const cssLoaders = [
-        isDev ? "style-loader" : miniCssExtract.loader,
-        // {
-        //     loader: miniCssExtract.loader,
-        //     options: {
-        //         hmr: isDev,
-        //     }
-        // },
-        'css-loader',
+/** options: isDev, useCssModule, miniCssExtractLoader */
+const getCssLoaders = (options) => {
+    return [
+        {
+            loader: options.isDev ? 'style-loader' : miniCssExtract.loader,
+        },
+        {
+            loader: 'css-loader',
+            options: {
+                modules: !!options.useCssModule,
+            },
+        },
         {
             loader: 'postcss-loader',
             options: {
@@ -22,19 +24,22 @@ module.exports = (isServer, isDev) => {
                 plugins: (loader) => {
                     const targetPlugins = [
                         postcssImport({ root: loader.resourcePath }),
-                        pix2rem({ propList: ['*'], rootValue: 100 }),
+                        // pix2rem({ propList: ['*'], rootValue: 100 }),
                         postcssPresetEnv(),
-                    ]
+                    ];
 
-                    if (!isDev) {
+                    if (!options.isDev) {
                         targetPlugins.push(cssnano());
                     }
 
                     return targetPlugins;
-                }
+                },
             },
         },
     ];
+};
+
+module.exports = (isServer, isDev) => {
     return [
         {
             test: /\.(js|jsx|ts|tsx)$/,
@@ -44,24 +49,54 @@ module.exports = (isServer, isDev) => {
                     loader: 'babel-loader',
                     options: {
                         cacheDirectory: true,
-                    }
-                }
-            ]
+                    },
+                },
+            ],
         },
         {
             test: /\.css$/,
-            use: isServer ? ["ignore-loader"] : cssLoaders,
+            use: getCssLoaders({ useCssModule: false, isDev: isDev }),
         },
         {
             test: /\.scss$/,
-            use: isServer ? ["ignore-loader"] : [
-                ...cssLoaders,
+            use: [
+                ...getCssLoaders({ useCssModule: false, isDev: isDev }),
                 {
                     loader: 'sass-loader',
                     options: {
                         implementation: sass,
-                    }
-                }
+                    },
+                },
+            ],
+        },
+        {
+            test: /\.less$/,
+            include: /node_modules/,
+            use: [
+                ...getCssLoaders({ useCssModule: false, isDev: isDev }),
+                {
+                    loader: 'less-loader',
+                    options: {
+                        lessOptions: {
+                            javascriptEnabled: true,
+                        },
+                    },
+                },
+            ],
+        },
+        {
+            test: /\.less$/,
+            exclude: /node_modules/,
+            use: [
+                ...getCssLoaders({ useCssModule: true, isDev: isDev }), // 如果本地不需要css modules, 可以合并为同一个less配置项
+                {
+                    loader: 'less-loader',
+                    options: {
+                        lessOptions: {
+                            javascriptEnabled: true,
+                        },
+                    },
+                },
             ],
         },
         {
@@ -71,11 +106,11 @@ module.exports = (isServer, isDev) => {
                 {
                     loader: 'url-loader',
                     options: {
-                        limit: 5 * 1024,  // 5kb
+                        limit: 5 * 1024, // 5kb
                         name: 'media/[name].[contentHash].[ext]',
                         emitFile: !isServer,
                     },
-                }
+                },
             ],
         },
         {
@@ -87,8 +122,8 @@ module.exports = (isServer, isDev) => {
                         name: 'media/[name].[contentHash].[ext]',
                         emitFile: !isServer,
                     },
-                }
+                },
             ],
         },
-    ]
-}
+    ];
+};

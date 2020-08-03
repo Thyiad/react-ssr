@@ -1,25 +1,27 @@
-interface IState {
+import { UserModel } from '@/models/User';
+
+export interface IState {
+    currentUserinfo?: UserModel;
     doingItem: string;
     todoList: string[];
-    name: string;
 }
 
-interface IAction<T = any> {
+export interface IAction<T = any> {
     type: string;
     payload: T;
 }
 
-interface IActions {
+export interface IActions {
     [key: string]: (...rest: any[]) => IAction;
 }
 
 type IReducer = (state: IState, action: IAction) => IState;
 
-interface IReducers {
+export interface IReducers {
     [key: string]: IReducer;
 }
 
-interface IReducerFile {
+export interface IReducerFile {
     actions: IActions;
     reducers: IReducers;
 }

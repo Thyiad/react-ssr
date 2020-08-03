@@ -1,23 +1,28 @@
 import React, { FC } from 'react';
-import { render, hydrate } from 'react-dom';
+import { render } from 'react-dom';
 import { BrowserRouter, Switch } from 'react-router-dom';
+import { Provider } from './redux/store';
 import routes from './route';
-import AppContainer from './components/AppContainer';
-import { loadableReady } from '@loadable/component';
-import '@client/assets/scss/common.scss';
+import RouteWithSubRoutes from '@/components/RouteWithSubRoutes';
+import 'antd/dist/antd.css';
+import '@/assets/scss/common.scss';
 import './app.scss';
+import { initThyiadUtil } from '@/utils/index';
+
+initThyiadUtil();
 
 const App: FC = () => {
-    console.log('in app.tsx render..........11111');
     return (
-        <BrowserRouter>
-            <AppContainer />
-        </BrowserRouter>
+        <Provider>
+            <BrowserRouter>
+                <Switch>
+                    {routes.map((route) => (
+                        <RouteWithSubRoutes key={route.name} {...route} />
+                    ))}
+                </Switch>
+            </BrowserRouter>
+        </Provider>
     );
 };
 
-// render(<App />, document.getElementById('root'));
-
-loadableReady(() => {
-    hydrate(<App />, document.getElementById('root'));
-});
+render(<App />, document.getElementById('root'));

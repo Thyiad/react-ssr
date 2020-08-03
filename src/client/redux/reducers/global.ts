@@ -1,3 +1,5 @@
+import { IState, IAction } from '../data';
+
 export const actions = {
     setKeyValue: (key: string, value: any): IAction => {
         return {

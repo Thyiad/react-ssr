@@ -3,29 +3,24 @@ const path = require('path');
 const cwd = process.cwd();
 const fs = require('fs');
 const moduleRules = require('./module-rules');
-const envConfig = require('./env-config');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CaseSensitivePathPlugin = require('case-sensitive-paths-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-// const HtmlWebpackPlugin = require('html-webpack-plugin');
-// const ManifestPlugin = require('webpack-manifest-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const LoadablePlugin = require('@loadable/webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
-const errorOverlayMiddleware = require('react-dev-utils/errorOverlayMiddleware');
 const WebpackBar = require('webpackbar');
-const StartServerPlugin = require('start-server-webpack-plugin');
-const childProcess = require('child_process');
 
 /**
- * 
+ *
  * @param {*} type client | server
- * @param {*} isDev 
+ * @param {*} isDev
  */
-module.exports = (type, isDev) => {
+module.exports = (type, isDev, envConfig) => {
     const isServer = type === 'server';
     isDev = !!isDev;
-    const nodeEnv = isDev ? "development" : "production";
-    const deployEnv = isDev ? "dev" : "prd";
+    const nodeEnv = isDev ? 'development' : 'production';
+    const deployEnv = isDev ? 'dev' : 'prd';
 
     const plugins = [
         new webpack.ProgressPlugin(),
@@ -35,9 +30,17 @@ module.exports = (type, isDev) => {
         }),
         new CleanWebpackPlugin(),
         new CaseSensitivePathPlugin(),
-        new LoadablePlugin(),
-        // new webpack.HotModuleReplacementPlugin(),
     ];
+    if (envConfig.sysType === 'ssr') {
+        plugins.push(new LoadablePlugin());
+    } else if (envConfig.sysType === 'spa') {
+        plugins.push(
+            new HtmlWebpackPlugin({
+                template: path.resolve(cwd, 'webpack/index.html'),
+                filename: 'index.html',
+            }),
+        );
+    }
     if (isDev) {
         plugins.push(new webpack.HotModuleReplacementPlugin());
         plugins.push(new webpack.NamedModulesPlugin());
@@ -45,82 +48,112 @@ module.exports = (type, isDev) => {
             new WebpackBar({
                 color: !isServer ? '#f56be2' : '#c065f4',
                 name: !isServer ? 'client' : 'server',
-            })
+            }),
         );
-    }else{
-        new MiniCssExtractPlugin({
-            filename: 'css/[name].[contenthash].css',
-            chunkFilename: 'chunks/[id].[contenthash].css',
-        });
+    } else {
+        plugins.push(
+            new MiniCssExtractPlugin({
+                filename: 'css/[name].[contenthash].css',
+                chunkFilename: 'chunks/[id].[contenthash].css',
+            }),
+        );
     }
 
-    return {
-        target: isServer ? "node" : "web",
-        mode: isDev ? "development" : "production",
-        // entry: isServer ? ['webpack/hot/poll', path.resolve(cwd, `src/${type}/app`)] : path.resolve(cwd, `src/${type}/app`),
-        entry: isServer ? [path.resolve(cwd, `src/${type}/app`)] : path.resolve(cwd, `src/${type}/app`),
-        output: {
-            path: path.resolve(cwd, `dist/${type}`),
-            filename: isServer ? "[name].js" : (isDev ? 'js/[name].[hash].js' : 'js/[name].[contentHash].js'),
-            chunkFilename: isDev ? 'chunks/[name].[hash].js' : 'chunks/[name].[contentHash].js',
-            publicPath: (!isServer && isDev) ? `http://${envConfig.host}:${envConfig.clientPort}/` : '/',
+    const curConfig = {
+        'spa-client': {
+            target: 'web',
+            entry: path.resolve(cwd, 'src/client/app'), // todo: 此处要想办法变成
+            output: {
+                path: path.resolve(cwd, `dist/client`),
+                filename: `js/[name].[${isDev ? 'hash' : 'contentHash'}].js`,
+                chunkFilename: `chunks/[name].[${isDev ? 'hash' : 'contentHash'}].js`,
+                publicPath: '/',
+            },
         },
+        'ssr-client': {
+            target: 'web',
+            entry: path.resolve(cwd, `src/client/app`),
+            output: {
+                path: path.resolve(cwd, `dist/client`),
+                filename: `js/[name].[${isDev ? 'hash' : 'contentHash'}].js`,
+                publicPath: isDev ? `http://${envConfig.host}:${envConfig.clientPort}/` : '/',
+            },
+        },
+        'ssr-server': {
+            target: 'node',
+            entry: path.resolve(cwd, `src/server/app`),
+            output: {
+                path: path.resolve(cwd, `dist/server`),
+                filename: '[name].js',
+                publicPath: '/',
+            },
+        },
+    }[`${envConfig.sysType}-${type}`];
+
+    return {
+        target: curConfig.target,
+        mode: isDev ? 'development' : 'production',
+        entry: curConfig.entry,
+        output: curConfig.output,
         resolve: {
             extensions: ['.ts', '.tsx', '.scss', '.js', '.jsx', '.sass'],
             alias: {
-                // 'webpack/hot/poll': require.resolve('webpack/hot/poll'),
-                "@client": path.resolve(cwd, 'src/client'),
-                "@server": path.resolve(cwd, 'src/server'),
-            }
+                '@thyiad/util': '@thyiad/util',
+                '@server': path.resolve(cwd, 'src/server'),
+                '@': path.resolve(cwd, 'src/client'),
+            },
         },
-        externals: isServer ? [
-            nodeExternals({
-                whitelist: [
-                //   isDev ? 'webpack/hot/poll' : null,
-                  /\.(eot|woff|woff2|ttf|otf)$/,
-                  /\.(svg|png|jpg|jpeg|gif|ico)$/,
-                  /\.(mp4|mp3|ogg|swf|webp)$/,
-                  /\.(css|scss|sass|sss|less)$/,
-                ].filter(x => x),
-              })
-        ] : [],
+        externals: isServer
+            ? [
+                  nodeExternals({
+                      whiteaist: [
+                          /\.(eot|woff|woff2|ttf|otf)$/,
+                          /\.(svg|png|jpg|jpeg|gif|ico)$/,
+                          /\.(mp4|mp3|ogg|swf|webp)$/,
+                          /\.(css|scss|sass|sss|less)$/,
+                      ].filter((x) => x),
+                  }),
+              ]
+            : [],
         module: {
             rules: moduleRules(isServer, isDev),
         },
         plugins,
         watch: isDev,
-        devServer: (isDev) ? {
-            logLevel: 'warn', //不想看到那个complied successfully
-            contentBase: path.resolve(cwd, 'src/client'),
-            historyApiFallback: true,
-            compress: true,
-            host: envConfig.host,
-            port: envConfig.clientPort,
-            hot: true,
-            open: false,
-            headers: { 'Access-Control-Allow-Origin': '*' },
-            watchOptions: {
-                ignored: /node_modules/,    // 监听过多文件会占用cpu、内存，so，可以忽略掉部分文件
-                aggregateTimeout: 200,  // 默认200，文件变更后延时多久rebuild
-                poll: false,    // 默认false，如果不采用watch，那么可以采用poll（轮询）
-            },
-            before(app) {
-                // This lets us open files from the runtime error overlay.
-                app.use(errorOverlayMiddleware());
-            },
-            writeToDisk: true,
-        } : undefined,
-        devtool: isDev ? "inline-source-map" : undefined,
-        optimization: isServer ? undefined : {
-            splitChunks: {
-                cacheGroups: {
-                    libs: {
-                        test: /node_modules/, // 指定是node_modules下的第三方包
-                        chunks: 'initial',
-                        name: 'vendor' // 打包后的文件名，任意命名
-                    }
-                }
-            }
-        }
-    }
-}
+        // 只有client会实际用到
+        devServer: isDev
+            ? {
+                  stats: 'errors-only', //'errors-warnings',
+                  clientLogLevel: 'silent',
+                  contentBase: path.resolve(cwd, 'src/client'),
+                  historyApiFallback: true,
+                  compress: true,
+                  host: envConfig.host,
+                  port: envConfig.clientPort,
+                  hot: true,
+                  open: false,
+                  quiet: true,
+                  overlay: true,
+                  watchOptions: {
+                      ignored: /node_modules/, // 监听过多文件会占用cpu、内存，so，可以忽略掉部分文件
+                      aggregateTimeout: 200, // 默认200，文件变更后延时多久rebuild
+                      poll: false, // 默认false，如果不采用watch，那么可以采用poll（轮询）
+                  },
+              }
+            : undefined,
+        devtool: isDev ? 'inline-source-map' : undefined,
+        optimization: isServer
+            ? undefined
+            : {
+                  splitChunks: {
+                      cacheGroups: {
+                          libs: {
+                              test: /node_modules/, // 指定是node_modules下的第三方包
+                              chunks: 'initial',
+                              name: 'vendor', // 打包后的文件名，任意命名
+                          },
+                      },
+                  },
+              },
+    };
+};

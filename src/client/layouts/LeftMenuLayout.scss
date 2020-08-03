@@ -1,0 +1,58 @@
+.left-menu-layout {
+    height: 100%;
+    .sider-logo {
+        position: relative;
+        height: 64px;
+        line-height: 64px;
+        padding-left: 24px;
+        overflow: hidden;
+        background: #002140;
+        transition: all 0.3s;
+        img {
+            display: inline-block;
+            width: 32px;
+            vertical-align: middle;
+        }
+        span {
+            display: inline-block;
+            margin: 0 0 0 12px;
+            color: #fff;
+            font-weight: 600;
+            font-size: 20px;
+            vertical-align: middle;
+        }
+    }
+    .site-layout {
+        &-header {
+            background-color: #fff;
+            padding: 0 24px 0 0;
+            display: flex;
+            align-items: center;
+            .trigger {
+                font-size: 18px;
+                padding: 12px 24px;
+                cursor: pointer;
+                transition: color 0.3s;
+                &:hover {
+                    color: #1890ff;
+                }
+            }
+            .content {
+                flex: 1;
+                margin-right: 24px;
+                .title {
+                    display: inline-block;
+                    font-weight: 600;
+                    font-size: 20px;
+                }
+            }
+        }
+        &-content {
+            margin: 24px;
+            min-height: 280px;
+            &-wrapper {
+                min-height: 80vh;
+            }
+        }
+    }
+}

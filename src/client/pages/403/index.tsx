@@ -7,9 +7,9 @@ const NoFoundPage: React.FC<RoutePageProps> = () => {
 
     return (
         <Result
-            status="404"
-            title="404"
-            subTitle="Sorry, the page you visited does not exist."
+            status="403"
+            title="403"
+            subTitle="Sorry, you don't have access to this page."
             extra={
                 <Button type="primary" onClick={() => history.push('/')}>
                     Back Home

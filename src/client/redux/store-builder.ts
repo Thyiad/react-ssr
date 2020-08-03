@@ -1,9 +1,10 @@
 import { Dispatch } from 'react';
 import reducers from './reducers/index';
+import { IState, IAction, IReducers } from './data';
 
 /** 初始state */
 export const initState: IState = {
-    name: '',
+    currentUserinfo: undefined,
     doingItem: 'doing item',
     todoList: ['todo1', 'todo2', 'todo3'],
 };
@@ -18,7 +19,6 @@ let reducerHandle: IReducers;
 export const buildActionReducers = (
     dispatch: Dispatch<IAction>,
 ): { actions: ReducerActions; reducerHandle: IReducers } => {
-    console.log('in buildActionReducers...........');
     Object.keys(reducers).forEach((kindKey) => {
         // @ts-ignore
         // 这一块ts提示不好搞，所以直接注掉了
