@@ -6,6 +6,7 @@ https://www.thyiad.top/_posts/2020-06-05-%E4%BB%8E0%E6%90%AD%E5%BB%BAreact+ts+ss
 
 使用修改点：
 
+-   使用了 nodemon，需要自行全局安装
 -   constant/index.ts
     > 采用 cookie 存储 token 到上级域名，在这个文件中修改 cookie key 及登录页面的 url
 -   constant/systemInfo.ts
