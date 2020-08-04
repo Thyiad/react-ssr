@@ -23,6 +23,9 @@ https://www.thyiad.top/_posts/2020-06-05-%E4%BB%8E0%E6%90%AD%E5%BB%BAreact+ts+ss
     > 左侧菜单布局、顶部菜单布局、注册/登录布局
 -   [x] 权限控制
 -   [x] 集成 ant design pro table
+-   [ ] thyReq 允许自定义 axios 回调
+-   [ ] stylus、vue 支持
+    > 等 vue3 release 再考虑，到时候再集成一个默认的 vue ui
 
 ### 提交规范
 
