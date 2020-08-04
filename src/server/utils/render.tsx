@@ -12,7 +12,7 @@ const statsFile = `${process.cwd()}/dist/client/loadable-stats.json`;
 let extractor;
 const useRem = false;
 
-export const renderHtml = async (ctx: Context, isSSR: boolean): Promise<string> => {
+export const renderHtml = async (ctx: Context, router: RouteProps): Promise<string> => {
     if (config.isDev) {
         extractor = new ChunkExtractor({ statsFile });
     }
@@ -20,7 +20,7 @@ export const renderHtml = async (ctx: Context, isSSR: boolean): Promise<string> 
         extractor = new ChunkExtractor({ statsFile });
     }
 
-    const jsx = isSSR
+    const jsx = router.isSSR
         ? extractor.collectChunks(
               <StaticRouter location={ctx.url} context={{}}>
                   <AppContainer />
@@ -46,7 +46,7 @@ export const renderHtml = async (ctx: Context, isSSR: boolean): Promise<string> 
 };
 
 export const render = async (ctx: Context, router: RouteProps) => {
-    const templateStr = await renderHtml(ctx, router.isSSR);
+    const templateStr = await renderHtml(ctx, router);
     ctx.type = 'html';
     ctx.body = templateStr;
 };
