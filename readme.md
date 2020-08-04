@@ -40,6 +40,11 @@ https://www.thyiad.top/_posts/2020-06-05-%E4%BB%8E0%E6%90%AD%E5%BB%BAreact+ts+ss
 'test' // Adds or modifies tests. 测试用例，包括单元测试、集成测试等
 ```
 
+### ssr
+
+-   [ ] server 端获取页面初始数据
+-   [x] 注入初始 store 数据
+
 ### cli-spa
 
 -   [ ] src 中移除 server，client 下的文件直接提升至 src 下

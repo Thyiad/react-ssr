@@ -2,8 +2,6 @@ import { UserModel } from '@/models/User';
 
 export interface IState {
     currentUserinfo?: UserModel;
-    doingItem: string;
-    todoList: string[];
 }
 
 export interface IAction<T = any> {

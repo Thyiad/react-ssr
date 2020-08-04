@@ -1,6 +1,10 @@
 import { RouteComponentProps } from 'react-router-dom';
+import { IState } from '@client/redux/data';
 
 declare global {
+    interface Window {
+        ssrData?: IState;
+    }
     interface RouteProps {
         /** 页面标题 */
         title: string;

@@ -2,11 +2,19 @@ import { Dispatch } from 'react';
 import reducers from './reducers/index';
 import { IState, IAction, IReducers } from './data';
 
-/** 初始state */
-export const initState: IState = {
+const initState: IState = {
     currentUserinfo: undefined,
-    doingItem: 'doing item',
-    todoList: ['todo1', 'todo2', 'todo3'],
+};
+
+export const getInitState = (): IState => {
+    let ssrData: IState = null;
+    if (typeof window === 'object') {
+        ssrData = window.ssrData;
+    }
+    return {
+        ...ssrData,
+        ...initState,
+    };
 };
 
 export type ReducerKinds = keyof typeof reducers;
