@@ -12,11 +12,16 @@ import { fetchCurrentUserinfo } from '@/models/User';
 import AvatarDropdown from './AvatarDropdown';
 import CommonFooter from './CommonFooter';
 import { useRole } from '@/hooks/useRole';
+import { MenuUnfoldOutlined, MenuFoldOutlined, TableOutlined } from '@ant-design/icons';
 
 const { Header, Content } = Layout;
 
 import './TopMenuLayout.scss';
 import logo from '@/assets/img/logo.png';
+
+const iconDic = {
+    TableOutlined: <TableOutlined />,
+};
 
 const TopMenuLayout: FC<RoutePageProps> = (props) => {
     const history = useHistory();
@@ -88,7 +93,7 @@ const TopMenuLayout: FC<RoutePageProps> = (props) => {
                                     (!item.roles || item.roles.includes(state.currentUserinfo?.role)),
                             )
                             .map((item) => (
-                                <Menu.Item key={item.path} icon={item.icon}>
+                                <Menu.Item key={item.path} icon={iconDic[item.icon]}>
                                     {item.title}
                                 </Menu.Item>
                             ))}

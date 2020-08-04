@@ -4,6 +4,7 @@ const postcssPresetEnv = require('postcss-preset-env');
 const cssnano = require('cssnano');
 const pix2rem = require('postcss-pxtorem');
 const sass = require('sass');
+const webpack = require('webpack');
 
 /** options: isDev, useCssModule, miniCssExtractLoader */
 const getCssLoaders = (options) => {
@@ -38,7 +39,6 @@ const getCssLoaders = (options) => {
         },
     ];
 };
-
 module.exports = (isServer, isDev) => {
     return [
         {
@@ -55,49 +55,55 @@ module.exports = (isServer, isDev) => {
         },
         {
             test: /\.css$/,
-            use: getCssLoaders({ useCssModule: false, isDev: isDev }),
+            use: isServer ? 'null-loader' : getCssLoaders({ useCssModule: false, isDev: isDev }),
         },
         {
             test: /\.scss$/,
-            use: [
-                ...getCssLoaders({ useCssModule: false, isDev: isDev }),
-                {
-                    loader: 'sass-loader',
-                    options: {
-                        implementation: sass,
-                    },
-                },
-            ],
+            use: isServer
+                ? 'null-loader'
+                : [
+                      ...getCssLoaders({ useCssModule: false, isDev: isDev }),
+                      {
+                          loader: 'sass-loader',
+                          options: {
+                              implementation: sass,
+                          },
+                      },
+                  ],
         },
         {
             test: /\.less$/,
             include: /node_modules/,
-            use: [
-                ...getCssLoaders({ useCssModule: false, isDev: isDev }),
-                {
-                    loader: 'less-loader',
-                    options: {
-                        lessOptions: {
-                            javascriptEnabled: true,
-                        },
-                    },
-                },
-            ],
+            use: isServer
+                ? 'null-loader'
+                : [
+                      ...getCssLoaders({ useCssModule: false, isDev: isDev }),
+                      {
+                          loader: 'less-loader',
+                          options: {
+                              lessOptions: {
+                                  javascriptEnabled: true,
+                              },
+                          },
+                      },
+                  ],
         },
         {
             test: /\.less$/,
             exclude: /node_modules/,
-            use: [
-                ...getCssLoaders({ useCssModule: true, isDev: isDev }), // 如果本地不需要css modules, 可以合并为同一个less配置项
-                {
-                    loader: 'less-loader',
-                    options: {
-                        lessOptions: {
-                            javascriptEnabled: true,
-                        },
-                    },
-                },
-            ],
+            use: isServer
+                ? 'null-loader'
+                : [
+                      ...getCssLoaders({ useCssModule: true, isDev: isDev }), // 如果本地不需要css modules, 可以合并为同一个less配置项
+                      {
+                          loader: 'less-loader',
+                          options: {
+                              lessOptions: {
+                                  javascriptEnabled: true,
+                              },
+                          },
+                      },
+                  ],
         },
         {
             test: /\.(png|jpg|jpeg|gif|svg|ttf)$/,

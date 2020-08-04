@@ -92,7 +92,6 @@ const TablePage: FC<RoutePageProps> = (props) => {
     return useMemo(() => {
         return (
             <>
-                <div className="test-table">阿拉拉了</div>
                 <ProTable<TableItem>
                     headerTitle=""
                     actionRef={actionRef}

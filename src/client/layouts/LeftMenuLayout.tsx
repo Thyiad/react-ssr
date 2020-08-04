@@ -9,7 +9,7 @@ import { getMatchRoute } from '@/utils/index';
 import { LOGIN_COOKIE_KEY, LOGIN_PATHNAME } from '@/constant/index';
 import systemInfo from '@/constant/systemInfo';
 import { fetchCurrentUserinfo } from '@/models/User';
-import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
+import { MenuUnfoldOutlined, MenuFoldOutlined, TableOutlined } from '@ant-design/icons';
 import AvatarDropdown from './AvatarDropdown';
 import CommonFooter from './CommonFooter';
 import { useRole } from '@/hooks/useRole';
@@ -18,6 +18,10 @@ const { Header, Sider, Content } = Layout;
 
 import './LeftMenuLayout.scss';
 import logo from '@/assets/img/logo.png';
+
+const iconDic = {
+    TableOutlined: <TableOutlined />,
+};
 
 /**
  * 左侧菜单layout
@@ -89,7 +93,7 @@ const LeftMenuLayout: FC<RoutePageProps> = (props) => {
                                     (!item.roles || item.roles.includes(state.currentUserinfo?.role)),
                             )
                             .map((item) => (
-                                <Menu.Item key={item.path} icon={item.icon}>
+                                <Menu.Item key={item.path} icon={iconDic[item.icon]}>
                                     {item.title}
                                 </Menu.Item>
                             ))}

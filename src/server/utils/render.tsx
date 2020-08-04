@@ -1,20 +1,21 @@
 import { Context } from 'koa';
 import { StaticRouter } from 'react-router-dom';
-import AppContainer from '@client/components/AppContainer';
+import { AppContainer } from '@client/components/AppContainer';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { IndexTemplate } from '@server/utils/template';
 import artTemplate from 'art-template';
-import fs from 'fs';
-import { jsonParse } from '@client/utils/stringify';
 import { ChunkExtractor } from '@loadable/server';
 import config from '@server/config';
 
 const statsFile = `${process.cwd()}/dist/client/loadable-stats.json`;
-let extractor = new ChunkExtractor({ statsFile });
+let extractor;
 
 export const renderHtml = async (ctx: Context, isSSR: boolean): Promise<string> => {
     if (config.isDev) {
+        extractor = new ChunkExtractor({ statsFile });
+    }
+    if (!extractor) {
         extractor = new ChunkExtractor({ statsFile });
     }
 

@@ -3,11 +3,17 @@ import { getCurrentRoute } from '../utils/getCurrentRoute';
 import { render } from '../utils/render';
 
 export const base = async (ctx: Context, next: Next): Promise<void> => {
-    const currentRoute = getCurrentRoute(ctx);
-    if (currentRoute) {
-        await render(ctx, currentRoute);
+    try {
+        const currentRoute = getCurrentRoute(ctx);
+        if (currentRoute) {
+            await render(ctx, currentRoute);
+        }
+        await next();
+    } catch (error) {
+        console.log(error);
+        ctx.type = 'html';
+        ctx.body = error;
     }
-    await next();
 };
 
 export const page404 = (ctx: Context, next: Next) => {

@@ -1,4 +1,3 @@
-import React from 'react';
 import loadable from '@loadable/component';
 
 import UserLayout from './layouts/UserLayout';
@@ -8,7 +7,6 @@ const Login = loadable(() => import(/* webpackChunkName: "login" */ './pages/log
 const Table = loadable(() => import(/* webpackChunkName: "table" */ './pages/table/index'));
 const NotFound = loadable(() => import(/* webpackChunkName: "404" */ './pages/404/index'));
 const NoPermission = loadable(() => import(/* webpackChunkName: "403" */ './pages/403/index'));
-import { HomeOutlined, TableOutlined } from '@ant-design/icons';
 
 const routes: RouteProps[] = [
     {
@@ -70,7 +68,7 @@ const routes: RouteProps[] = [
                 path: '/table',
                 exact: true,
                 component: Table,
-                icon: <TableOutlined />,
+                icon: 'TableOutlined',
             },
             {
                 title: '',

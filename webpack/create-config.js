@@ -62,7 +62,7 @@ module.exports = (type, isDev, envConfig) => {
     const curConfig = {
         'spa-client': {
             target: 'web',
-            entry: path.resolve(cwd, 'src/client/app'), // todo: 此处要想办法变成
+            entry: path.resolve(cwd, 'src/client/app'),
             output: {
                 path: path.resolve(cwd, `dist/client`),
                 filename: `js/[name].[${isDev ? 'hash' : 'contentHash'}].js`,
@@ -100,17 +100,19 @@ module.exports = (type, isDev, envConfig) => {
             alias: {
                 '@thyiad/util': '@thyiad/util',
                 '@server': path.resolve(cwd, 'src/server'),
+                '@client': path.resolve(cwd, 'src/client'),
                 '@': path.resolve(cwd, 'src/client'),
             },
         },
         externals: isServer
             ? [
                   nodeExternals({
-                      whiteaist: [
+                      allowlist: [
                           /\.(eot|woff|woff2|ttf|otf)$/,
                           /\.(svg|png|jpg|jpeg|gif|ico)$/,
                           /\.(mp4|mp3|ogg|swf|webp)$/,
                           /\.(css|scss|sass|sss|less)$/,
+                          /antd\/.*?\/style.*?/,
                       ].filter((x) => x),
                   }),
               ]
@@ -120,7 +122,6 @@ module.exports = (type, isDev, envConfig) => {
         },
         plugins,
         watch: isDev,
-        // 只有client会实际用到
         devServer: isDev
             ? {
                   stats: 'errors-only', //'errors-warnings',
@@ -138,6 +139,13 @@ module.exports = (type, isDev, envConfig) => {
                       ignored: /node_modules/, // 监听过多文件会占用cpu、内存，so，可以忽略掉部分文件
                       aggregateTimeout: 200, // 默认200，文件变更后延时多久rebuild
                       poll: false, // 默认false，如果不采用watch，那么可以采用poll（轮询）
+                  },
+                  writeToDisk: true,
+                  headers: {
+                      'Access-Control-Allow-Credentials': true,
+                      'Access-Control-Allow-Headers': 'X-Requested-With,ownerId,Content-Type',
+                      'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
+                      'Access-Control-Allow-Origin': '*',
                   },
               }
             : undefined,

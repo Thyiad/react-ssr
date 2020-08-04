@@ -62,19 +62,6 @@ serverCompile.hooks.done.tap('server_compile_done', (compilation, callback) => {
         });
         console.log(chalk.blue(`server has started at ${envConfig.serverPort}`));
     }
-    // if (serverChildProcess) {
-    //     console.log('server recomplie completed');
-    //     serverChildProcess.kill();
-    // }
-    // // 开启子线程 编译node服务
-    // serverChildProcess = childProcess.spawn('node', [path.resolve(cwd, `dist/server/main.js`)]);
-    // serverChildProcess.stdout.on('data', (data) => {
-    //     console.log(`server out: ${data}`);
-    // });
-
-    // serverChildProcess.stderr.on('data', (data) => {
-    //     console.error(`server error: ${data}`);
-    // });
     callback && callback();
 });
 serverCompile.watch(serverConfig.devServer.watchOptions, (err) => {

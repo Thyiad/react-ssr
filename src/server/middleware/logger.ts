@@ -1,5 +1,4 @@
 import Koa from 'koa';
-import { jsonStringify } from '../../client/utils/stringify';
 import logger from '../utils/logger';
 
 export const loggerMiddle = () => {
@@ -21,7 +20,7 @@ export const loggerMiddle = () => {
                 referer: headers.referer,
                 userAgent: ctx.header['user-agent'] || '',
             };
-            const msg = `Response time ${ms}ms, request info ${jsonStringify(client)}`;
+            const msg = `Response time ${ms}ms, request info ${JSON.stringify(client)}`;
             if (ctx.status >= 500) {
                 logger.error(msg);
             } else if (ctx.status >= 400) {

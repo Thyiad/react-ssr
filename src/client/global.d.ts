@@ -19,7 +19,7 @@ declare global {
         /** name, 页面key */
         name: string;
         /** icon */
-        icon?: React.ReactNode;
+        icon?: string;
         /** 路由 */
         path: string;
         /** 是否严格匹配 */
