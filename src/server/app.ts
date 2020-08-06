@@ -8,7 +8,6 @@ import path from 'path';
 import { loggerMiddle } from './middleware/logger';
 import logger from './utils/logger';
 import router from './routes';
-import 'ignore-styles';
 
 const app = new Koa();
 
