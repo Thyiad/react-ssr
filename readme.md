@@ -1,4 +1,4 @@
-react+ts+srr 从 0 搭建系列的文章仓库
+react+ts+srr 从 0 搭建：
 
 https://www.thyiad.top/_posts/2020-06-05-%E4%BB%8E0%E6%90%AD%E5%BB%BAreact+ts+ssr.html
 
@@ -6,7 +6,7 @@ https://www.thyiad.top/_posts/2020-06-05-%E4%BB%8E0%E6%90%AD%E5%BB%BAreact+ts+ss
 
 使用修改点：
 
--   使用了 nodemon，需要自行全局安装
+-   ssr 本地开发时，使用了 nodemon，需要自行全局安装
 -   constant/index.ts
     > 采用 cookie 存储 token 到上级域名，在这个文件中修改 cookie key 及登录页面的 url
 -   constant/systemInfo.ts
@@ -14,6 +14,7 @@ https://www.thyiad.top/_posts/2020-06-05-%E4%BB%8E0%E6%90%AD%E5%BB%BAreact+ts+ss
 -   开启 rem 需要放开注释
     > webpack/module-rules.js 的 pix2rem
     > webpack/index.html 中 rem 的 script 节点
+    > server/config.ts 中的 useRem
 
 ### 已完成
 
@@ -48,9 +49,3 @@ https://www.thyiad.top/_posts/2020-06-05-%E4%BB%8E0%E6%90%AD%E5%BB%BAreact+ts+ss
 
 -   [ ] server 端获取页面初始数据
 -   [x] 注入初始 store 数据
-
-### cli-spa
-
--   [ ] src 中移除 server，client 下的文件直接提升至 src 下
--   [ ] spa-client 的 entry、output->path 移除 client 子目录
--   [ ] devServer 的 contentBase 移除 client 子目录

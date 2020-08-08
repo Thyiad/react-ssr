@@ -22,6 +22,8 @@ module.exports = (type, isDev, envConfig) => {
     const nodeEnv = isDev ? 'development' : 'production';
     const deployEnv = isDev ? 'dev' : 'prd';
 
+    const spaClientFolder = fs.existsSync(path.resolve(cwd, 'src/client')) ? '/client' : '';
+
     const plugins = [
         new webpack.ProgressPlugin(),
         new webpack.DefinePlugin({
@@ -62,9 +64,9 @@ module.exports = (type, isDev, envConfig) => {
     const curConfig = {
         'spa-client': {
             target: 'web',
-            entry: path.resolve(cwd, 'src/client/app'),
+            entry: path.resolve(cwd, `src${spaClientFolder}/app`),
             output: {
-                path: path.resolve(cwd, `dist/client`),
+                path: path.resolve(cwd, `dist${spaClientFolder}`),
                 filename: `js/[name].[${isDev ? 'hash' : 'contentHash'}].js`,
                 chunkFilename: `chunks/[name].[${isDev ? 'hash' : 'contentHash'}].js`,
                 publicPath: '/',
@@ -126,7 +128,7 @@ module.exports = (type, isDev, envConfig) => {
             ? {
                   stats: 'errors-only', //'errors-warnings',
                   clientLogLevel: 'silent',
-                  contentBase: path.resolve(cwd, 'src/client'),
+                  contentBase: path.resolve(cwd, `src${spaClientFolder}`),
                   historyApiFallback: true,
                   compress: true,
                   host: envConfig.host,

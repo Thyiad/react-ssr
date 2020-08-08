@@ -10,7 +10,6 @@ import config from '@server/config';
 
 const statsFile = `${process.cwd()}/dist/client/loadable-stats.json`;
 let extractor;
-const useRem = false;
 
 export const renderHtml = async (ctx: Context, router: RouteProps): Promise<string> => {
     if (config.isDev) {
@@ -35,7 +34,7 @@ export const renderHtml = async (ctx: Context, router: RouteProps): Promise<stri
     const ssrData = {};
     const renderData = {
         html,
-        remScript: useRem ? RemScript : '',
+        remScript: config.useRem ? RemScript : '',
         ssrData: `window.ssrData=${JSON.stringify(ssrData || null)}`,
         scriptTags,
         linkTags,
