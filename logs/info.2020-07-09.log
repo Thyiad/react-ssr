@@ -1,3 +1,0 @@
-[2020-07-09T20:18:05.013] [INFO] info - App is running: http://localhost:8089 
-[2020-07-09T20:19:18.743] [INFO] info - Response time 1ms, request info {"method":"GET","url":"/u","host":"localhost:8089","query":{},"userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36"} 
-[2020-07-09T20:26:58.081] [INFO] info - App is running: http://localhost:8089 
