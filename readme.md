@@ -49,3 +49,8 @@ https://www.thyiad.top/_posts/2020-06-05-%E4%BB%8E0%E6%90%AD%E5%BB%BAreact+ts+ss
 
 -   [ ] server 端获取页面初始数据
 -   [x] 注入初始 store 数据
+
+### 预览
+
+![login](./preview-login.jpg)
+![home](./preview.jpg)
