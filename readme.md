@@ -6,6 +6,11 @@ https://www.thyiad.top/_posts/2020-06-05-%E4%BB%8E0%E6%90%AD%E5%BB%BAreact+ts+ss
 
 使用修改点：
 
+-   windows 下配置 autocrlf 为 false
+    ```bash
+    git config --global core.autocrlf false
+    ```
+    > 否则会自动把换行符 LF(linefeed character) 转换成回车符 CRLF(carriage-return character)
 -   ssr 本地开发时，使用了 nodemon，需要自行全局安装
 -   constant/index.ts
     > 采用 cookie 存储 token 到上级域名，在这个文件中修改 cookie key 及登录页面的 url
