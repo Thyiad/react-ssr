@@ -1,5 +1,5 @@
 module.exports = {
-    /** 开发时监听的端口 */
+    /** 开发时监听的host */
     host: '0.0.0.0',
     /** 开发时客户端端口 */
     clientPort: 8088,

@@ -103,7 +103,7 @@ module.exports = (type, isDev, envConfig) => {
                 '@thyiad/util': '@thyiad/util',
                 '@server': path.resolve(cwd, 'src/server'),
                 '@client': path.resolve(cwd, 'src/client'),
-                '@': path.resolve(cwd, 'src/client'),
+                '@': path.resolve(cwd, `src${spaClientFolder}`),
             },
         },
         externals: isServer
