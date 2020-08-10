@@ -6,7 +6,7 @@ const pix2rem = require('postcss-pxtorem');
 const sass = require('sass');
 const webpack = require('webpack');
 
-/** options: isDev, useCssModule, miniCssExtractLoader */
+/** options: isDev, useCssModule */
 const getCssLoaders = (options) => {
     return [
         {

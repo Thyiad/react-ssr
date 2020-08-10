@@ -4,12 +4,12 @@ import { Layout, Menu } from 'antd';
 import { useRedux } from '@/hooks/useRedux';
 import PageLoading from '@/components/PageLoading';
 import RouteWithSubRoutes from '@/components/RouteWithSubRoutes';
-import { thyCookie } from '@thyiad/util';
-import { getMatchRoute } from '@/utils/index';
+import { thyCookie, thyEnv } from '@thyiad/util';
+import { getMatchRoute, canUseWindow } from '@/utils/index';
 import { LOGIN_COOKIE_KEY, LOGIN_PATHNAME } from '@/constant/index';
 import systemInfo from '@/constant/systemInfo';
 import { fetchCurrentUserinfo } from '@/models/User';
-import { MenuUnfoldOutlined, MenuFoldOutlined, TableOutlined } from '@ant-design/icons';
+import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
 import AvatarDropdown from './AvatarDropdown';
 import CommonFooter from './CommonFooter';
 import { useRole } from '@/hooks/useRole';
@@ -18,10 +18,6 @@ const { Header, Sider, Content } = Layout;
 
 import './LeftMenuLayout.scss';
 import logo from '@/assets/img/logo.png';
-
-const iconDic = {
-    TableOutlined: <TableOutlined />,
-};
 
 /**
  * 左侧菜单layout
@@ -35,8 +31,13 @@ const LeftMenuLayout: FC<RoutePageProps> = (props) => {
 
     const [collapsed, setCollapsed] = useState(false);
 
+    console.log('canUseWindow:' + thyEnv.canUseWindow());
+
     const initActiveMenu: string = useMemo(() => {
-        const findedRoute = getMatchRoute();
+        if (!canUseWindow()) {
+            return '';
+        }
+        const findedRoute = getMatchRoute(window.location.pathname);
         if (findedRoute) {
             return findedRoute.redirect || findedRoute.path;
         }
@@ -53,7 +54,8 @@ const LeftMenuLayout: FC<RoutePageProps> = (props) => {
         fetchCurrentUserinfo().then((res) => {
             actions.user.setCurrentUserinfo(res);
         });
-    }, [actions.user]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const onMenuClick = useCallback(
         (event: any) => {
@@ -64,6 +66,26 @@ const LeftMenuLayout: FC<RoutePageProps> = (props) => {
         [history],
     );
 
+    const renderMenu = useCallback(
+        (item: RouteProps) => {
+            if (item.hideInMenu || (item.roles && item.roles.includes(state.currentUserinfo?.role))) {
+                return null;
+            }
+            return Array.isArray(item.routes) && item.routes.length > 0 ? (
+                <Menu.SubMenu key={item.path} icon={item.icon} title={item.title}>
+                    {item.routes.map((child) => {
+                        return renderMenu(child);
+                    })}
+                </Menu.SubMenu>
+            ) : (
+                <Menu.Item key={item.path} icon={item.icon}>
+                    {item.title}
+                </Menu.Item>
+            );
+        },
+        [state.currentUserinfo],
+    );
+
     return useMemo(() => {
         // 如果用户信息为空，显示loading
         if (!state.currentUserinfo) {
@@ -71,7 +93,7 @@ const LeftMenuLayout: FC<RoutePageProps> = (props) => {
         }
 
         if (isFirstRender.current) {
-            checkRole(history, state.currentUserinfo.role);
+            checkRole(history, window.location.pathname, state.currentUserinfo.role);
             isFirstRender.current = false;
         }
 
@@ -85,18 +107,9 @@ const LeftMenuLayout: FC<RoutePageProps> = (props) => {
                         </a>
                     </div>
                     <Menu theme="dark" mode="inline" defaultSelectedKeys={[initActiveMenu]} onClick={onMenuClick}>
-                        {routes
-                            ?.filter(
-                                (item) =>
-                                    !item.hideInMenu &&
-                                    // @ts-ignore
-                                    (!item.roles || item.roles.includes(state.currentUserinfo?.role)),
-                            )
-                            .map((item) => (
-                                <Menu.Item key={item.path} icon={iconDic[item.icon]}>
-                                    {item.title}
-                                </Menu.Item>
-                            ))}
+                        {routes.map((item) => {
+                            return renderMenu(item);
+                        })}
                     </Menu>
                 </Sider>
                 <Layout className="site-layout">
@@ -125,7 +138,17 @@ const LeftMenuLayout: FC<RoutePageProps> = (props) => {
                 </Layout>
             </Layout>
         );
-    }, [state.currentUserinfo, isFirstRender, collapsed, initActiveMenu, onMenuClick, routes, checkRole, history]);
+    }, [
+        state.currentUserinfo,
+        isFirstRender,
+        collapsed,
+        initActiveMenu,
+        onMenuClick,
+        routes,
+        checkRole,
+        history,
+        renderMenu,
+    ]);
 };
 
 export default LeftMenuLayout;

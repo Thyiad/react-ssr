@@ -1,6 +1,6 @@
 import { Context } from 'koa';
 import { matchPath } from 'react-router-dom';
-import routes from '@client/route';
+import routes from '@client/route.tsx';
 
 export const getCurrentRoute = (ctx: Context) => {
     const pathname = ctx.path;

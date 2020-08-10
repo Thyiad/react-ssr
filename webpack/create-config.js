@@ -16,11 +16,10 @@ const WebpackBar = require('webpackbar');
  * @param {*} type client | server
  * @param {*} isDev
  */
-module.exports = (type, isDev, envConfig) => {
+module.exports = (type, isDev, envConfig, sysType) => {
     const isServer = type === 'server';
     isDev = !!isDev;
     const nodeEnv = isDev ? 'development' : 'production';
-    const deployEnv = isDev ? 'dev' : 'prd';
 
     const spaClientFolder = fs.existsSync(path.resolve(cwd, 'src/client')) ? '/client' : '';
 
@@ -28,7 +27,7 @@ module.exports = (type, isDev, envConfig) => {
         new webpack.ProgressPlugin(),
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify(nodeEnv),
-            'process.env.DEPLOY_ENV': JSON.stringify(deployEnv),
+            'process.env.SYS_TYPE': JSON.stringify(sysType),
         }),
         new CleanWebpackPlugin(),
         new CaseSensitivePathPlugin(),

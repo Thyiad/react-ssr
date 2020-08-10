@@ -52,8 +52,10 @@ https://www.thyiad.top/_posts/2020-06-05-%E4%BB%8E0%E6%90%AD%E5%BB%BAreact+ts+ss
 
 ### ssr
 
--   [ ] server 端获取页面初始数据
+-   [x] server 端获取页面初始数据
 -   [x] 注入初始 store 数据
+-   [ ] server 端有修改时，如何自动刷新页面
+-   [ ] 使用 nodemon，有时候端口不会被释放
 
 ### 预览
 

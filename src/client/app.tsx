@@ -3,10 +3,10 @@ import { render, hydrate } from 'react-dom';
 import { AppContainer } from '@/components/AppContainer';
 import { loadableReady } from '@loadable/component';
 
-// // spa使用render
-// render(<AppContainer />, document.getElementById('root'));
-
-// ssr使用hydrate
-loadableReady(() => {
-    hydrate(<AppContainer />, document.getElementById('root'));
-});
+if (process.env.SYS_TYPE === 'ssr') {
+    loadableReady(() => {
+        hydrate(<AppContainer />, document.getElementById('root'));
+    });
+} else {
+    render(<AppContainer />, document.getElementById('root'));
+}

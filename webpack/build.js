@@ -14,7 +14,7 @@ if (!['ssr', 'spa'].includes(sysType)) {
 }
 envConfig.sysType = sysType;
 
-const clientConfig = createConfig('client', false, envConfig);
+const clientConfig = createConfig('client', false, envConfig, sysType);
 const clientCompile = webpack(clientConfig);
 
 let logged = false;
@@ -31,7 +31,7 @@ if (envConfig.sysType === 'spa') {
     return;
 }
 
-const serverConfig = createConfig('server', false, envConfig);
+const serverConfig = createConfig('server', false, envConfig, sysType);
 const serverCompile = webpack(serverConfig);
 serverCompile.hooks.done.tap('server_compile_done', (compilation, callback) => {
     console.log(chalk.blue(`server_compile_done`));

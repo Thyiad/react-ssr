@@ -1,6 +1,6 @@
 import { Context } from 'koa';
 import { StaticRouter } from 'react-router-dom';
-import { AppContainer } from '@client/components/AppContainer';
+import { AppRoutes } from '@client/components/AppContainer';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { IndexTemplate, RemScript } from '@server/utils/template';
@@ -22,7 +22,7 @@ export const renderHtml = async (ctx: Context, router: RouteProps): Promise<stri
     const jsx = router.isSSR
         ? extractor.collectChunks(
               <StaticRouter location={ctx.url} context={{}}>
-                  <AppContainer />
+                  <AppRoutes />
               </StaticRouter>,
           )
         : extractor.collectChunks(<StaticRouter location={ctx.url} context={{}} />);
@@ -30,12 +30,17 @@ export const renderHtml = async (ctx: Context, router: RouteProps): Promise<stri
     const scriptTags = extractor.getScriptTags(); // or extractor.getScriptElements();
     const linkTags = extractor.getLinkTags(); // or extractor.getLinkElements();
     const styleTags = extractor.getStyleTags(); // or extractor.getStyleElements();
-    // todo: 如果需要提前获取数据，需要 await 获取数据
-    const ssrData = {};
+    let ssrData = {};
+    if (router.getInitialProps) {
+        const pageInitData = await router.getInitialProps();
+        ssrData = {
+            ...pageInitData,
+        };
+    }
     const renderData = {
         html,
         remScript: config.useRem ? RemScript : '',
-        ssrData: `window.ssrData=${JSON.stringify(ssrData || null)}`,
+        ssrData: `<script>window.ssrData=${JSON.stringify(ssrData || null)}</script>`,
         scriptTags,
         linkTags,
         styleTags,

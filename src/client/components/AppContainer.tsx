@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
-import { BrowserRouter, Switch } from 'react-router-dom';
+import { BrowserRouter, StaticRouter, Switch } from 'react-router-dom';
 import { Provider } from '@/redux/store';
-import routes from '@/route';
+import routes from '@/route.tsx';
 import RouteWithSubRoutes from '@/components/RouteWithSubRoutes';
 import '@/assets/scss/common.scss';
 import '@/app.scss';
@@ -9,16 +9,22 @@ import { initThyiadUtil } from '@/utils/index';
 
 initThyiadUtil();
 
-export const AppContainer: FC = () => {
+export const AppRoutes: FC = () => {
     return (
         <Provider>
-            <BrowserRouter>
-                <Switch>
-                    {routes.map((route) => (
-                        <RouteWithSubRoutes key={route.name} {...route} />
-                    ))}
-                </Switch>
-            </BrowserRouter>
+            <Switch>
+                {routes.map((route) => (
+                    <RouteWithSubRoutes key={route.name} {...route} />
+                ))}
+            </Switch>
         </Provider>
+    );
+};
+
+export const AppContainer: FC = () => {
+    return (
+        <BrowserRouter>
+            <AppRoutes />
+        </BrowserRouter>
     );
 };

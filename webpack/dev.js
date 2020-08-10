@@ -15,7 +15,7 @@ if (!['ssr', 'spa'].includes(sysType)) {
 envConfig.sysType = sysType;
 
 // 编译client
-const clientConfig = createConfig('client', true, envConfig);
+const clientConfig = createConfig('client', true, envConfig, sysType);
 const clientCompile = webpack(clientConfig);
 
 let logged = false;
@@ -37,7 +37,7 @@ if (envConfig.sysType === 'spa') {
 }
 
 // 编译server
-const serverConfig = createConfig('server', true, envConfig);
+const serverConfig = createConfig('server', true, envConfig, sysType);
 const serverCompile = webpack(serverConfig);
 let serverChildProcess = false;
 serverCompile.hooks.done.tap('server_compile_done', (compilation, callback) => {

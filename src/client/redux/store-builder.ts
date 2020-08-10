@@ -8,7 +8,8 @@ const initState: IState = {
 
 export const getInitState = (): IState => {
     let ssrData: IState = null;
-    if (typeof window === 'object') {
+    const isBrowser = new Function('try {return this===window;}catch(e){ return false;}');
+    if (isBrowser()) {
         ssrData = window.ssrData;
     }
     return {

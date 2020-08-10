@@ -1,10 +1,11 @@
 import { Context, Next } from 'koa';
-import { getCurrentRoute } from '../utils/getCurrentRoute';
+import { getMatchRoute } from '@client/utils/index';
+import routes from '@client/route.tsx';
 import { render } from '../utils/render';
 
 export const base = async (ctx: Context, next: Next): Promise<void> => {
     try {
-        const currentRoute = getCurrentRoute(ctx);
+        const currentRoute = getMatchRoute(ctx.path, routes);
         if (currentRoute) {
             await render(ctx, currentRoute);
         }

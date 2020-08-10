@@ -1,12 +1,18 @@
+import React from 'react';
 import loadable from '@loadable/component';
+import { MenuUnfoldOutlined, MenuFoldOutlined, TableOutlined } from '@ant-design/icons';
 
 import UserLayout from './layouts/UserLayout';
 import LeftMenuLayout from './layouts/LeftMenuLayout';
 import TopMenuLayout from './layouts/TopMenuLayout';
+import SubRouteWrapper from './components/SubRouteWrapper';
+import * as Init from '@/utils/getInitialProps';
+
 const Login = loadable(() => import(/* webpackChunkName: "login" */ './pages/login/index'));
 const Table = loadable(() => import(/* webpackChunkName: "table" */ './pages/table/index'));
 const NotFound = loadable(() => import(/* webpackChunkName: "404" */ './pages/404/index'));
 const NoPermission = loadable(() => import(/* webpackChunkName: "403" */ './pages/403/index'));
+const EmptyPage = loadable(() => import(/* webpackChunkName: "test" */ './pages/empty/index'));
 
 const routes: RouteProps[] = [
     {
@@ -59,7 +65,6 @@ const routes: RouteProps[] = [
                 path: '/',
                 exact: true,
                 redirect: '/table',
-                component: Table,
                 hideInMenu: true,
             },
             {
@@ -68,7 +73,43 @@ const routes: RouteProps[] = [
                 path: '/table',
                 exact: true,
                 component: Table,
-                icon: 'TableOutlined',
+                icon: <TableOutlined />,
+                isSSR: true,
+                getInitialProps: Init.getTableInitData,
+            },
+            {
+                title: '无限嵌套',
+                name: 'subs',
+                path: '/subs',
+                exact: false,
+                component: SubRouteWrapper,
+                icon: <TableOutlined />,
+                routes: [
+                    {
+                        title: '',
+                        name: 'sub_',
+                        path: '/subs',
+                        exact: true,
+                        redirect: '/subs/child1',
+                        hideInMenu: true,
+                    },
+                    {
+                        title: '嵌套子页面1',
+                        name: 'child1',
+                        path: '/subs/child1',
+                        exact: true,
+                        component: EmptyPage,
+                        icon: <TableOutlined />,
+                    },
+                    {
+                        title: '嵌套子页面2',
+                        name: 'child2',
+                        path: '/subs/child2',
+                        exact: true,
+                        component: EmptyPage,
+                        icon: <TableOutlined />,
+                    },
+                ],
             },
             {
                 title: '',

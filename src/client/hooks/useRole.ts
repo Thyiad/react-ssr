@@ -2,8 +2,8 @@ import { useEffect, useRef } from 'react';
 import { History } from 'history';
 import { getMatchRoute } from '@/utils/index';
 
-const checkRole = (history: History, curRole?: string, pathname?: string): void => {
-    const findedRoute = getMatchRoute(pathname || window.location.pathname);
+const checkRole = (history: History, pathname: string, curRole?: string): void => {
+    const findedRoute = getMatchRoute(pathname);
     if (!findedRoute || !findedRoute.roles || !curRole) {
         return;
     }
@@ -22,7 +22,7 @@ export const useRole = (history: History, curRole?: string): UseRoleRes => {
 
     useEffect(() => {
         const unRegister = history.listen((e) => {
-            checkRole(history, curRole, e.pathname);
+            checkRole(history, e.pathname, curRole);
         });
         return unRegister;
     }, [history, curRole]);

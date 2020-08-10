@@ -5,23 +5,18 @@ import { useRedux } from '@/hooks/useRedux';
 import PageLoading from '@/components/PageLoading';
 import RouteWithSubRoutes from '@/components/RouteWithSubRoutes';
 import { thyCookie } from '@thyiad/util';
-import { getMatchRoute } from '@/utils/index';
+import { getMatchRoute, canUseWindow } from '@/utils/index';
 import { LOGIN_COOKIE_KEY, LOGIN_PATHNAME } from '@/constant/index';
 import systemInfo from '@/constant/systemInfo';
 import { fetchCurrentUserinfo } from '@/models/User';
 import AvatarDropdown from './AvatarDropdown';
 import CommonFooter from './CommonFooter';
 import { useRole } from '@/hooks/useRole';
-import { MenuUnfoldOutlined, MenuFoldOutlined, TableOutlined } from '@ant-design/icons';
 
 const { Header, Content } = Layout;
 
 import './TopMenuLayout.scss';
 import logo from '@/assets/img/logo.png';
-
-const iconDic = {
-    TableOutlined: <TableOutlined />,
-};
 
 const TopMenuLayout: FC<RoutePageProps> = (props) => {
     const history = useHistory();
@@ -41,7 +36,10 @@ const TopMenuLayout: FC<RoutePageProps> = (props) => {
     }, [actions.user]);
 
     const initActiveMenu: string = useMemo(() => {
-        const findedRoute = getMatchRoute();
+        if (!canUseWindow()) {
+            return '';
+        }
+        const findedRoute = getMatchRoute(window.location.pathname);
         if (findedRoute) {
             return findedRoute.redirect || findedRoute.path;
         }
@@ -58,6 +56,26 @@ const TopMenuLayout: FC<RoutePageProps> = (props) => {
         [history],
     );
 
+    const renderMenu = useCallback(
+        (item: RouteProps) => {
+            if (item.hideInMenu || (item.roles && item.roles.includes(state.currentUserinfo?.role))) {
+                return null;
+            }
+            return Array.isArray(item.routes) && item.routes.length > 0 ? (
+                <Menu.SubMenu key={item.path} icon={item.icon} title={item.title}>
+                    {item.routes.map((child) => {
+                        return renderMenu(child);
+                    })}
+                </Menu.SubMenu>
+            ) : (
+                <Menu.Item key={item.path} icon={item.icon}>
+                    {item.title}
+                </Menu.Item>
+            );
+        },
+        [state.currentUserinfo],
+    );
+
     return useMemo(() => {
         // 如果用户信息为空，显示loading
         if (!state.currentUserinfo) {
@@ -65,7 +83,7 @@ const TopMenuLayout: FC<RoutePageProps> = (props) => {
         }
 
         if (isFirstRender.current) {
-            checkRole(history, state.currentUserinfo.role);
+            checkRole(history, window.location.pathname, state.currentUserinfo.role);
             isFirstRender.current = false;
         }
 
@@ -85,18 +103,9 @@ const TopMenuLayout: FC<RoutePageProps> = (props) => {
                         defaultSelectedKeys={[initActiveMenu]}
                         style={{ lineHeight: '64px', flex: 1, overflow: 'hidden' }}
                     >
-                        {routes
-                            ?.filter(
-                                (item) =>
-                                    !item.hideInMenu &&
-                                    // @ts-ignore
-                                    (!item.roles || item.roles.includes(state.currentUserinfo?.role)),
-                            )
-                            .map((item) => (
-                                <Menu.Item key={item.path} icon={iconDic[item.icon]}>
-                                    {item.title}
-                                </Menu.Item>
-                            ))}
+                        {routes?.map((item) => {
+                            return renderMenu(item);
+                        })}
                     </Menu>
                     <AvatarDropdown nameColor="#fff" />
                 </Header>
@@ -112,7 +121,7 @@ const TopMenuLayout: FC<RoutePageProps> = (props) => {
                 </Content>
             </Layout>
         );
-    }, [state.currentUserinfo, isFirstRender, onMenuClick, initActiveMenu, routes, checkRole, history]);
+    }, [state.currentUserinfo, isFirstRender, onMenuClick, initActiveMenu, routes, checkRole, history, renderMenu]);
 };
 
 export default TopMenuLayout;

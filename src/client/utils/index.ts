@@ -1,7 +1,7 @@
 import { initImplements, thyCookie } from '@thyiad/util';
 import { msgLoading, toast, alert, confirm } from './ui';
 import { LOGIN_COOKIE_KEY, LOGIN_PATHNAME, TOKEN_HEADER_NAME } from '@/constant/index';
-import rootRoutes from '../route';
+import rootRoutes from '../route.tsx';
 import { matchPath } from 'react-router-dom';
 
 export const initThyiadUtil = () => {
@@ -20,18 +20,20 @@ export const initThyiadUtil = () => {
     });
 };
 
+export const canUseWindow = () => {
+    return typeof window !== 'undefined';
+};
+
 /**
- * 通过pathname解析对应路由
- * 暂只支持解析到第二级
+ * 通过pathname检索对应路由
  * @param pathname
  */
-export const getMatchRoute = (pathname?: string, routes?: RouteProps[]) => {
-    pathname = pathname || window.location.pathname;
+export const getMatchRoute = (pathname: string, routes?: RouteProps[]) => {
     routes = routes || rootRoutes;
-    const findedRoute = routes?.find((route) => matchPath(window.location.pathname, route));
+    const findedRoute = routes?.find((route) => matchPath(pathname, route));
     if (findedRoute) {
         if (findedRoute.routes) {
-            const nextFindedRoute = findedRoute.routes?.find((route) => matchPath(window.location.pathname, route));
+            const nextFindedRoute = getMatchRoute(pathname, findedRoute.routes);
             if (nextFindedRoute) {
                 return nextFindedRoute;
             }
