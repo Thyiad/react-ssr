@@ -42,26 +42,41 @@ const serverCompile = webpack(serverConfig);
 let serverChildProcess = false;
 serverCompile.hooks.done.tap('server_compile_done', (compilation, callback) => {
     console.log(chalk.blue(`server_compile_done`));
-    if (!serverChildProcess) {
-        serverChildProcess = childProcess.spawn('nodemon', [
-            '--watch',
-            path.resolve(cwd, `dist/server`),
-            '--ignore',
-            '*hot-update.json',
-            '--ignore',
-            '*hot-update.js',
-            '--ignore',
-            'loadable-stats.json',
-            path.resolve(cwd, `dist/server/main.js`),
-        ]);
-        serverChildProcess.stdout.on('data', (data) => {
-            console.log(`server out: ${data}`);
-        });
-        serverChildProcess.stderr.on('data', (data) => {
-            console.error(`server error: ${data}`);
-        });
-        console.log(chalk.blue(`server has started at ${envConfig.serverPort}`));
+
+    // 手动kill方式
+    if (serverChildProcess) {
+        serverChildProcess.kill();
     }
+    serverChildProcess = childProcess.spawn('node', [path.resolve(cwd, `dist/server/main.js`)]);
+    serverChildProcess.stdout.on('data', (data) => {
+        console.log(`server out: ${data}`);
+    });
+    serverChildProcess.stderr.on('data', (data) => {
+        console.error(`server error: ${data}`);
+    });
+    console.log(chalk.blue(`server has started at ${envConfig.serverPort}`));
+
+    // // nodemon方式
+    // if (!serverChildProcess) {
+    //     serverChildProcess = childProcess.spawn('nodemon', [
+    //         '--watch',
+    //         path.resolve(cwd, `dist/server`),
+    //         '--ignore',
+    //         '*hot-update.json',
+    //         '--ignore',
+    //         '*hot-update.js',
+    //         '--ignore',
+    //         'loadable-stats.json',
+    //         path.resolve(cwd, `dist/server/main.js`),
+    //     ]);
+    //     serverChildProcess.stdout.on('data', (data) => {
+    //         console.log(`server out: ${data}`);
+    //     });
+    //     serverChildProcess.stderr.on('data', (data) => {
+    //         console.error(`server error: ${data}`);
+    //     });
+    //     console.log(chalk.blue(`server has started at ${envConfig.serverPort}`));
+    // }
     callback && callback();
 });
 serverCompile.watch(serverConfig.devServer.watchOptions, (err) => {
