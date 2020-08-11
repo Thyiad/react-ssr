@@ -18,8 +18,8 @@ envConfig.sysType = sysType;
 
 // 编译client
 const clientConfig = createConfig('client', true, envConfig, sysType);
-const clientCompile = webpack(smp.wrap(clientConfig));
-// const clientCompile = webpack(clientConfig);
+// const clientCompile = webpack(smp.wrap(clientConfig));
+const clientCompile = webpack(clientConfig);
 
 let logged = false;
 clientCompile.hooks.done.tapAsync('client_compile_done', (compilation, callback) => {
