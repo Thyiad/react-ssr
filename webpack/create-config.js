@@ -10,6 +10,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const LoadablePlugin = require('@loadable/webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
 const WebpackBar = require('webpackbar');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 /**
  *
@@ -30,7 +31,6 @@ module.exports = (type, isDev, envConfig, sysType) => {
             'process.env.SYS_TYPE': JSON.stringify(sysType),
         }),
         new CleanWebpackPlugin(),
-        new CaseSensitivePathPlugin(),
     ];
     if (envConfig.sysType === 'ssr') {
         plugins.push(new LoadablePlugin());
@@ -52,13 +52,16 @@ module.exports = (type, isDev, envConfig, sysType) => {
             }),
         );
     } else {
-        plugins.push(
-            new MiniCssExtractPlugin({
-                filename: 'css/[name].[contenthash].css',
-                chunkFilename: 'chunks/[id].[contenthash].css',
-            }),
-        );
+        plugins.push(new CaseSensitivePathPlugin()), // 大小写检测很费时，暂时只在build中使用
+            plugins.push(
+                new MiniCssExtractPlugin({
+                    filename: 'css/[name].[contenthash].css',
+                    chunkFilename: 'chunks/[id].[contenthash].css',
+                }),
+            );
     }
+    // 打包尺寸分析：http://127.0.0.1:8888
+    // plugins.push(new BundleAnalyzerPlugin());
 
     const curConfig = {
         'spa-client': {
@@ -97,7 +100,7 @@ module.exports = (type, isDev, envConfig, sysType) => {
         entry: curConfig.entry,
         output: curConfig.output,
         resolve: {
-            extensions: ['.ts', '.tsx', '.scss', '.js', '.jsx', '.sass'],
+            extensions: ['.ts', '.tsx', '.scss', '.js', '.jsx', '.sass', '.less', '.json'],
             alias: {
                 '@thyiad/util': '@thyiad/util',
                 '@server': path.resolve(cwd, 'src/server'),

@@ -1,6 +1,8 @@
 const createConfig = require('./create-config');
 const webpack = require('webpack');
 const webpackDevServer = require('webpack-dev-server');
+const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
+const smp = new SpeedMeasurePlugin();
 const chalk = require('chalk');
 const path = require('path');
 const childProcess = require('child_process');
@@ -16,7 +18,8 @@ envConfig.sysType = sysType;
 
 // 编译client
 const clientConfig = createConfig('client', true, envConfig, sysType);
-const clientCompile = webpack(clientConfig);
+const clientCompile = webpack(smp.wrap(clientConfig));
+// const clientCompile = webpack(clientConfig);
 
 let logged = false;
 clientCompile.hooks.done.tapAsync('client_compile_done', (compilation, callback) => {

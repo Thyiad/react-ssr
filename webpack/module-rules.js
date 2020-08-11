@@ -4,11 +4,16 @@ const postcssPresetEnv = require('postcss-preset-env');
 const cssnano = require('cssnano');
 const pix2rem = require('postcss-pxtorem');
 const sass = require('sass');
-const webpack = require('webpack');
+const threadLoader = require('thread-loader');
 
 /** options: isDev, useCssModule */
 const getCssLoaders = (options) => {
     return [
+        // cache-loader 在大开销loaders才开启，否则几乎无性能提升
+        // {
+        //     loader: 'cache-loader',
+        // },
+        // thread-loader 无法和 less、sass一起使用：各种报错
         {
             loader: options.isDev ? 'style-loader' : miniCssExtract.loader,
         },
@@ -37,14 +42,26 @@ const getCssLoaders = (options) => {
                 },
             },
         },
-    ];
+    ].filter((item) => item);
 };
+
 module.exports = (isServer, isDev) => {
+    // threadLoader预热
+    const workerPool = { poolTimeout: isDev ? Infinity : 2000 };
+    threadLoader.warmup(workerPool, ['babel-loader']);
+
     return [
         {
             test: /\.(js|jsx|ts|tsx)$/,
             exclude: /mode_modules/,
             use: [
+                // {
+                //     loader: 'cache-loader',
+                // },
+                {
+                    loader: 'thread-loader',
+                    options: workerPool,
+                },
                 {
                     loader: 'babel-loader',
                     options: {
@@ -59,6 +76,7 @@ module.exports = (isServer, isDev) => {
         },
         {
             test: /\.scss$/,
+            exclude: /node_modules/,
             use: isServer
                 ? 'null-loader'
                 : [
@@ -121,6 +139,7 @@ module.exports = (isServer, isDev) => {
         },
         {
             test: /\.(json|mp4)$/,
+            exclude: /node_modules/,
             use: [
                 {
                     loader: 'file-loader',
