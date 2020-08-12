@@ -48,7 +48,7 @@ serverCompile.hooks.done.tap('server_compile_done', (compilation, callback) => {
 
     // 手动kill方式
     if (serverChildProcess) {
-        serverChildProcess.kill();
+        erverChildProcess.kill('SIGINT');
     }
     serverChildProcess = childProcess.spawn('node', [path.resolve(cwd, `dist/server/main.js`)]);
     serverChildProcess.stdout.on('data', (data) => {

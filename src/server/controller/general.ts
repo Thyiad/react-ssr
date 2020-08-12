@@ -1,6 +1,6 @@
 import { Context, Next } from 'koa';
 import { getMatchRoute } from '@client/utils/index';
-import routes from '@client/route.tsx';
+import routes from '@client/route';
 import { render } from '../utils/render';
 
 export const base = async (ctx: Context, next: Next): Promise<void> => {
