@@ -1,6 +1,6 @@
 import React from 'react';
 import './CommonFooter.scss';
-import systemInfo from '@/constant/systemInfo';
+import systemInfo from '@client/constants/systemInfo';
 
 const { copyright } = systemInfo;
 

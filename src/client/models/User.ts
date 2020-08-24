@@ -1,5 +1,5 @@
-import * as api from '@/constant/api';
-import { LOGIN_COOKIE_KEY, LOGIN_PATHNAME } from '@/constant/index';
+import * as api from '@client/constants/api';
+import { LOGIN_COOKIE_KEY, LOGIN_PATHNAME } from '@client/constants/index';
 import { thyReq } from '@thyiad/util';
 
 export const fetchCurrentUserinfo = (): Promise<UserModel> => {

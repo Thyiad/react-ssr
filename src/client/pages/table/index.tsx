@@ -4,7 +4,7 @@ import { Avatar, Button } from 'antd';
 import { DownOutlined, PlusOutlined } from '@ant-design/icons';
 import { thyUI, thyReq } from '@thyiad/util';
 import { TableItem, TableListParams } from './table';
-import * as api from '@/constant/api';
+import * as api from '@client/constants/api';
 import './index.scss';
 
 const TablePage: FC<RoutePageProps> = (props) => {

@@ -1,7 +1,7 @@
 import React, { FC, useMemo } from 'react';
 import { Link, Switch } from 'react-router-dom';
 import CommonFooter from './CommonFooter';
-import systemInfo from '@/constant/systemInfo';
+import systemInfo from '@client/constants/systemInfo';
 import RouteWithSubRoutes from '@/components/RouteWithSubRoutes';
 import './UserLayout.scss';
 import logo from '@/assets/img/logo.png';
