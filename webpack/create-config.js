@@ -17,7 +17,7 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
  * @param {*} type client | server
  * @param {*} isDev
  */
-module.exports = (type, isDev, envConfig, sysType) => {
+module.exports = (type, isDev, envConfig) => {
     const isServer = type === 'server';
     isDev = !!isDev;
     const nodeEnv = isDev ? 'development' : 'production';
@@ -28,7 +28,7 @@ module.exports = (type, isDev, envConfig, sysType) => {
         new webpack.ProgressPlugin(),
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify(nodeEnv),
-            'process.env.SYS_TYPE': JSON.stringify(sysType),
+            'process.env.SYS_TYPE': JSON.stringify(envConfig.sysType),
         }),
         new CleanWebpackPlugin(),
     ];
