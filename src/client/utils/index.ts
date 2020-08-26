@@ -1,6 +1,6 @@
 import { initImplements, thyCookie } from '@thyiad/util';
 import { msgLoading, toast, alert, confirm } from './ui';
-import { LOGIN_COOKIE_KEY, LOGIN_PATHNAME, TOKEN_HEADER_NAME } from '@client/constants/index';
+import { LOGIN_COOKIE_KEY, LOGIN_PATHNAME, REQUEST_HEADER_TOKEN_NAME } from '@client/constants/index';
 import rootRoutes from '../route';
 import { matchPath } from 'react-router-dom';
 
@@ -14,7 +14,17 @@ export const initThyiadUtil = () => {
         },
         req: {
             loginCookeyKey: LOGIN_COOKIE_KEY,
-            tokenHeaderName: TOKEN_HEADER_NAME,
+            tokenHeaderName: REQUEST_HEADER_TOKEN_NAME,
+            ajaxStatus: {
+                success: 2000,
+                error: 3000,
+                expired: 4000,
+            },
+            ajaxData: {
+                code: 'code',
+                msg: 'msg',
+                data: 'data',
+            },
             logout: logout,
         },
     });

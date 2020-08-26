@@ -3,7 +3,10 @@
  */
 export const LOGIN_COOKIE_KEY = 'loginCookieKey';
 
-export const TOKEN_HEADER_NAME = 'accessKey';
+/**
+ * 发送请求时token的header名
+ */
+export const REQUEST_HEADER_TOKEN_NAME = 'accessKey';
 
 /**
  * 已登录角色的cookie名
