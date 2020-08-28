@@ -7,4 +7,6 @@ module.exports = {
     serverPort: 8089,
     /** 系统类型: ssr | spa */
     sysType: 'ssr',
+    /** 是否正在打包dll，暂时不启用dllPlugin和DllReferencePlugin */
+    isDll: false,
 };
