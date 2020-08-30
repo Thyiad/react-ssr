@@ -38,7 +38,10 @@ export const canUseWindow = () => {
  * 通过pathname检索对应路由
  * @param pathname
  */
-export const getMatchRoute = (pathname: string, routes?: RouteProps[]) => {
+export const getMatchRoute = (pathname?: string, routes?: RouteProps[]) => {
+    if (!pathname) {
+        pathname = canUseWindow() ? window.location.pathname : '';
+    }
     routes = routes || rootRoutes;
     const findedRoute = routes?.find((route) => matchPath(pathname, route));
     if (findedRoute) {

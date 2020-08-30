@@ -39,7 +39,7 @@ const TopMenuLayout: FC<RoutePageProps> = (props) => {
         if (!canUseWindow()) {
             return '';
         }
-        const findedRoute = getMatchRoute(window.location.pathname);
+        const findedRoute = getMatchRoute();
         if (findedRoute) {
             return findedRoute.redirect || findedRoute.path;
         }
