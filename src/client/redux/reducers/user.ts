@@ -2,19 +2,19 @@ import { IState, IAction } from '../data';
 import { UserModel } from '@/models/User';
 
 export const actions = {
-    setCurrentUserinfo: (currentUserinfo: UserModel): IAction => {
+    setcurrentUser: (currentUser: UserModel): IAction => {
         return {
-            type: 'setCurrentUserinfo',
-            payload: currentUserinfo,
+            type: 'setcurrentUser',
+            payload: currentUser,
         };
     },
 };
 
 export const reducers = {
-    setCurrentUserinfo: (state: IState, action: IAction<UserModel>): IState => {
+    setcurrentUser: (state: IState, action: IAction<UserModel>): IState => {
         return {
             ...state,
-            currentUserinfo: action.payload,
+            currentUser: action.payload,
         };
     },
 };

@@ -22,7 +22,7 @@ const TopMenuLayout: FC<RoutePageProps> = (props) => {
     const history = useHistory();
     const { routes } = props;
     const { state, actions } = useRedux();
-    const { isFirstRender, checkRole } = useRole(history, state.currentUserinfo?.role);
+    const { isFirstRender, checkRole } = useRole(history, state.currentUser?.role);
 
     useEffect(() => {
         const accessKey = thyCookie.get(LOGIN_COOKIE_KEY);
@@ -31,7 +31,7 @@ const TopMenuLayout: FC<RoutePageProps> = (props) => {
             return;
         }
         fetchCurrentUserinfo().then((res) => {
-            actions.user.setCurrentUserinfo(res);
+            actions.user.setcurrentUser(res);
         });
     }, [actions.user]);
 
@@ -58,7 +58,7 @@ const TopMenuLayout: FC<RoutePageProps> = (props) => {
 
     const renderMenu = useCallback(
         (item: RouteProps) => {
-            if (item.hideInMenu || (item.roles && item.roles.includes(state.currentUserinfo?.role))) {
+            if (item.hideInMenu || (item.roles && item.roles.includes(state.currentUser?.role))) {
                 return null;
             }
             return Array.isArray(item.routes) && item.routes.length > 0 ? (
@@ -73,17 +73,17 @@ const TopMenuLayout: FC<RoutePageProps> = (props) => {
                 </Menu.Item>
             );
         },
-        [state.currentUserinfo],
+        [state.currentUser],
     );
 
     return useMemo(() => {
         // 如果用户信息为空，显示loading
-        if (!state.currentUserinfo) {
+        if (!state.currentUser) {
             return <PageLoading />;
         }
 
         if (isFirstRender.current) {
-            checkRole(history, window.location.pathname, state.currentUserinfo.role);
+            checkRole(history, window.location.pathname, state.currentUser?.role);
             isFirstRender.current = false;
         }
 
@@ -121,7 +121,7 @@ const TopMenuLayout: FC<RoutePageProps> = (props) => {
                 </Content>
             </Layout>
         );
-    }, [state.currentUserinfo, isFirstRender, onMenuClick, initActiveMenu, routes, checkRole, history, renderMenu]);
+    }, [state.currentUser, isFirstRender, onMenuClick, initActiveMenu, routes, checkRole, history, renderMenu]);
 };
 
 export default TopMenuLayout;
