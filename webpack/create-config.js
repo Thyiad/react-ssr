@@ -153,8 +153,8 @@ module.exports = (type, isDev, envConfig) => {
                   },
               }
             : undefined,
-        // devtool: isDev ? 'inline-source-map' : undefined,
-        devtool: isDev ? 'cheap-module-source-map' : 'source-map',
+        devtool: isDev ? 'inline-source-map' : undefined,
+        // devtool: isDev ? 'cheap-module-source-map' : 'source-map',
         optimization: isServer
             ? undefined
             : {
