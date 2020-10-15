@@ -11,7 +11,6 @@ https://www.thyiad.top/_posts/2020-06-05-%E4%BB%8E0%E6%90%AD%E5%BB%BAreact+ts+ss
     git config --global core.autocrlf false
     ```
     > 否则会自动把换行符 LF(linefeed character) 转换成回车符 CRLF(carriage-return character)
--   ssr 本地开发时，使用了 nodemon，需要自行全局安装
 -   constant/index.ts
     > 采用 cookie 存储 token 到上级域名，在这个文件中修改 cookie key 及登录页面的 url
 -   constant/systemInfo.ts
@@ -30,9 +29,19 @@ https://www.thyiad.top/_posts/2020-06-05-%E4%BB%8E0%E6%90%AD%E5%BB%BAreact+ts+ss
     > 左侧菜单布局、顶部菜单布局、注册/登录布局
 -   [x] 权限控制
 -   [x] 集成 ant design pro table
--   [ ] thyReq 允许自定义 axios 回调
+-   [x] thyReq 允许自定义 axios 回调
 -   [ ] stylus、vue 支持
     > 等 vue3 release 再考虑，到时候再集成一个默认的 vue ui
+-   [ ] fluent ui
+    > 看着风格挺好的，接口设计也挺好的，还 css in js，奈何组件太弱了，需要自行完善很多：
+    -   [x] toast 静态调用（基于 MessageBar 封装）
+    -   [ ] alert、confirm 静态调用（基于 Modal 封装）
+    -   [ ] 表格：分页组件（无）、过滤搜索区域（）
+    -   [ ] 表单：form 组件（无）、form 自动验证（无）
+    -   [ ] 默认没有栅格栏，需要导入 Fabric Core
+    -   [ ] 重写 login 页面
+    -   [ ] 重写 leftMenuLayout
+    -   [ ] 重写 topMenuLayout
 
 ### 提交规范
 
@@ -54,8 +63,10 @@ https://www.thyiad.top/_posts/2020-06-05-%E4%BB%8E0%E6%90%AD%E5%BB%BAreact+ts+ss
 
 -   [x] server 端获取页面初始数据
 -   [x] 注入初始 store 数据
--   [ ] server 端有修改时，如何自动刷新页面
--   [ ] 使用 nodemon，有时候端口不会被释放
+-   [x] server 端有修改时，如何自动刷新页面
+        除非开发时 socket 通知，但仅仅为了自动刷新，没必要
+-   [x] 使用 nodemon，有时候端口不会被释放
+        已改为 spawn+kill('SIGINT') 的方式
 
 ### 预览
 
