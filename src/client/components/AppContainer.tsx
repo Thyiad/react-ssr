@@ -6,7 +6,9 @@ import RouteWithSubRoutes from '@/components/RouteWithSubRoutes';
 import '@/assets/scss/common.scss';
 import '@/app.scss';
 import { initThyiadUtil } from '@/utils/index';
+import { initializeIcons } from '@fluentui/react';
 
+initializeIcons();
 initThyiadUtil();
 
 export const AppRoutes: FC = () => {

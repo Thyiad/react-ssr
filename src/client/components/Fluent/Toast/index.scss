@@ -1,0 +1,24 @@
+.fluent-toast-container {
+    position: fixed;
+    top: 36px;
+    display: flex;
+    justify-content: center;
+    transition: opacity 0.3s;
+    width: 100%;
+    .ms-MessageBar {
+        width: unset;
+        .ms-MessageBar-content {
+            width: unset;
+        }
+    }
+    &.show {
+        display: flex;
+        opacity: 1;
+        z-index: 99999999;
+    }
+    &.hide {
+        display: none;
+        opacity: 0;
+        z-index: -1;
+    }
+}

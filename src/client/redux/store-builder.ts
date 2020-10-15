@@ -1,9 +1,10 @@
 import { Dispatch } from 'react';
 import reducers from './reducers/index';
 import { IState, IAction, IReducers } from './data';
+import { MessageBarType } from '@fluentui/react';
 
 const initState: IState = {
-    currentUserinfo: undefined,
+    currentUser: undefined,
 };
 
 export const getInitState = (): IState => {

@@ -1,5 +1,5 @@
 import { initImplements, thyCookie } from '@thyiad/util';
-import { msgLoading, toast, alert, confirm } from './ui';
+import { msgLoading, toast, alert, confirm } from './ui-fluent';
 import { LOGIN_COOKIE_KEY, LOGIN_PATHNAME, REQUEST_HEADER_TOKEN_NAME } from '@client/constants/index';
 import rootRoutes from '../route';
 import { matchPath } from 'react-router-dom';
