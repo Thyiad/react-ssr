@@ -4,7 +4,7 @@ import { MessageBar, MessageBarType } from '@fluentui/react';
 import './index.scss';
 
 let toastContainer: HTMLElement = null;
-const durationTimer = 0;
+let durationTimer: NodeJS.Timeout = null;
 const duration = 2000;
 
 const hideToast = () => {
@@ -28,10 +28,9 @@ const showToast = (title: string, type?: MessageBarType) => {
         </MessageBar>
     );
     ReactDOM.render(msgBar, toastContainer);
-    // @ts-ignore
-    // durationTimer = setTimeout(() => {
-    //     hideToast();
-    // }, duration);
+    durationTimer = setTimeout(() => {
+        hideToast();
+    }, duration);
 };
 
 const Toast = {
