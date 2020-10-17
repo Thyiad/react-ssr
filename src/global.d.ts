@@ -42,7 +42,7 @@ declare global {
         /** 是否ssr */
         isSSR?: boolean;
         /** ssr初始数据 */
-        getInitialProps?: () => Promise<{ [key: string]: any }>;
+        getInitialProps?: () => Promise<any>;
     }
 
     interface RoutePageProps extends RouteComponentProps {
