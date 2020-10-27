@@ -8,7 +8,7 @@ import { thyCookie, thyEnv } from '@thyiad/util';
 import { getMatchRoute, canUseWindow } from '@/utils/index';
 import { LOGIN_COOKIE_KEY, LOGIN_PATHNAME } from '@client/constants/index';
 import systemInfo from '@client/constants/systemInfo';
-import { fetchCurrentUserinfo } from '@/models/User';
+import { fetchCurrentUser } from '@/models/User';
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
 import AvatarDropdown from './AvatarDropdown';
 import CommonFooter from './CommonFooter';
@@ -51,7 +51,7 @@ const LeftMenuLayout: FC<RoutePageProps> = (props) => {
             window.location.href = `${LOGIN_PATHNAME}?target=${encodeURIComponent(window.location.href)}`;
             return;
         }
-        fetchCurrentUserinfo().then((res) => {
+        fetchCurrentUser().then((res) => {
             actions.user.setcurrentUser(res);
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
