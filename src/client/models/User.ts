@@ -2,8 +2,8 @@ import * as api from '@client/constants/api';
 import { LOGIN_COOKIE_KEY, LOGIN_PATHNAME } from '@client/constants/index';
 import { thyReq } from '@thyiad/util';
 
-export const fetchCurrentUserinfo = (): Promise<UserModel> => {
-    return thyReq.post<UserModel>(api.FetchCurrentUserinfo);
+export const fetchCurrentUser = (): Promise<UserModel> => {
+    return thyReq.post<UserModel>(api.FetchCurrentUser);
 };
 
 export const login = (loginParams: any): Promise<LoginRes> => {

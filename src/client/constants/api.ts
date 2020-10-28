@@ -10,5 +10,5 @@ export const CommonExpired = `${HOST}/commonExpired`;
 export const CommonList = `${HOST}/tableList`;
 
 export const UPLOAD_OSS = `${HOST}/api/user/uploadOSS`;
-export const FetchCurrentUserinfo = `${HOST}/getUserInfo`;
+export const FetchCurrentUser = `${HOST}/getUserInfo`;
 export const Login = `${HOST}/login`;

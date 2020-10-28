@@ -36,12 +36,12 @@ const AvatarDropdown: FC<AvatarDropdownProps> = (props) => {
         return (
             <Dropdown overlay={dropdownMenu}>
                 <span className="avatar-dropdown">
-                    <Avatar size="small" src={state.currentUserinfo?.avatar} alt="" />
-                    <span style={{ marginLeft: 8, color: nameColor }}>{state.currentUserinfo?.name}</span>
+                    <Avatar size="small" src={state.currentUser?.avatar} alt="" />
+                    <span style={{ marginLeft: 8, color: nameColor }}>{state.currentUser?.name}</span>
                 </span>
             </Dropdown>
         );
-    }, [dropdownMenu, state.currentUserinfo, nameColor]);
+    }, [dropdownMenu, state.currentUser, nameColor]);
 };
 
 export default AvatarDropdown;

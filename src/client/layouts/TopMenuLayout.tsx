@@ -8,7 +8,7 @@ import { thyCookie } from '@thyiad/util';
 import { getMatchRoute, canUseWindow } from '@/utils/index';
 import { LOGIN_COOKIE_KEY, LOGIN_PATHNAME } from '@client/constants/index';
 import systemInfo from '@client/constants/systemInfo';
-import { fetchCurrentUserinfo } from '@/models/User';
+import { fetchCurrentUser } from '@/models/User';
 import AvatarDropdown from './AvatarDropdown';
 import CommonFooter from './CommonFooter';
 import { useRole } from '@/hooks/useRole';
@@ -30,7 +30,7 @@ const TopMenuLayout: FC<RoutePageProps> = (props) => {
             window.location.href = `${LOGIN_PATHNAME}?target=${encodeURIComponent(window.location.href)}`;
             return;
         }
-        fetchCurrentUserinfo().then((res) => {
+        fetchCurrentUser().then((res) => {
             actions.user.setcurrentUser(res);
         });
     }, [actions.user]);
