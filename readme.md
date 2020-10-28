@@ -1,7 +1,3 @@
-react+ts+srr 从 0 搭建：
-
-https://www.thyiad.top/_posts/2020-06-05-%E4%BB%8E0%E6%90%AD%E5%BB%BAreact+ts+ssr.html
-
 ### 注意
 
 使用修改点：
