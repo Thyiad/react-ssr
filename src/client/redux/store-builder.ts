@@ -13,8 +13,8 @@ export const getInitState = (): IState => {
         ssrData = window.ssrData;
     }
     return {
-        ...ssrData,
         ...initState,
+        ...ssrData,
     };
 };
 
