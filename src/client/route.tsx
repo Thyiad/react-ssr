@@ -14,7 +14,29 @@ const NotFound = loadable(() => import(/* webpackChunkName: "404" */ './pages/40
 const NoPermission = loadable(() => import(/* webpackChunkName: "403" */ './pages/403/index'));
 const EmptyPage = loadable(() => import(/* webpackChunkName: "test" */ './pages/empty/index'));
 
-const routes: RouteProps[] = [
+/**
+ * 系统路由：403、404等等
+ */
+const sysPages: RouteProps[] = [
+    {
+        title: '403',
+        path: '/403',
+        name: '403',
+        exact: true,
+        component: NoPermission,
+    },
+    {
+        title: '404',
+        path: '/404',
+        name: '404',
+        component: NotFound,
+    },
+];
+
+/**
+ * 用户登录、注册等页面
+ */
+const userPages: RouteProps[] = [
     {
         title: '',
         path: '/user',
@@ -39,19 +61,11 @@ const routes: RouteProps[] = [
             },
         ],
     },
-    {
-        title: '403',
-        path: '/403',
-        name: '403',
-        exact: true,
-        component: NoPermission,
-    },
-    {
-        title: '404',
-        path: '/404',
-        name: '404',
-        component: NotFound,
-    },
+];
+
+const routes: RouteProps[] = [
+    ...sysPages,
+    ...userPages,
     {
         title: '',
         path: '/',
