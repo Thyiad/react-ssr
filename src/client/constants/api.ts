@@ -6,4 +6,11 @@ const apiHostDic: HostDicType = {
     pre: 'https://gwbk-uat.zhongan.com',
     prd: 'https://gwbk.zhongan.com',
 };
-export const API_HOST = apiHostDic[DEPLOY_ENV];
+const evtHostDic: HostDicType = {
+    dev: 'https://evt-test3.zhongan.com',
+    test: 'https://evt-test3.zhongan.com',
+    pre: 'https://evt-uat.zhongan.com',
+    prd: 'https://evt.zhongan.com',
+};
+export const HOST_GW = apiHostDic[DEPLOY_ENV];
+export const HOST_EVT = evtHostDic[DEPLOY_ENV];

@@ -21,7 +21,7 @@ import {
 } from '@/constants/keyword';
 import { formStringify, formParse } from '../utils/formStringify';
 import { simpleStringify, jsonParse } from './stringify';
-import { API_HOST } from '@client/constants/api';
+import { HOST_GW } from '@client/constants/api';
 import { getBaseHost } from './index';
 import { getRequestChannelId } from './channelId';
 
@@ -238,7 +238,7 @@ export const getCookieToHeader = async (ctx?: Context) => {
 };
 /** 区分环境追加host */
 const formatUrl = (_url: string): string => {
-    let url = joinUrlPath(API_HOST, _url);
+    let url = joinUrlPath(HOST_GW, _url);
     if (/^https?:\/\//.test(_url)) {
         url = _url;
     } else if (_url.startsWith('/api/')) {

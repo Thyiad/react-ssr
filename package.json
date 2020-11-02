@@ -10,7 +10,9 @@
         "dev:ssr": "node webpack/dev.js ssr",
         "build:ssr": "node webpack/build.js ssr",
         "test": "echo \"Error: no test specified\" && exit 1",
-        "lint": "eslint src --fix --ext .ts,.tsx"
+        "lint": "eslint src --fix --ext .ts,.tsx",
+        "lint:report": "eslint --ext .tsx,.ts src/client/constants -f checkstyle -o report_zacc_eslint_js.xml; exit 0",
+        "lint:html": "eslint --ext .tsx,.ts src/client/constants -f node_modules/eslint-html-reporter/reporter.js -o report.html"
     },
     "dependencies": {
         "@dm/sso": "^2.0.5",
