@@ -8,7 +8,7 @@ try {
 } catch (error) {}
 
 // 以下方式会打包成__webpack_require__方式调用，导致module.exports报错
-// 也不能使用...等es6语法，否则也会同样报错，至于为什么会打包成这样，还未彻底弄明白
+// 也不能使用...等es6语法，否则也会同样报错，至于为什么会打包成这样，尚未完全搞明白
 // const fs = require('fs');
 // const path = require('path');
 // let localEnvConfig = {};
