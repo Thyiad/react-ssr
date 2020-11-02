@@ -24,3 +24,4 @@
 
 -   [ ] 集成 eslint-config-za
     > https://wiki.zhonganonline.com/pages/viewpage.action?pageId=35094667
+    > 目前只检测了 src/client/constants
