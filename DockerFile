@@ -1,4 +1,4 @@
-FROM base-registry.zhonganinfo.com/env/node:10.16
+FROM base-registry.zhonganinfo.com/env/node:10.14.1
 
 ENV SASS_BINARY_SITE http://npm.zhonganinfo.com/node-mirrors/node-sass/
 
