@@ -7,7 +7,7 @@ const config = {
     useRem: true,
     baseDir: process.cwd(),
     port: isDev ? envConfig.serverPort : 8080,
-    deployEnv: isDev ? 'dev' : process.env.DEPLOY_ENV,
+    deployEnv: isDev ? 'dev' : process.env.DEPLOY_ENV || 'prd',
 };
 
 console.log(

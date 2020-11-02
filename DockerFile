@@ -10,4 +10,4 @@ EXPOSE 8080
 
 RUN npm run build
 
-CMD ["node","dist/server/app.js"]
+CMD ["node","dist/server/main.js"]
