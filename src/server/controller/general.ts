@@ -9,7 +9,6 @@ export const base = async (ctx: Context, next: Next): Promise<void> => {
         if (currentRoute) {
             await render(ctx, currentRoute);
         }
-        await next();
     } catch (error) {
         console.log(error);
         ctx.type = 'html';
@@ -17,10 +16,10 @@ export const base = async (ctx: Context, next: Next): Promise<void> => {
     }
 };
 
-export const page404 = (ctx: Context, next: Next) => {
+export const page404 = async (ctx: Context, next: Next): Promise<void> => {
     ctx.render('404');
 };
 
-export const page500 = (ctx: Context, next: Next) => {
+export const page500 = async (ctx: Context, next: Next): Promise<void> => {
     ctx.render('500');
 };

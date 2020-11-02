@@ -19,6 +19,7 @@ export const loggerMiddle = () => {
                 query: ctx.query,
                 referer: headers.referer,
                 userAgent: ctx.header['user-agent'] || '',
+                status: ctx.status,
             };
             const msg = `Response time ${ms}ms, request info ${JSON.stringify(client)}`;
             if (ctx.status >= 500) {
@@ -29,7 +30,7 @@ export const loggerMiddle = () => {
                     ctx.redirect('/404');
                 }
             } else if (ctx.status >= 100) {
-                console.log(msg);
+                logger.info(msg);
             }
         }
     };

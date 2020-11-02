@@ -30,7 +30,7 @@ const getCssLoaders = (options) => {
                 plugins: (loader) => {
                     const targetPlugins = [
                         postcssImport({ root: loader.resourcePath }),
-                        // pix2rem({ propList: ['*'], rootValue: 100 }),
+                        pix2rem({ propList: ['*'], rootValue: 100 }),
                         postcssPresetEnv(),
                     ];
 

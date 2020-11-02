@@ -52,13 +52,13 @@ module.exports = (type, isDev, envConfig) => {
             }),
         );
     } else {
-        plugins.push(new CaseSensitivePathPlugin()), // 大小写检测很费时，暂时只在build中使用
-            plugins.push(
-                new MiniCssExtractPlugin({
-                    filename: 'css/[name].[contenthash].css',
-                    chunkFilename: 'chunks/[id].[contenthash].css',
-                }),
-            );
+        plugins.push(new CaseSensitivePathPlugin()); // 大小写检测很费时，暂时只在build中使用
+        plugins.push(
+            new MiniCssExtractPlugin({
+                filename: 'css/[name].[contenthash].css',
+                chunkFilename: 'chunks/[id].[contenthash].css',
+            }),
+        );
     }
     // 打包尺寸分析：http://127.0.0.1:8888
     // plugins.push(new BundleAnalyzerPlugin());
@@ -102,7 +102,6 @@ module.exports = (type, isDev, envConfig) => {
         resolve: {
             extensions: ['.ts', '.tsx', '.scss', '.js', '.jsx', '.sass', '.less', '.json'],
             alias: {
-                '@thyiad/util': '@thyiad/util',
                 '@server': path.resolve(cwd, 'src/server'),
                 '@client': path.resolve(cwd, 'src/client'),
                 '@': path.resolve(cwd, `src${spaClientFolder}`),
@@ -136,6 +135,7 @@ module.exports = (type, isDev, envConfig) => {
                   host: envConfig.host,
                   port: envConfig.clientPort,
                   hot: true,
+                  //   hot: `${envConfig.sysType}-${type}` === 'ssr-server' ? false : true,
                   open: false,
                   quiet: true,
                   overlay: true,

@@ -13,14 +13,13 @@
         "lint": "eslint src --fix --ext .ts,.tsx"
     },
     "dependencies": {
-        "@ant-design/icons": "^4.2.2",
-        "@ant-design/pro-table": "^2.9.12",
+        "@dm/sso": "^2.0.5",
+        "@dm/utils": "^0.3.41",
         "@koa/router": "^9.4.0",
         "@loadable/component": "^5.14.1",
         "@loadable/server": "^5.14.0",
-        "@thyiad/util": "^1.1.19",
-        "antd": "^4.7.3",
         "art-template": "^4.13.2",
+        "axios": "^0.21.0",
         "koa": "^2.13.0",
         "koa-art-template": "^1.1.1",
         "koa-bodyparser": "^4.3.0",
@@ -30,7 +29,8 @@
         "react": "^16.13.1",
         "react-dom": "^16.13.1",
         "react-helmet": "^6.1.0",
-        "react-router-dom": "^5.2.0"
+        "react-router-dom": "^5.2.0",
+        "zarm": "^2.6.0"
     },
     "devDependencies": {
         "@babel/cli": "^7.12.1",

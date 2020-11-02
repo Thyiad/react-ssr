@@ -14,8 +14,15 @@ declare global {
     declare module '*.bmp';
     declare module '*.tiff';
 
+    type DeployEnv = 'dev' | 'test' | 'pre' | 'prd';
+
+    type HostDicType = {
+        [key in DeployEnv]: string;
+    };
+
     interface Window {
         ssrData?: IState;
+        DEPLOY_ENV?: DeployEnv;
     }
 
     interface RouteProps {
@@ -82,7 +89,7 @@ declare global {
 }
 
 declare module 'koa' {
-    interface Context {
-        render(page: string, options?: any): void;
-    }
+    // interface Context {
+    //     render(page: string, options?: any): void;
+    // }
 }

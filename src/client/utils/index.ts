@@ -1,37 +1,24 @@
-import { initImplements, thyCookie } from '@thyiad/util';
-import { msgLoading, toast, alert, confirm } from './ui';
-import { LOGIN_COOKIE_KEY, LOGIN_PATHNAME, REQUEST_HEADER_TOKEN_NAME } from '@client/constants/index';
 import rootRoutes from '../route';
 import { matchPath } from 'react-router-dom';
 
-export const initThyiadUtil = () => {
-    initImplements({
-        ui: {
-            msgLoading,
-            toast,
-            alert,
-            confirm,
-        },
-        req: {
-            loginCookeyKey: LOGIN_COOKIE_KEY,
-            tokenHeaderName: REQUEST_HEADER_TOKEN_NAME,
-            ajaxStatus: {
-                success: 2000,
-                error: 3000,
-                expired: 4000,
-            },
-            ajaxData: {
-                code: 'code',
-                msg: 'msg',
-                data: 'data',
-            },
-            logout: logout,
-        },
-    });
-};
-
+// const isBrowser = new Function('try {return this===window;}catch(e){ return false;}');
 export const canUseWindow = () => {
     return typeof window !== 'undefined';
+};
+
+/**
+ * 获取基域名
+ * 只识别 xx.xx.xx，否则返回当前 hostname
+ * @param hostname 需要解析的域名，默认当前域名
+ */
+export const getBaseHost = (hostname = ''): string => {
+    hostname = hostname || (canUseWindow() && window.location.hostname) || '';
+    if (!/^([^.]+\.){2}[^.]+$/.test(hostname)) {
+        return hostname;
+    }
+    const hostArr = hostname.split('.');
+    const baseHost = `.${hostArr.slice(hostArr.length - 2).join('.')}`;
+    return baseHost;
 };
 
 /**
@@ -54,12 +41,4 @@ export const getMatchRoute = (pathname?: string, routes?: RouteProps[]) => {
         return findedRoute;
     }
     return null;
-};
-
-/**
- * 退出登录
- */
-export const logout = (): void => {
-    thyCookie.remove(LOGIN_COOKIE_KEY);
-    window.location.href = `${LOGIN_PATHNAME}?target=${encodeURIComponent(window.location.href)}`;
 };

@@ -4,10 +4,7 @@
             "@babel/preset-env",
             {
                 "modules": false,
-                "targets": [
-                    "ios >= 8",
-                    "android >= 4.2"
-                ],
+                "targets": ["ios >= 8", "android >= 4.2"],
                 "useBuiltIns": "usage",
                 "corejs": 3
             }
@@ -23,8 +20,7 @@
         [
             "import",
             {
-                "libraryName": "antd",
-                "libraryDirectory": "lib",
+                "libraryName": "zarm",
                 "style": true
             }
         ]

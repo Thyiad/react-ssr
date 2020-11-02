@@ -12,13 +12,14 @@ import router from './routes';
 const app = new Koa();
 
 render(app, {
-    root: path.join(process.cwd(), 'src/server/view'),
+    root: path.join(config.baseDir, 'src/server/view'),
     extname: '.art',
     debug: config.isDev,
 });
 
 app.use(serve(path.join(config.baseDir, '/dist/client')));
 app.use(loggerMiddle());
+
 app.use(bodyParser());
 app.use(router.routes());
 app.use(router.allowedMethods());

@@ -2,7 +2,7 @@ export const IndexTemplate = `<!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <link type="image/x-icon" rel="shortcut icon" href="//www.thyiad.top/logo.png">
+  <link type="image/x-icon" rel="shortcut icon" href="//static.zhongan.com/website/online/assets/images/favicon.ico">
   <meta charset="utf-8">
   <meta name="keywords" content="" />
   <meta name="description" content="" />

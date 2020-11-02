@@ -1,4 +1,4 @@
-export const getTableInitData = (): Promise<{ [key: string]: any }> => {
+export const getDemoInitData = (): Promise<{ [key: string]: any }> => {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             resolve({

@@ -1,32 +1,33 @@
-@import "./mixin.scss";
+@import './mixin.scss';
+@import './reset-mobile.css';
 
 html,
 body,
 #root {
-  height: 100%;
-  background-color: #f0f2f5;
+    height: 100%;
+    background-color: #f0f2f5;
 }
 .ellipsis-line {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .overflow-hidden {
-  overflow: hidden;
+    overflow: hidden;
 }
 .ellipsis-multi {
-  display: -webkit-box;
-  text-overflow: ellipsis;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  overflow: hidden;
-  &.line-3 {
-    -webkit-line-clamp: 3;
-  }
-  &.line-4 {
-    -webkit-line-clamp: 4;
-  }
-  &.line-5 {
-    -webkit-line-clamp: 5;
-  }
+    display: -webkit-box;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    &.line-3 {
+        -webkit-line-clamp: 3;
+    }
+    &.line-4 {
+        -webkit-line-clamp: 4;
+    }
+    &.line-5 {
+        -webkit-line-clamp: 5;
+    }
 }

@@ -46,9 +46,10 @@ let serverChildProcess = false;
 serverCompile.hooks.done.tap('server_compile_done', (compilation, callback) => {
     console.log(chalk.blue(`server_compile_done`));
 
-    // 手动kill方式
+    // 手动kill
     if (serverChildProcess) {
-        erverChildProcess.kill('SIGINT');
+        const killResult = serverChildProcess.kill('SIGINT');
+        console.log('kill exist server: ' + killResult);
     }
     serverChildProcess = childProcess.spawn('node', [path.resolve(cwd, `dist/server/main.js`)]);
     serverChildProcess.stdout.on('data', (data) => {

@@ -7,5 +7,5 @@ export const getList = (ctx: Context, next: () => Promise<any>) => {
         returnCode: 200,
         result: ['111', '222', '333'],
     };
-    next();
+    return;
 };
