@@ -116,6 +116,7 @@ module.exports = (type, isDev, envConfig) => {
                           /\.(mp4|mp3|ogg|swf|webp)$/,
                           /\.(css|scss|sass|sss|less)$/,
                           /antd\/.*?\/style.*?/,
+                          /zarm\/.*?\/style.*?/,
                       ].filter((x) => x),
                   }),
               ]

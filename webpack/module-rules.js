@@ -89,40 +89,40 @@ module.exports = (isServer, isDev) => {
                       },
                   ],
         },
-        {
-            test: /\.less$/,
-            include: /node_modules/,
-            use: isServer
-                ? 'null-loader'
-                : [
-                      ...getCssLoaders({ useCssModule: false, isDev: isDev }),
-                      {
-                          loader: 'less-loader',
-                          options: {
-                              lessOptions: {
-                                  javascriptEnabled: true,
-                              },
-                          },
-                      },
-                  ],
-        },
-        {
-            test: /\.less$/,
-            exclude: /node_modules/,
-            use: isServer
-                ? 'null-loader'
-                : [
-                      ...getCssLoaders({ useCssModule: true, isDev: isDev }), // 如果本地不需要css modules, 可以合并为同一个less配置项
-                      {
-                          loader: 'less-loader',
-                          options: {
-                              lessOptions: {
-                                  javascriptEnabled: true,
-                              },
-                          },
-                      },
-                  ],
-        },
+        // {
+        //     test: /\.less$/,
+        //     include: /node_modules/,
+        //     use: isServer
+        //         ? 'null-loader'
+        //         : [
+        //               ...getCssLoaders({ useCssModule: false, isDev: isDev }),
+        //               {
+        //                   loader: 'less-loader',
+        //                   options: {
+        //                       lessOptions: {
+        //                           javascriptEnabled: true,
+        //                       },
+        //                   },
+        //               },
+        //           ],
+        // },
+        // {
+        //     test: /\.less$/,
+        //     exclude: /node_modules/,
+        //     use: isServer
+        //         ? 'null-loader'
+        //         : [
+        //               ...getCssLoaders({ useCssModule: true, isDev: isDev }), // 如果本地不需要css modules, 可以合并为同一个less配置项
+        //               {
+        //                   loader: 'less-loader',
+        //                   options: {
+        //                       lessOptions: {
+        //                           javascriptEnabled: true,
+        //                       },
+        //                   },
+        //               },
+        //           ],
+        // },
         {
             test: /\.(png|jpg|jpeg|gif|svg|ttf)$/,
             exclude: /node_modules/,
