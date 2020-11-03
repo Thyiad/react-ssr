@@ -1,3 +1,5 @@
 node_modules
 dist
 logs
+report_zacc_eslint_js.xml
+webpack/env-config.local.js
