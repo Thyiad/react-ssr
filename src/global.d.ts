@@ -20,6 +20,13 @@ declare global {
         [key in DeployEnv]: string;
     };
 
+    namespace NodeJS {
+        interface ProcessEnv {
+            DEPLOY_ENV: DeployEnv;
+            [key: string]: string;
+        }
+    }
+
     interface Window {
         ssrData?: IState;
         DEPLOY_ENV?: DeployEnv;

@@ -16,7 +16,7 @@ export const IndexTemplate = `<!DOCTYPE html>
   <meta name="browsermode" content="application" />
   <meta name="x5-orientation" content="portrait" />
   <meta name="x5-fullscreen" content="true" />
-  <title></title>
+  <title>众安保险</title>
   {{@remScript}}
   {{@ssrData}}
   {{@linkTags}}
