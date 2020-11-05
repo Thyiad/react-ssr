@@ -1,12 +1,10 @@
-import dmSSO from '@dm/sso';
+// import dmSSO from '@dm/sso';
 import { dmBridge, dmCookie, dmEnv, dmTools, dmUrl, MinProgramInterfaceType } from '@dm/utils';
-import { resetAccessKey } from '@model/axios';
-import { checkLogin } from '@model/user';
-import { isLoginFree } from '@utils/common';
-import { BIZ_ORIGIN, SSO_ENV_MAPPING } from '@utils/constant';
+import { resetAccessKey } from '@client/utils/axios';
+import { checkLogin } from '@client/models/User';
+import { BIZ_ORIGIN, SSO_ENV_MAPPING } from '@client/constants/keyword';
 
-import { currentEnv } from './common';
-import { COOKIE_KEY } from './constant';
+import { DEPLOY_ENV, LOGIN_COOKIE_KEY } from '@client/constants/index';
 
 let sso: any = null;
 
@@ -71,7 +69,7 @@ export const getMinProgramsLogin = (
 
 // let timeout: any;
 export const login = async (
-    params?: {
+    params: {
         link?: string;
         closeGotoUrl?: string;
         showClose?: boolean;
@@ -80,9 +78,9 @@ export const login = async (
     },
     callback?: () => void,
 ) => {
-    // isMustLogin 强制走登录逻辑，即使免登录也不行
+    // isMustLogin 强制走登录逻辑
     const isCheckLogin = params && params.isMustLogin === true;
-    if (isCheckLogin !== true && isLoginFree()) {
+    if (isCheckLogin !== true) {
         console.log('------------------免登陆------------------');
         callback && callback();
         return true;
@@ -92,12 +90,13 @@ export const login = async (
         callback && callback();
     };
     if (sso === null) {
-        const DmSSO = dmSSO;
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        const DmSSO = require('@dm/sso').default;
         sso = new DmSSO({
             type: 1, // 0,默认密码登录，默认OTP登录
             mode: 'multi' as any, // 有无tab,multi,single
             color: '#13c8a1', // 更换主色调，默认众安绿色：#13c8a1
-            env: SSO_ENV_MAPPING[currentEnv] as any,
+            env: SSO_ENV_MAPPING[DEPLOY_ENV] as any,
             showClose: !(params && params.showClose === false),
             // closeCallback() {
             //   timeout = setTimeout(() => {
@@ -109,9 +108,9 @@ export const login = async (
             //   }, 1000);
             // },
             loginCallback(_, res) {
-                if (currentEnv === 'dev') {
+                if (DEPLOY_ENV === 'dev') {
                     if (res.value && res.value.accessKey) {
-                        dmCookie.set(COOKIE_KEY, res.value.accessKey, 60 * 30);
+                        dmCookie.set(LOGIN_COOKIE_KEY, res.value.accessKey, 60 * 30);
                     }
                 }
                 // clearTimeout(timeout);
@@ -131,7 +130,7 @@ export const login = async (
                 if (res.status === '1' && res.data.token) {
                     const accesskey = res.data.token || '';
                     dmCookie.set({
-                        key: COOKIE_KEY,
+                        key: LOGIN_COOKIE_KEY,
                         value: accesskey,
                         domain: '.zhongan.com',
                     });

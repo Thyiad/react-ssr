@@ -6,7 +6,8 @@ import { CTX_SSR_DATA } from '@client/constants';
 import { canUseWindow } from '@client/utils';
 
 const initState: IState = {
-    currentUser: undefined,
+    isLogin: false,
+    isSearchLoginStatus: true,
 };
 
 export const getInitState = (ctx?: Context): IState => {

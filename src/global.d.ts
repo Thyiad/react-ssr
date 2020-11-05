@@ -24,6 +24,8 @@ declare global {
         interface ProcessEnv {
             DEPLOY_ENV: DeployEnv;
             [key: string]: string;
+            _za?: any;
+            wx?: any;
         }
     }
 

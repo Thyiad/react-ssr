@@ -16,6 +16,7 @@ router.get('/health', (ctx) => {
 router.post('/404', controller.general.page404);
 router.get('/500', controller.general.page500);
 router.get('/api/getList', controller.api.getList);
+router.get('/api/clearCacheHtml', controller.api.clearCacheHtml);
 router.get('(.*)', controller.general.base);
 
 export default router;

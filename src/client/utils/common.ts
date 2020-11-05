@@ -5,7 +5,7 @@ import {
     UNIQUE_BIZ_KEY,
     BODY_CLASS_NAME,
 } from '@client/constants/keyword';
-import { dmTools, dmUrl, dmCookie, dmStorage, dmEnv } from '@dm/utils';
+import { dmTools, dmUrl, dmCookie, dmStorage, dmEnv, dmBridge } from '@dm/utils';
 import { Context } from 'koa';
 import { ChannelIdEnum } from '@/types/enum';
 import { DEPLOY_ENV } from '@client/constants';
@@ -136,4 +136,76 @@ export const dateFormat = (dateFrom: number | string, format = 'yyyy-MM-dd hh:mm
         }
     });
     return format;
+};
+
+export const getUserAgent = (ctx?: Context): string => {
+    if (ctx) {
+        return (ctx.header['user-agent'] || '').toLowerCase();
+    } else if (dmTools.isClient()) {
+        return window.navigator.userAgent.toLowerCase();
+    } else {
+        return '';
+    }
+};
+
+export const pageBack = () => {
+    const curHref = window.location.href;
+    window.history.back();
+    if (dmEnv.isApp()) {
+        setTimeout(() => {
+            const needCloseWebView = window.location.href === curHref;
+            if (needCloseWebView) {
+                dmBridge.closeWebView();
+            }
+        }, 300);
+    }
+};
+
+export const loadScript = (url) => {
+    if (!url) {
+        return Promise.reject();
+    }
+    const scriptList = document.getElementsByTagName('script');
+    if (scriptList) {
+        const isExist = Array.from(scriptList).find((item) => item.src.indexOf(url) > -1);
+        if (isExist) {
+            return Promise.resolve();
+        }
+    }
+    return new Promise((resolve) => {
+        const el = document.createElement('script') as any;
+        el.src = url;
+        // eslint-disable-next-line func-names
+        el.onload = el.onerror = el.onreadystatechange = function () {
+            const rs = this.readyState;
+            if (!rs || rs === 'complete' || rs === 'loaded') {
+                resolve();
+            }
+        };
+        document.body.appendChild(el);
+    });
+};
+
+export const jump = (_url, isReplace = false) => {
+    if (_url == null || _url == '') {
+        return;
+    }
+
+    const url = _url;
+
+    if ((url.startsWith('/') || url.startsWith('http:') || url.startsWith('https:')) && dmEnv.isApp()) {
+        dmBridge.buildPromiseFunc('resetNavigationBar', {
+            resetArray: ['titleText', 'titleColor', 'rightButton', 'rightMenu'],
+        });
+        dmBridge.buildPromiseFunc('setStatusBarStyle', {
+            statusBgColor: '#000000',
+            statusTextStyle: 'light',
+        });
+    }
+
+    if (isReplace) {
+        window.location.replace(url);
+    } else {
+        window.location.href = url;
+    }
 };

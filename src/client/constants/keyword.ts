@@ -77,3 +77,23 @@ export const BODY_CLASS_NAME = {
     ios: 'ios',
     android: 'android',
 };
+
+/** 保存query到cookie里 */
+export const SAVE_COOKIE_KEY = ['bizOrigin', 'abt', 'targetSource', 'promotionCode', 'bizContent', 'linkBiz'];
+
+/** 是否清除ABTEST的常量 */
+export const CLEAR_ABTEST = 'init_abtest';
+
+/** 当前的ABTEST的cookie */
+export const CURRENT_ABTEST_VALUE = 'currentABTestValue';
+
+/** sso 登陆环境map */
+export const SSO_ENV_MAPPING = {
+    dev: 'test',
+    test: 'test',
+    pre: 'pre',
+    prd: 'prd',
+};
+
+/** 退出导航hash */
+export const QUIT_GUIDE_HASH = 'quitGuide';

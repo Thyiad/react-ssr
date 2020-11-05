@@ -1,6 +1,6 @@
 import { Context } from 'koa';
 import { StaticRouter } from 'react-router-dom';
-import { AppRoutes } from '@client/components/AppContainer';
+import { AppProvider } from '@client/components/AppContainer';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { IndexTemplate, RemScript } from '@server/utils/template';
@@ -12,7 +12,19 @@ import { BASE_NAME, CTX_SSR_DATA } from '@client/constants';
 const statsFile = `${config.baseDir}/dist/client/loadable-stats.json`;
 let extractor;
 
+let cacheHtmlDic: { [key: string]: string } = {};
+
+export const clearCacheHtml = () => {
+    const len = Object.keys(cacheHtmlDic).length;
+    cacheHtmlDic = {};
+    return len;
+};
+
 export const renderHtml = async (ctx: Context, router: RouteProps): Promise<string> => {
+    if (cacheHtmlDic[ctx.URL.pathname]) {
+        return cacheHtmlDic[ctx.URL.pathname];
+    }
+
     if (config.isDev) {
         extractor = new ChunkExtractor({ statsFile });
     }
@@ -32,7 +44,7 @@ export const renderHtml = async (ctx: Context, router: RouteProps): Promise<stri
     const jsx = router.isSSR
         ? extractor.collectChunks(
               <StaticRouter location={ctx.url} basename={BASE_NAME} context={{}}>
-                  <AppRoutes context={ctx} />
+                  <AppProvider context={ctx} />
               </StaticRouter>,
           )
         : extractor.collectChunks(<StaticRouter location={ctx.url} context={{}} />);
