@@ -11,7 +11,19 @@ import config from '@server/config';
 const statsFile = `${process.cwd()}/dist/client/loadable-stats.json`;
 let extractor;
 
+let cacheHtmlDic: { [key: string]: string } = {};
+
+export const clearCacheHtml = () => {
+    const len = Object.keys(cacheHtmlDic).length;
+    cacheHtmlDic = {};
+    return len;
+};
+
 export const renderHtml = async (ctx: Context, router: RouteProps): Promise<string> => {
+    if (cacheHtmlDic[ctx.URL.pathname]) {
+        return cacheHtmlDic[ctx.URL.pathname];
+    }
+
     if (config.isDev) {
         extractor = new ChunkExtractor({ statsFile });
     }
@@ -46,6 +58,7 @@ export const renderHtml = async (ctx: Context, router: RouteProps): Promise<stri
         styleTags,
     };
     const templateStr = artTemplate.render(IndexTemplate, renderData);
+    cacheHtmlDic[ctx.URL.pathname] = templateStr;
     return templateStr;
 };
 

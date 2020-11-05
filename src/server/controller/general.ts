@@ -2,18 +2,21 @@ import { Context, Next } from 'koa';
 import { getMatchRoute } from '@client/utils/index';
 import routes from '@client/route';
 import { render } from '../utils/render';
+import logger from '@server/utils/logger';
 
 export const base = async (ctx: Context, next: Next): Promise<void> => {
     try {
         const currentRoute = getMatchRoute(ctx.path, routes);
         if (currentRoute) {
             await render(ctx, currentRoute);
+        } else {
+            ctx.redirect('/404');
         }
-        await next();
+        next();
     } catch (error) {
-        console.log(error);
-        ctx.type = 'html';
-        ctx.body = error;
+        logger.error(error);
+        console.error(error);
+        ctx.redirect('/500');
     }
 };
 

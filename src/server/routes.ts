@@ -8,13 +8,10 @@ router.get('/favicon.ico', (ctx) => {
     ctx.res.end('');
 });
 
-// @ts-ignore
-router.get('/api/getList', controller.api.getList);
-// @ts-ignore
 router.get('/404', controller.general.page404);
-// @ts-ignore
 router.get('/500', controller.general.page500);
-// @ts-ignore
+router.get('/api/getList', controller.api.getList);
+router.get('/api/clearCacheHtml', controller.api.clearCacheHtml);
 router.get('(.*)', controller.general.base);
 
 export default router;

@@ -12,6 +12,7 @@ const Login = loadable(() => import(/* webpackChunkName: "login" */ './pages/log
 const Table = loadable(() => import(/* webpackChunkName: "table" */ './pages/table/index'));
 const NotFound = loadable(() => import(/* webpackChunkName: "404" */ './pages/404/index'));
 const NoPermission = loadable(() => import(/* webpackChunkName: "403" */ './pages/403/index'));
+const PageError = loadable(() => import(/* webpackChunkName: "500" */ './pages/500/index'));
 const EmptyPage = loadable(() => import(/* webpackChunkName: "test" */ './pages/empty/index'));
 
 /**
@@ -30,6 +31,12 @@ const sysPages: RouteProps[] = [
         path: '/404',
         name: '404',
         component: NotFound,
+    },
+    {
+        title: '500',
+        path: '/500',
+        name: '500',
+        component: PageError,
     },
 ];
 
