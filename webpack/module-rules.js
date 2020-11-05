@@ -76,6 +76,7 @@ module.exports = (isServer, isDev) => {
         },
         {
             test: /\.scss$/,
+            exclude: /node_modules/,
             use: isServer
                 ? 'null-loader'
                 : [
