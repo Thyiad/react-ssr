@@ -1,0 +1,25 @@
+.page-500 {
+    height: 100vh;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .box {
+        width: 190px;
+        margin: 0 auto;
+    }
+    img {
+        width: 100%;
+        display: block;
+    }
+    .text {
+        margin-top: 20px;
+        height: 20px;
+        font-size: 14px;
+        font-family: PingFangSC-Regular;
+        font-weight: 400;
+        color: rgba(70, 70, 70, 1);
+        line-height: 20px;
+        text-align: center;
+    }
+}

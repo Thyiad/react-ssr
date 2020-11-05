@@ -13,7 +13,7 @@ router.get('/health', (ctx) => {
     ctx.res.end('ok');
 });
 
-router.post('/404', controller.general.page404);
+router.get('/404', controller.general.page404);
 router.get('/500', controller.general.page500);
 router.get('/api/getList', controller.api.getList);
 router.get('/api/clearCacheHtml', controller.api.clearCacheHtml);
