@@ -12,6 +12,7 @@ const statsFile = `${process.cwd()}/dist/client/loadable-stats.json`;
 let extractor;
 
 let cacheHtmlDic: { [key: string]: string } = {};
+const maxCacheCount = 500;
 
 export const clearCacheHtml = () => {
     const len = Object.keys(cacheHtmlDic).length;
@@ -59,6 +60,10 @@ export const renderHtml = async (ctx: Context, router: RouteProps): Promise<stri
     };
     const templateStr = artTemplate.render(IndexTemplate, renderData);
     cacheHtmlDic[ctx.URL.pathname] = templateStr;
+    const cacheKeys = Object.keys(cacheHtmlDic);
+    if (cacheKeys.length > maxCacheCount) {
+        delete cacheHtmlDic[cacheKeys[0]];
+    }
     return templateStr;
 };
 
