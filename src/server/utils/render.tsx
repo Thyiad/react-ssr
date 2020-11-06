@@ -3,7 +3,7 @@ import { StaticRouter } from 'react-router-dom';
 import { AppProvider } from '@client/components/AppContainer';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import { IndexTemplate, RemScript } from '@server/utils/template';
+import { IndexTemplate, RemScript, VconsoleScript } from '@server/utils/template';
 import artTemplate from 'art-template';
 import { ChunkExtractor } from '@loadable/server';
 import config from '@server/config';
@@ -51,7 +51,9 @@ export const renderHtml = async (ctx: Context, router: RouteProps): Promise<stri
         : extractor.collectChunks(<StaticRouter location={ctx.url} context={{}} />);
 
     const html = renderToString(jsx);
-    const scriptTags = extractor.getScriptTags(); // or extractor.getScriptElements();
+    const scriptTags =
+        extractor.getScriptTags() + // or extractor.getScriptElements();
+        (config.deployEnv === 'prd' ? '' : VconsoleScript);
     const linkTags = extractor.getLinkTags(); // or extractor.getLinkElements();
     const styleTags = extractor.getStyleTags(); // or extractor.getStyleElements();
     const renderData = {
