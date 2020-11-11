@@ -26,19 +26,19 @@ const getCssLoaders = (options) => {
         {
             loader: 'postcss-loader',
             options: {
-                ident: 'postcss',
-                plugins: (loader) => {
+                postcssOptions: (loaderContext) => {
                     const targetPlugins = [
-                        postcssImport({ root: loader.resourcePath }),
+                        postcssImport({ root: loaderContext.resourcePath }),
                         // pix2rem({ propList: ['*'], rootValue: 100 }),
                         postcssPresetEnv(),
                     ];
-
                     if (!options.isDev) {
                         targetPlugins.push(cssnano());
                     }
 
-                    return targetPlugins;
+                    return {
+                        plugins: targetPlugins,
+                    };
                 },
             },
         },
