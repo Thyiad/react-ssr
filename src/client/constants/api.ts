@@ -1,7 +1,7 @@
 console.log(`node_env: ${process.env.NODE_ENV}, app_env: ${process.env.APP_ENV}`);
 export const HOST =
     process.env.NODE_ENV === 'development'
-        ? 'https://easymock.thyiad.top/mock/5e15c46171d5710015e178e5/boilerplate' // 测试地址
+        ? 'https://easymock.thyiad.top/mock/5fabb662f398e40020f988dd/boilerplate' // 测试地址
         : ''; // 线上地址
 
 export const CommonOK = `${HOST}/commonOK`;
