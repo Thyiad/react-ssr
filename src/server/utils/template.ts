@@ -26,6 +26,7 @@ export const IndexTemplate = `<!DOCTYPE html>
 <body>
   <div id="root">{{@html}}</div>
   {{@scriptTags}}
+  <script async src="//static.zhongan.com/website/public/js/ilog/dist/ilog.min.js"></script>
 </body>
 </html>`;
 
