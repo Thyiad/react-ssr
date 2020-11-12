@@ -29,7 +29,7 @@ const getCssLoaders = (options) => {
                 postcssOptions: (loaderContext) => {
                     const targetPlugins = [
                         postcssImport({ root: loaderContext.resourcePath }),
-                        pix2rem({ propList: ['*'], rootValue: 100 }),
+                        pix2rem({ propList: ['*'], rootValue: 100, exclude: /node_modules/i }),
                         postcssPresetEnv(),
                     ];
                     if (!options.isDev) {
