@@ -21,6 +21,7 @@
         "@thyiad/util": "^1.1.19",
         "antd": "^4.8.2",
         "art-template": "^4.13.2",
+        "bizcharts": "^4.0.15",
         "koa": "^2.13.0",
         "koa-art-template": "^1.1.1",
         "koa-bodyparser": "^4.3.0",
