@@ -6,6 +6,8 @@ import { LOGIN_COOKIE_KEY } from '@client/constants';
 import { UploadFile, UploadChangeParam, RcFile } from 'antd/lib/upload/interface';
 import { thyUI, UITypes, thyCookie } from '@thyiad/util';
 import { Response } from './upload.d';
+import lrz from 'lrz';
+import { dataURLtoFile } from './tool';
 
 const { toast } = thyUI;
 
@@ -20,9 +22,20 @@ interface IProps {
     fileSize?: number;
     uploadText?: string;
     btnProps?: { [key: string]: any };
+    selectSuc?: (file: RcFile) => void;
     uploadSuc?: (resData: any) => void;
     uploadErr?: () => void;
     showLoading?: boolean;
+    /** 是否前端压缩
+     * 默认启用压缩
+     * 默认大于100kb才压缩
+     * 默认以下格式：['.jpg', '.jpeg', '.png', '.gif', '.bmp']
+     * */
+    compressOption?: {
+        isCompress: boolean;
+        minSize: number;
+        extList: string[];
+    };
 }
 
 const UploadBtn: React.FC<IProps> = (props: PropsWithChildren<IProps>) => {
@@ -51,7 +64,7 @@ const UploadBtn: React.FC<IProps> = (props: PropsWithChildren<IProps>) => {
         }
     };
 
-    const beforeUpload = (file: RcFile) => {
+    const beforeUpload = (file: RcFile): boolean | Promise<File> => {
         const { extList, fileSize } = props;
         if (Array.isArray(extList) && extList.length > 0) {
             const extValid = extList.some((ext) => file.name.endsWith(ext));
@@ -68,8 +81,28 @@ const UploadBtn: React.FC<IProps> = (props: PropsWithChildren<IProps>) => {
             }
         }
 
-        // todo：支持前端压缩图片，压缩之后再上传
+        if (
+            props.compressOption &&
+            props.compressOption.isCompress &&
+            file.size > props.compressOption.minSize &&
+            props.compressOption.extList.some((ext) => file.name.endsWith(ext))
+        ) {
+            return new Promise((resolve, reject) => {
+                lrz(file)
+                    .then((rst: any) => {
+                        const newFile = dataURLtoFile(rst.base64, rst.origin.name);
+                        // @ts-ignore
+                        newFile.uid = file.uid;
+                        resolve(newFile);
+                    })
+                    .catch(() => {
+                        toast('图片上传发生错误：前端压缩图片失败');
+                        reject(new Error('图片上传发生错误：前端压缩图片失败'));
+                    });
+            });
+        }
 
+        props.selectSuc && props.selectSuc(file);
         return true;
     };
 
@@ -81,6 +114,7 @@ const UploadBtn: React.FC<IProps> = (props: PropsWithChildren<IProps>) => {
             headers={headers}
             onChange={onChange}
             fileList={fileList}
+            // @ts-ignore
             beforeUpload={beforeUpload}
             showUploadList={false}
             data={uploadParams}
@@ -99,6 +133,11 @@ UploadBtn.defaultProps = {
     uploadText: '上传',
     btnProps: {},
     showLoading: false,
+    compressOption: {
+        isCompress: true,
+        minSize: 102400,
+        extList: ['.jpg', '.jpeg', '.png', '.gif', '.bmp'],
+    },
 };
 
 export default UploadBtn;

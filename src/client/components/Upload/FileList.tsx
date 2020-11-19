@@ -7,6 +7,8 @@ import { UploadFile, UploadChangeParam, RcFile } from 'antd/lib/upload/interface
 import { thyUI, thyCookie, UITypes, thyStr } from '@thyiad/util';
 const { toast } = thyUI;
 import { Response } from './upload.d';
+import lrz from 'lrz';
+import { dataURLtoFile } from './tool';
 
 interface IProps {
     uploadUrl?: string;
@@ -21,6 +23,16 @@ interface IProps {
     fileListChange?: (fileUrlList: string[]) => void;
     uploadErr?: () => void;
     showLoading?: boolean;
+    /** 是否前端压缩
+     * 默认启用压缩
+     * 默认大于100kb才压缩
+     * 默认以下格式：['.jpg', '.jpeg', '.png', '.gif', '.bmp']
+     * */
+    compressOption?: {
+        isCompress: boolean;
+        minSize: number;
+        extList: string[];
+    };
 
     hideUpload?: boolean;
     maxCount?: number;
@@ -100,7 +112,26 @@ const FileList: React.FC<IProps> = (props: IProps) => {
             }
         }
 
-        // todo：支持前端压缩图片，压缩之后再上传
+        if (
+            props.compressOption &&
+            props.compressOption.isCompress &&
+            file.size > props.compressOption.minSize &&
+            props.compressOption.extList.some((ext) => file.name.endsWith(ext))
+        ) {
+            return new Promise((resolve, reject) => {
+                lrz(file)
+                    .then((rst: any) => {
+                        const newFile = dataURLtoFile(rst.base64, rst.origin.name);
+                        // @ts-ignore
+                        newFile.uid = file.uid;
+                        resolve(newFile);
+                    })
+                    .catch(() => {
+                        toast('图片上传发生错误：前端压缩图片失败');
+                        reject(new Error('图片上传发生错误：前端压缩图片失败'));
+                    });
+            });
+        }
 
         return true;
     };
@@ -111,6 +142,7 @@ const FileList: React.FC<IProps> = (props: IProps) => {
             headers={headers}
             onChange={onChange}
             fileList={fileList}
+            // @ts-ignore
             beforeUpload={beforeUpload}
             showUploadList
             data={uploadParams}
@@ -133,6 +165,11 @@ FileList.defaultProps = {
     uploadText: '上传',
     btnProps: {},
     showLoading: false,
+    compressOption: {
+        isCompress: true,
+        minSize: 102400,
+        extList: ['.jpg', '.jpeg', '.png', '.gif', '.bmp'],
+    },
     hideUpload: false,
     maxCount: 5,
     initFileUrlList: [],

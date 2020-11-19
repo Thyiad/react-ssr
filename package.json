@@ -27,6 +27,7 @@
         "koa-bodyparser": "^4.3.0",
         "koa-static": "^5.0.0",
         "log4js": "^6.3.0",
+        "lrz": "^4.9.41",
         "moment": "^2.29.1",
         "react": "^17.0.1",
         "react-dom": "^17.0.1",
