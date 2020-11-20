@@ -52,10 +52,10 @@ const UploadBtn: React.FC<IProps> = (props: PropsWithChildren<IProps>) => {
         setFileList([...params.fileList]);
         setUploading(params.file.status === 'uploading');
         if (params.file.status === 'done' && params.file.response && params.file.response.code === 2000) {
-            const isUploadOSS = uploadUrl === api.UPLOAD_OSS;
             const resData = params.file.response.data;
             if (uploadSuc) {
-                uploadSuc(isUploadOSS ? resData[0] : resData);
+                // 暂只考虑单个文件上传
+                uploadSuc(Array.isArray(resData) ? resData[0] : resData);
             }
         } else if (params.file.status === 'error') {
             if (uploadErr) {

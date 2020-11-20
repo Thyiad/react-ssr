@@ -76,9 +76,9 @@ const FileList: React.FC<IProps> = (props: IProps) => {
         const newFileList = params.fileList
             .map((file) => {
                 if (file.response && file.response.code === 2000) {
-                    const isUploadOSS = uploadUrl === api.UPLOAD_OSS;
                     const resData = file.response.data;
-                    const serverUrl = isUploadOSS ? resData[0] : resData;
+                    // 暂只考虑单个文件上传
+                    const serverUrl = Array.isArray(resData) ? resData[0] : resData;
                     file.url = serverUrl;
                 }
                 return file;
