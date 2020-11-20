@@ -2,7 +2,6 @@ import React, { useState, useMemo, useCallback } from 'react';
 import { Button, Upload, message } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { UploadFile, UploadChangeParam, RcFile } from 'antd/lib/upload/interface';
-// @ts-ignore
 import lrz from 'lrz';
 import { dataURLtoFile, getFileName } from './tool';
 import { Response } from './upload.d';
