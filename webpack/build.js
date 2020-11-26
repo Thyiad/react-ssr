@@ -28,7 +28,7 @@ clientCompile.run((err) => {
         console.log(chalk.red(err));
     }
     const clientEndTime = Date.now();
-    console.log(`前端耗时：${clientEndTime - clientStartTime}ms`);
+    console.log(chalk.blue(`前端编译打包耗时：${clientEndTime - clientStartTime}ms`));
 });
 if (envConfig.sysType === 'spa') {
     return;
@@ -40,8 +40,11 @@ serverCompile.hooks.done.tap('server_compile_done', (compilation, callback) => {
     console.log(chalk.blue(`server_compile_done`));
     callback && callback();
 });
+const serverStartTime = Date.now();
 serverCompile.run((err) => {
     if (err) {
         console.log(chalk.red(err));
     }
+    const serverEndTime = Date.now();
+    console.log(chalk.blue(`后端编译打包耗时：${serverEndTime - serverStartTime}ms`));
 });
