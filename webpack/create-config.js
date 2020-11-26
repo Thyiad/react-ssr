@@ -14,8 +14,14 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 
 /**
  *
- * @param {*} type client | server
- * @param {*} isDev
+ * @param {string} type client | server
+ * @param {boolean} isDev
+ * @param {object} envConfig
+ * @param {string} envConfig.host
+ * @param {string} envConfig.clientPort
+ * @param {string} envConfig.serverPort
+ * @param {string} envConfig.sysType
+ * @param {boolean} envConfig.isDll
  */
 module.exports = (type, isDev, envConfig) => {
     const isServer = type === 'server';
@@ -32,6 +38,14 @@ module.exports = (type, isDev, envConfig) => {
         }),
         new CleanWebpackPlugin(),
     ];
+    if (envConfig.isDll) {
+        plugins.unshift(
+            new webpack.DllReferencePlugin({
+                context: cwd,
+                manifest: require(path.join(cwd, 'dist_base/vendor-manifest.json')),
+            }),
+        );
+    }
     if (envConfig.sysType === 'ssr') {
         plugins.push(new LoadablePlugin());
     } else if (envConfig.sysType === 'spa') {
@@ -44,7 +58,7 @@ module.exports = (type, isDev, envConfig) => {
     }
     if (isDev) {
         plugins.push(new webpack.HotModuleReplacementPlugin());
-        plugins.push(new webpack.NamedModulesPlugin());
+        // plugins.push(new webpack.NamedModulesPlugin());
         plugins.push(
             new WebpackBar({
                 color: !isServer ? '#f56be2' : '#c065f4',
@@ -52,13 +66,13 @@ module.exports = (type, isDev, envConfig) => {
             }),
         );
     } else {
-        plugins.push(new CaseSensitivePathPlugin()), // 大小写检测很费时，暂时只在build中使用
-            plugins.push(
-                new MiniCssExtractPlugin({
-                    filename: 'css/[name].[contenthash].css',
-                    chunkFilename: 'chunks/[id].[contenthash].css',
-                }),
-            );
+        // plugins.push(new CaseSensitivePathPlugin()), // 大小写检测很费时，暂时只在build中使用
+        plugins.push(
+            new MiniCssExtractPlugin({
+                filename: 'css/[name].[contenthash].css',
+                chunkFilename: 'chunks/[id].[contenthash].css',
+            }),
+        );
     }
     // 打包尺寸分析：http://127.0.0.1:8888
     // plugins.push(new BundleAnalyzerPlugin());
@@ -158,6 +172,7 @@ module.exports = (type, isDev, envConfig) => {
         optimization: isServer
             ? undefined
             : {
+                  // namedModules: true,
                   splitChunks: {
                       cacheGroups: {
                           libs: {

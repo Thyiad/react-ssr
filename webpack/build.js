@@ -22,10 +22,13 @@ clientCompile.hooks.done.tapAsync('client_compile_done', (compilation, callback)
     console.log(chalk.blue(`client_compile_done`));
     callback && callback();
 });
+const clientStartTime = Date.now();
 clientCompile.run((err) => {
     if (err) {
         console.log(chalk.red(err));
     }
+    const clientEndTime = Date.now();
+    console.log(`前端耗时：${clientEndTime - clientStartTime}ms`);
 });
 if (envConfig.sysType === 'spa') {
     return;
