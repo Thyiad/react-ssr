@@ -1,7 +1,7 @@
-import { UserModel } from '@/models/User';
+import { UserItem } from '@/types/user';
 
 export interface IState {
-    currentUser?: UserModel;
+    currentUser?: UserItem;
 }
 
 export interface IAction<T = any> {
