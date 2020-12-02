@@ -1,6 +1,6 @@
-import React, { FC } from 'react';
-import { BrowserRouter, StaticRouter, Switch } from 'react-router-dom';
-import { Provider } from '@/redux/store';
+import React, { FC, useEffect } from 'react';
+import { BrowserRouter, StaticRouter, Switch, useHistory } from 'react-router-dom';
+import { Provider, StoreProviderProps } from '@/redux/store';
 import routes from '@/route';
 import RouteWithSubRoutes from '@/components/RouteWithSubRoutes';
 import '@/assets/scss/common.scss';
@@ -9,22 +9,35 @@ import { initThyiadUtil } from '@/utils/index';
 
 initThyiadUtil();
 
-export const AppRoutes: FC = () => {
+export const AppBody: FC = () => {
+    const history = useHistory();
+    useEffect(() => {
+        history.listen((e) => {
+            // 此处做路由监听
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
     return (
-        <Provider>
-            <Switch>
-                {routes.map((route) => (
-                    <RouteWithSubRoutes key={route.name} {...route} />
-                ))}
-            </Switch>
+        <Switch>
+            {routes.map((route) => (
+                <RouteWithSubRoutes key={route.name} {...route} />
+            ))}
+        </Switch>
+    );
+};
+
+export const AppProvider: FC<StoreProviderProps> = (props: StoreProviderProps) => {
+    return (
+        <Provider context={props.context}>
+            <AppBody />
         </Provider>
     );
 };
 
-export const AppContainer: FC = () => {
+export const AppBrowser: FC = () => {
     return (
         <BrowserRouter>
-            <AppRoutes />
+            <AppProvider />
         </BrowserRouter>
     );
 };

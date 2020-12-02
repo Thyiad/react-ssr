@@ -1,4 +1,4 @@
-import { initImplements, thyCookie } from '@thyiad/util';
+import { initImplements, thyCookie, thyEnv } from '@thyiad/util';
 import { msgLoading, toast, alert, confirm } from './ui';
 import { LOGIN_COOKIE_KEY, REQUEST_HEADER_TOKEN_NAME } from '@client/constants/index';
 import { LOGIN_PATHNAME } from '@client/constants/url';
@@ -31,17 +31,13 @@ export const initThyiadUtil = () => {
     });
 };
 
-export const canUseWindow = () => {
-    return typeof window !== 'undefined';
-};
-
 /**
  * 通过pathname检索对应路由
  * @param pathname
  */
 export const getMatchRoute = (pathname?: string, routes?: RouteProps[]) => {
     if (!pathname) {
-        pathname = canUseWindow() ? window.location.pathname : '';
+        pathname = thyEnv.canUseWindow() ? window.location.pathname : '';
     }
     routes = routes || rootRoutes;
     const findedRoute = routes?.find((route) => matchPath(pathname, route));

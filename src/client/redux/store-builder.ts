@@ -1,20 +1,21 @@
 import { Dispatch } from 'react';
 import reducers from './reducers/index';
 import { IState, IAction, IReducers } from './data';
+import { Context } from 'koa';
+import { CTX_SSR_DATA } from '@client/constants';
+import { thyEnv } from '@thyiad/util';
 
 const initState: IState = {
     currentUser: undefined,
 };
 
-export const getInitState = (): IState => {
-    let ssrData: IState = null;
-    const isBrowser = new Function('try {return this===window;}catch(e){ return false;}');
-    if (isBrowser()) {
-        ssrData = window.ssrData;
-    }
+export const getInitState = (ctx?: Context): IState => {
+    const ctxSsrData: IState = ctx ? ctx[CTX_SSR_DATA] : null;
+    const winSsrData: IState = thyEnv.canUseWindow() ? window.ssrData : null;
     return {
         ...initState,
-        ...ssrData,
+        ...ctxSsrData,
+        ...winSsrData,
     };
 };
 

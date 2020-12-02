@@ -14,3 +14,5 @@ export const REQUEST_HEADER_TOKEN_NAME = 'accessKey';
  * 已登录角色的cookie名
  */
 export const LOGIN_ROLE_KEY = 'loginRoleKey';
+
+export const CTX_SSR_DATA = 'clientSsrData';

@@ -4,8 +4,8 @@ import { Layout, Menu } from 'antd';
 import { useRedux } from '@/hooks/useRedux';
 import PageLoading from '@/components/PageLoading';
 import RouteWithSubRoutes from '@/components/RouteWithSubRoutes';
-import { thyCookie } from '@thyiad/util';
-import { getMatchRoute, canUseWindow } from '@/utils/index';
+import { thyCookie, thyEnv } from '@thyiad/util';
+import { getMatchRoute } from '@/utils/index';
 import { LOGIN_COOKIE_KEY } from '@client/constants/index';
 import { LOGIN_PATHNAME } from '@client/constants/url';
 import systemInfo from '@client/constants/systemInfo';
@@ -37,7 +37,7 @@ const TopMenuLayout: FC<RoutePageProps> = (props) => {
     }, [actions.user]);
 
     const initActiveMenu: string = useMemo(() => {
-        if (!canUseWindow()) {
+        if (!thyEnv.canUseWindow()) {
             return '';
         }
         const findedRoute = getMatchRoute();

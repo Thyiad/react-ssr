@@ -1,12 +1,12 @@
 import React, { FC } from 'react';
 import { render, hydrate } from 'react-dom';
-import { AppContainer } from '@/components/AppContainer';
+import { AppBrowser } from '@/components/AppContainer';
 import { loadableReady } from '@loadable/component';
 
 if (process.env.SYS_TYPE === 'ssr') {
     loadableReady(() => {
-        hydrate(<AppContainer />, document.getElementById('root'));
+        hydrate(<AppBrowser />, document.getElementById('root'));
     });
 } else {
-    render(<AppContainer />, document.getElementById('root'));
+    render(<AppBrowser />, document.getElementById('root'));
 }
