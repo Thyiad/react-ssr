@@ -131,6 +131,7 @@ module.exports = (type, isDev, envConfig) => {
                           /\.(mp4|mp3|ogg|swf|webp)$/,
                           /\.(css|scss|sass|sss|less)$/,
                           /antd\/.*?\/style.*?/,
+                          /\@thyiad\/antd-ui/,
                       ].filter((x) => x),
                   }),
               ]

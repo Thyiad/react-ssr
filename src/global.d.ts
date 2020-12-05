@@ -81,8 +81,4 @@ declare global {
     }
 }
 
-declare module 'koa' {
-    interface Context {
-        render(page: string, options?: any): void;
-    }
-}
+declare module 'koa' {}

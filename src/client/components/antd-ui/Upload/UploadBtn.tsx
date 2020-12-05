@@ -4,7 +4,7 @@ import { UploadOutlined } from '@ant-design/icons';
 import { UploadFile, UploadChangeParam, RcFile } from 'antd/lib/upload/interface';
 import lrz from 'lrz';
 import { dataURLtoFile } from './tool';
-import { Response } from './upload.d';
+import { Response } from './upload';
 
 interface IProps {
     uploadUrl: string;

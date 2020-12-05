@@ -13,7 +13,8 @@ const Table = loadable(() => import(/* webpackChunkName: "table" */ './pages/tab
 const NotFound = loadable(() => import(/* webpackChunkName: "404" */ './pages/404/index'));
 const NoPermission = loadable(() => import(/* webpackChunkName: "403" */ './pages/403/index'));
 const PageError = loadable(() => import(/* webpackChunkName: "500" */ './pages/500/index'));
-const EmptyPage = loadable(() => import(/* webpackChunkName: "test" */ './pages/empty/index'));
+const EmptyPage = loadable(() => import(/* webpackChunkName: "empty" */ './pages/empty/index'));
+const DemoPage = loadable(() => import(/* webpackChunkName: "demo" */ './pages/demo/index'));
 
 /**
  * 系统路由：403、404等等
@@ -131,6 +132,14 @@ const routes: RouteProps[] = [
                         icon: <TableOutlined />,
                     },
                 ],
+            },
+            {
+                title: 'demo',
+                name: 'demo',
+                path: '/demo',
+                exact: true,
+                component: DemoPage,
+                icon: <TableOutlined />,
             },
             {
                 title: '',

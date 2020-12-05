@@ -1,3 +1,8 @@
+const path = require('path');
+const s = path.join('node_modules', '@thyiad', 'antd-ui');
+console.log(s.replace(/\\/g, '\\\\').replace(/\@/g, '\\@'));
+return;
+
 const { pathToRegexp, match, parse, compile } = require('path-to-regexp');
 
 const keys = [];

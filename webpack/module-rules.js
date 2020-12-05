@@ -52,8 +52,16 @@ module.exports = (isServer, isDev) => {
 
     return [
         {
+            test: /\.(ts|tsx)$/,
+            include: /node_modules(\/|\\)(\@thyiad(\/|\\)antd-ui).*/,
+            use: {
+                loader: 'ts-loader',
+                options: { allowTsInNodeModules: true },
+            },
+        },
+        {
             test: /\.(js|jsx|ts|tsx)$/,
-            exclude: /mode_modules/,
+            exclude: /node_modules/,
             use: [
                 // {
                 //     loader: 'cache-loader',

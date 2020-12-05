@@ -4,7 +4,7 @@
         "module": "ESNext",
         "jsx": "react",
         "sourceMap": true,
-        "noEmit": true,
+        "noEmit": false,
         "isolatedModules": true,
         "strict": false,
         "noImplicitAny": false,
@@ -25,6 +25,6 @@
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true
     },
-    "include": ["src"],
+    "include": ["src", "node_modules/@thyiad/antd-ui"],
     "exclude": ["webpack", "node_modules/**"]
 }
