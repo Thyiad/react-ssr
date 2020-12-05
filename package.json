@@ -19,7 +19,7 @@
         "@koa/router": "^10.0.0",
         "@loadable/component": "^5.14.1",
         "@loadable/server": "^5.14.0",
-        "@thyiad/antd-ui": "0.0.2",
+        "@thyiad/antd-ui": "0.0.3",
         "@thyiad/util": "^1.1.19",
         "antd": "^4.8.5",
         "art-template": "^4.13.2",
