@@ -5,7 +5,7 @@ import { G2 } from 'bizcharts';
  * @param chart 需要获取 DataURL 的 chart 实例
  * @returns 返回图表的 dataURL
  */
-export function toDataURL(chart: G2.Chart): string {
+export const toDataURL = (chart: G2.Chart): string => {
     if (!chart) {
         return '';
     }
@@ -29,14 +29,14 @@ export function toDataURL(chart: G2.Chart): string {
         dataURL = canvasDom.toDataURL('image/png');
     }
     return dataURL;
-}
+};
 
 /**
  * 图表图片导出
  * @param chart chart 实例
  * @param name 图片名称，可选，默认名为 'G2Chart'
  */
-export function downloadImage(chart: G2.Chart, name = 'G2Chart'): void {
+export const downloadImage = (chart: G2.Chart, name = 'G2Chart'): void => {
     if (!chart) {
         return;
     }
@@ -77,4 +77,4 @@ export function downloadImage(chart: G2.Chart, name = 'G2Chart'): void {
         e.initEvent('click', false, false);
         link.dispatchEvent(e);
     }, 16);
-}
+};

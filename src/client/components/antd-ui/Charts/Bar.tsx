@@ -18,7 +18,7 @@ interface BarProps {
 }
 
 const Bar: FC<BarProps> = (props: BarProps) => {
-    const { scale, width, height, autoFit, padding, data, color, barWidth, toolTipItemTpl, onGetG2Instance } = props;
+    const { scale, width, height, padding, autoFit, data, color, barWidth, toolTipItemTpl, onGetG2Instance } = props;
     const chartRef = useRef<G2.Chart>();
 
     const itemTpl =
@@ -29,13 +29,13 @@ const Bar: FC<BarProps> = (props: BarProps) => {
 
     return (
         <Chart
-            scale={scale}
             width={width}
             height={height}
+            padding={padding}
             autoFit={autoFit}
             data={data}
-            interactions={['active-region']}
-            padding={padding}
+            scale={scale}
+            interactions={['element-active']}
             onGetG2Instance={(chartIns: G2.Chart) => {
                 chartRef.current = chartIns;
                 onGetG2Instance && onGetG2Instance(chartIns);

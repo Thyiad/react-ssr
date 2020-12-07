@@ -17,7 +17,7 @@ interface LineProps {
 }
 
 const LineChart: FC<LineProps> = (props: LineProps) => {
-    const { width, height, padding, data, color, scale, onGetG2Instance, toolTipItemTpl } = props;
+    const { width, height, padding, autoFit, data, color, scale, onGetG2Instance, toolTipItemTpl } = props;
     const chartRef = useRef<G2.Chart>();
 
     const itemTpl =
@@ -28,12 +28,13 @@ const LineChart: FC<LineProps> = (props: LineProps) => {
 
     return (
         <Chart
-            au
-            padding={padding}
             width={width}
             height={height}
+            padding={padding}
+            autoFit={autoFit}
             data={data}
             scale={scale}
+            interactions={['element-active']}
             onGetG2Instance={(chartIns: G2.Chart) => {
                 chartRef.current = chartIns;
                 onGetG2Instance && onGetG2Instance(chartIns);
