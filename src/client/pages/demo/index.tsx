@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Divider } from 'antd';
-import { UploadBtn, Bar } from '@/components/antd-ui/index';
+import { UploadBtn, Bar, Line } from '@/components/antd-ui/index';
 import * as api from '@client/constants/api';
 import { thyUI, UITypes } from '@thyiad/util/lib/index';
 
@@ -30,13 +30,20 @@ const DemoPage: FC<RoutePageProps> = (props) => {
             ></UploadBtn>
             <Divider />
             <Bar
-                scale={{ y: { max: 100 } }}
+                scale={{ y: { min: 0, max: 100 } }}
                 width={barData.length * 100 + 80}
                 height={300}
                 barWidth={50}
-                toolTipFun={(x: string, y: string) => ({ name: '得分', value: `${y}%` })}
                 data={barData}
                 color="#43b6af"
+                toolTipItemTpl="通过率: {value}%"
+            />
+            <Line
+                width={barData.length * 100 + 80}
+                height={300}
+                scale={{ y: { min: 0, max: 100 } }}
+                data={barData}
+                toolTipItemTpl="通过率: {value}%"
             />
         </div>
     );

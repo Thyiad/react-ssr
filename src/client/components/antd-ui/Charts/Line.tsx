@@ -1,7 +1,7 @@
 import React, { FC, useRef } from 'react';
-import { Chart, G2, Interval, Tooltip } from 'bizcharts';
+import { Chart, G2, Tooltip, Line, Point, Axis } from 'bizcharts';
 
-interface BarProps {
+interface LineProps {
     width?: number;
     height?: number;
     autoFit?: boolean;
@@ -11,14 +11,13 @@ interface BarProps {
         y: number;
     }[];
     color?: string;
-    barWidth?: number;
     scale?: { [key in 'x' | 'y']?: { [key in 'min' | 'max']?: number } };
     onGetG2Instance?: (chartIns: G2.Chart) => void;
     toolTipItemTpl?: string;
 }
 
-const Bar: FC<BarProps> = (props: BarProps) => {
-    const { scale, width, height, autoFit, padding, data, color, barWidth, toolTipItemTpl, onGetG2Instance } = props;
+const LineChart: FC<LineProps> = (props: LineProps) => {
+    const { width, height, padding, data, color, scale, onGetG2Instance, toolTipItemTpl } = props;
     const chartRef = useRef<G2.Chart>();
 
     const itemTpl =
@@ -29,25 +28,26 @@ const Bar: FC<BarProps> = (props: BarProps) => {
 
     return (
         <Chart
-            scale={scale}
+            au
+            padding={padding}
             width={width}
             height={height}
-            autoFit={autoFit}
             data={data}
-            interactions={['active-region']}
-            padding={padding}
+            scale={scale}
             onGetG2Instance={(chartIns: G2.Chart) => {
                 chartRef.current = chartIns;
                 onGetG2Instance && onGetG2Instance(chartIns);
             }}
         >
-            <Interval position="x*y" color={color} size={barWidth} />
-            <Tooltip itemTpl={itemTpl} shared={false} showTitle={false} showCrosshairs={false} />
+            <Line position="x*y" color={color} />
+            <Point position="x*y" />
+            <Tooltip shared={false} itemTpl={itemTpl} showTitle={false} showCrosshairs lock triggerOn="hover" />
+            <Axis name="y" />
         </Chart>
     );
 };
 
-Bar.defaultProps = {
+LineChart.defaultProps = {
     height: 300,
     autoFit: true,
     padding: [30, 30, 30, 50],
@@ -55,4 +55,4 @@ Bar.defaultProps = {
     toolTipItemTpl: '{name}: {value}',
 };
 
-export default Bar;
+export default LineChart;

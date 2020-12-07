@@ -25,6 +25,6 @@
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true
     },
-    "include": ["src", "node_modules/@thyiad/antd-ui"],
+    "include": ["src"],
     "exclude": ["webpack", "node_modules/**"]
 }
