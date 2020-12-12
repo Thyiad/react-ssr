@@ -117,8 +117,8 @@ const TopMenuLayout: FC<RoutePageProps> = (props) => {
                                 <RouteWithSubRoutes key={route.name} {...route} />
                             ))}
                         </Switch>
-                        <CommonFooter />
                     </div>
+                    <CommonFooter />
                 </Content>
             </Layout>
         );
