@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { Divider } from 'antd';
-import { UploadBtn, Bar, Line, Radar } from '@/components/antd-ui/index';
+import { UploadBtn, Bar, Line, Radar, IconFont } from '@/components/antd-ui/index';
+import { iconFontKeys } from '@/components/antd-ui/IconFont/index';
 import * as api from '@client/constants/api';
 import { thyUI, UITypes } from '@thyiad/util/lib/index';
 
@@ -54,6 +55,12 @@ const DemoPage: FC<RoutePageProps> = (props) => {
                 data={barData}
                 toolTipItemTpl="通过率: {value}%"
             />
+            <Divider />
+            <div>
+                {iconFontKeys.map((item) => (
+                    <IconFont key={item} type={item} style={{ color: '#1890ff' }} />
+                ))}
+            </div>
         </div>
     );
 };

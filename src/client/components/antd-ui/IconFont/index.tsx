@@ -2,19 +2,32 @@ import React, { FC, CSSProperties } from 'react';
 import { createFromIconfontCN } from '@ant-design/icons';
 
 const Font = createFromIconfontCN({
-    scriptUrl: ['//at.alicdn.com/t/font_1975329_901dz1bfifi.js'],
+    scriptUrl: ['//at.alicdn.com/t/font_1975329_slkt1mabhmi.js'],
 });
 
-export type IconTypes =
-    | 'iconcha'
-    | 'iconyuanhuan'
-    | 'iconshuangyuan'
-    | 'iconsanjiaoxing'
-    | 'iconstudent'
-    | 'iconclass'
-    | 'iconstar'
-    | 'iconsanjiaoxing-fill'
-    | 'iconround-fill';
+export const iconFontKeys = [
+    'iconcha',
+    'iconyuanhuan',
+    'iconshuangyuan',
+    'iconsanjiaoxing',
+    'iconstudent',
+    'iconclass',
+    'iconstar',
+    'iconsanjiaoxing-fill',
+    'iconround-fill',
+    'iconvideo',
+    'iconeraser',
+    'iconface-jingya',
+    'iconface-sad',
+    'iconface-normal',
+    'iconface-happy',
+    'iconlingdang',
+    'iconqizhi',
+    'iconlaba',
+    'iconimage',
+] as const;
+
+export type IconTypes = typeof iconFontKeys[number];
 
 export interface IconFontProps {
     type: IconTypes;

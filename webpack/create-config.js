@@ -36,7 +36,6 @@ module.exports = (type, isDev, envConfig) => {
             'process.env.NODE_ENV': JSON.stringify(nodeEnv),
             'process.env.SYS_TYPE': JSON.stringify(envConfig.sysType),
         }),
-        new CleanWebpackPlugin(),
     ];
     if (envConfig.isDll) {
         plugins.unshift(
@@ -66,6 +65,7 @@ module.exports = (type, isDev, envConfig) => {
             }),
         );
     } else {
+        plugins.push(new CleanWebpackPlugin());
         // plugins.push(new CaseSensitivePathPlugin()), // 大小写检测很费时，暂时只在build中使用
         plugins.push(
             new MiniCssExtractPlugin({
