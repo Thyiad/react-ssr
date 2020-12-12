@@ -155,7 +155,7 @@ module.exports = (type, isDev, envConfig) => {
                   quiet: true,
                   overlay: true,
                   watchOptions: {
-                      ignored: /node_modules/, // 监听过多文件会占用cpu、内存，so，可以忽略掉部分文件
+                      ignored: /node_modules(?!(\/|\\)(\@thyiad(\/|\\)antd-ui)).*/, // 监听过多文件会占用cpu、内存，so，可以忽略掉部分文件
                       aggregateTimeout: 200, // 默认200，文件变更后延时多久rebuild
                       poll: false, // 默认false，如果不采用watch，那么可以采用poll（轮询）
                   },
