@@ -30,8 +30,8 @@ export const iconFontKeys = [
 export type IconTypes = typeof iconFontKeys[number];
 
 type IconFontProps = ComponentProps<typeof Font> & { type: IconTypes };
-const IconFont: FC<IconFontProps> = ({ type, style, className }: IconFontProps) => {
-    return <Font type={type} className={className} style={style} />;
+const IconFont: FC<IconFontProps> = (props: IconFontProps) => {
+    return <Font {...props} />;
 };
 
 export default IconFont;
