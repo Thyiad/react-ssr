@@ -36,7 +36,6 @@ module.exports = (type, isDev, envConfig) => {
             'process.env.NODE_ENV': JSON.stringify(nodeEnv),
             'process.env.SYS_TYPE': JSON.stringify(envConfig.sysType),
         }),
-        new CleanWebpackPlugin(),
     ];
     if (envConfig.isDll) {
         plugins.unshift(
@@ -66,6 +65,7 @@ module.exports = (type, isDev, envConfig) => {
             }),
         );
     } else {
+        plugins.push(new CleanWebpackPlugin());
         // plugins.push(new CaseSensitivePathPlugin()), // 大小写检测很费时，暂时只在build中使用
         plugins.push(
             new MiniCssExtractPlugin({
@@ -155,7 +155,7 @@ module.exports = (type, isDev, envConfig) => {
                   quiet: true,
                   overlay: true,
                   watchOptions: {
-                      ignored: /node_modules/, // 监听过多文件会占用cpu、内存，so，可以忽略掉部分文件
+                      ignored: /node_modules(?!(\/|\\)(\@thyiad(\/|\\)antd-ui)).*/, // 监听过多文件会占用cpu、内存，so，可以忽略掉部分文件
                       aggregateTimeout: 200, // 默认200，文件变更后延时多久rebuild
                       poll: false, // 默认false，如果不采用watch，那么可以采用poll（轮询）
                   },
