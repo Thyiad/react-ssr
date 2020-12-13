@@ -53,7 +53,7 @@ module.exports = (isServer, isDev) => {
     return [
         {
             test: /\.(js|jsx|ts|tsx)$/,
-            exclude: /mode_modules/,
+            exclude: /node_modules/,
             use: [
                 // {
                 //     loader: 'cache-loader',
