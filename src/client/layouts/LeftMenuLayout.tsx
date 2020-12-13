@@ -67,7 +67,7 @@ const LeftMenuLayout: FC<RoutePageProps> = (props) => {
 
     const renderMenu = useCallback(
         (item: RouteProps) => {
-            if (item.hideInMenu || (item.roles && item.roles.includes(state.currentUser?.role))) {
+            if (item.hideInMenu || (item.roles && !item.roles.includes(state.currentUser?.role))) {
                 return null;
             }
             return Array.isArray(item.routes) && item.routes.length > 0 ? (
