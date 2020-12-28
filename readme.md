@@ -3,6 +3,8 @@
 -   默认 rem（750px/100）
 -   husky、quick prettie、commitlint 验证提交
 -   zarm
+-   屏蔽 prettier 需要加上`/* prettier-ignore */`备注
+    > 比如想保持 PX，而不被转换成 px
 
 ### 提交规范
 
