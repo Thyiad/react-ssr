@@ -28,8 +28,9 @@
         }
     }
     &-content {
-        margin: 24px;
+        padding: 24px;
         min-height: 280px;
+        overflow-y: auto;
         &-wrapper {
             min-height: 80vh;
         }
