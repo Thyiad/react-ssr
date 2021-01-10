@@ -98,11 +98,10 @@ const LeftMenuLayout: FC<RoutePageProps> = (props) => {
 
         return (
             <Layout className="left-menu-layout">
-                <Sider trigger={null} collapsible collapsed={collapsed}>
+                <Sider trigger={null} collapsible collapsed={collapsed} width={150}>
                     <div className="sider-logo">
                         <a href="/">
                             <img src={logo} alt="" />
-                            <span>{systemInfo.title}</span>
                         </a>
                     </div>
                     <Menu theme="dark" mode="inline" defaultSelectedKeys={[initActiveMenu]} onClick={onMenuClick}>

@@ -4,10 +4,11 @@
         position: relative;
         height: 64px;
         line-height: 64px;
-        padding-left: 24px;
         overflow: hidden;
         background: #002140;
         transition: all 0.3s;
+        // padding-left: 24px;
+        text-align: center;
         img {
             display: inline-block;
             width: 32px;
