@@ -1,6 +1,6 @@
 import React, { FC, useRef, useMemo, useCallback } from 'react';
 import ProTable, { ProColumns, ActionType, RequestData } from '@ant-design/pro-table';
-import { Avatar, Button } from 'antd';
+import { Avatar, Button, Select } from 'antd';
 import { DownOutlined, PlusOutlined } from '@ant-design/icons';
 import { thyUI, thyReq } from '@thyiad/util';
 import { TableItem, TableListParams } from './table';
@@ -35,6 +35,29 @@ const TablePage: FC<RoutePageProps> = (props) => {
             {
                 title: '生日',
                 dataIndex: 'birthday',
+            },
+            // 生日
+            {
+                title: '自定义',
+                dataIndex: 'customize',
+                fieldProps: {
+                    onChange: (a, b) => {
+                        // a：value
+                        // b: option
+                        console.log(a, b);
+                    },
+                },
+                // 参数分别是：列配置、table配置、form引用
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                renderFormItem: (colItem, config, form) => (
+                    <Select placeholder="请选择">
+                        {[1, 2, 3].map((item) => (
+                            <Select.Option key={item} value={item}>
+                                {item}
+                            </Select.Option>
+                        ))}
+                    </Select>
+                ),
             },
             // 描述
             {
