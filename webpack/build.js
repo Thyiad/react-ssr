@@ -15,10 +15,10 @@ if (!['ssr', 'spa'].includes(sysType)) {
 envConfig.sysType = sysType;
 
 // client
-const dateStartClient = Date.now();
 const clientConfig = createConfig('client', false, envConfig);
 const clientCompile = webpack(clientConfig);
 
+const dateStartClient = Date.now();
 clientCompile.hooks.done.tapAsync('client_compile_done', (compilation, callback) => {
     const dateEndClient = Date.now();
     console.log(chalk.blue(`client_compile_done, timeSpan: ${(dateEndClient - dateStartClient) / 1000}s`));
@@ -34,9 +34,10 @@ if (envConfig.sysType === 'spa') {
 }
 
 // server
-const dateStartServer = Date.now();
 const serverConfig = createConfig('server', false, envConfig);
 const serverCompile = webpack(serverConfig);
+
+const dateStartServer = Date.now();
 serverCompile.hooks.done.tap('server_compile_done', (compilation, callback) => {
     const dateEndServer = Date.now();
     console.log(chalk.blue(`server_compile_done, timeSpan: ${(dateEndServer - dateStartServer) / 1000}s`));

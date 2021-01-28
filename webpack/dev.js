@@ -17,12 +17,12 @@ if (!['ssr', 'spa'].includes(sysType)) {
 envConfig.sysType = sysType;
 
 // 编译client
-const dateStartClient = Date.now();
 const clientConfig = createConfig('client', true, envConfig);
 // const clientCompile = webpack(smp.wrap(clientConfig));
 const clientCompile = webpack(clientConfig);
 
 let loggedClient = false;
+const dateStartClient = Date.now();
 clientCompile.hooks.done.tapAsync('client_compile_done', (compilation, callback) => {
     if (!loggedClient) {
         const dateEndClient = Date.now();
@@ -44,11 +44,12 @@ if (envConfig.sysType === 'spa') {
 }
 
 // 编译server
-const dateStartServer = Date.now();
 const serverConfig = createConfig('server', true, envConfig);
 const serverCompile = webpack(serverConfig);
+
 let serverChildProcess = false;
 let loggedServer = false;
+const dateStartServer = Date.now();
 serverCompile.hooks.done.tap('server_compile_done', (compilation, callback) => {
     if (!loggedServer) {
         const dateEndServer = Date.now();
