@@ -21,11 +21,15 @@ const clientConfig = createConfig('client', true, envConfig);
 // const clientCompile = webpack(smp.wrap(clientConfig));
 const clientCompile = webpack(clientConfig);
 
-let logged = false;
+const dateStartClient = Date.now();
+let loggedClient = false;
 clientCompile.hooks.done.tapAsync('client_compile_done', (compilation, callback) => {
-    if (!logged) {
-        console.log(chalk.blue(`client has started at ${clientConfig.devServer.port}`));
-        logged = true;
+    if (!loggedClient) {
+        const dateEndClient = Date.now();
+        console.log(chalk.blue(`client_compile_done, timeSpan: ${(dateEndClient - dateStartClient) / 1000}s`));
+        loggedClient = true;
+    } else {
+        console.log(chalk.blue(`client_recompile_done`));
     }
     callback && callback();
 });
@@ -42,9 +46,18 @@ if (envConfig.sysType === 'spa') {
 // 编译server
 const serverConfig = createConfig('server', true, envConfig);
 const serverCompile = webpack(serverConfig);
+
 let serverChildProcess = false;
+let loggedServer = false;
+const dateStartServer = Date.now();
 serverCompile.hooks.done.tap('server_compile_done', (compilation, callback) => {
-    console.log(chalk.blue(`server_compile_done`));
+    if (!loggedServer) {
+        const dateEndServer = Date.now();
+        console.log(chalk.blue(`server_compile_done, timeSpan: ${(dateEndServer - dateStartServer) / 1000}s`));
+        loggedServer = true;
+    } else {
+        console.log(chalk.blue(`server_recompile_done`));
+    }
 
     // 手动kill
     if (serverChildProcess) {
@@ -58,7 +71,6 @@ serverCompile.hooks.done.tap('server_compile_done', (compilation, callback) => {
     serverChildProcess.stderr.on('data', (data) => {
         console.error(`server error: ${data}`);
     });
-    console.log(chalk.blue(`server has started at ${envConfig.serverPort}`));
 
     // // nodemon方式
     // if (!serverChildProcess) {
