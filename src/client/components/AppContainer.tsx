@@ -6,6 +6,8 @@ import RouteWithSubRoutes from '@/components/RouteWithSubRoutes';
 import '@/assets/scss/common.scss';
 import '@/app.scss';
 import { initThyiadUtil } from '@/utils/index';
+import { ConfigProvider } from 'antd';
+import zhCN from 'antd/lib/locale/zh_CN';
 
 initThyiadUtil();
 
@@ -36,8 +38,10 @@ export const AppProvider: FC<StoreProviderProps> = (props: StoreProviderProps) =
 
 export const AppBrowser: FC = () => {
     return (
-        <BrowserRouter>
-            <AppProvider />
-        </BrowserRouter>
+        <ConfigProvider locale={zhCN}>
+            <BrowserRouter>
+                <AppProvider />
+            </BrowserRouter>
+        </ConfigProvider>
     );
 };
