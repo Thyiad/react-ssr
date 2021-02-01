@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
-import { Divider } from 'antd';
-import { UploadBtn, Bar, Line, Radar, IconFont } from '@/components/antd-ui/index';
+import { Form, Divider, Button } from 'antd';
+import { UploadBtn, UploadFormItem, Bar, Line, Radar, IconFont } from '@/components/antd-ui/index';
 import { iconFontKeys } from '@/components/antd-ui/IconFont/index';
 import * as api from '@client/constants/api';
 import { thyUI, UITypes } from '@thyiad/util/lib/index';
@@ -32,6 +32,40 @@ const DemoPage: FC<RoutePageProps> = (props) => {
                 extList={['.xlsx']}
                 uploadText="上传文件"
             ></UploadBtn>
+            <Divider />
+            <UploadFormItem
+                uploadUrl={api.UPLOAD_OSS}
+                uploadParams={{ saveDir: 'oss/upload', keepName: false }}
+                isMulti={true}
+                listType="picture-card"
+                fileSize={2}
+                extList={['.png', 'jpg']}
+                uploadText="上传文件"
+                onChange={(e) => {
+                    console.log(e);
+                }}
+                value="https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2771978851,2906984932&fm=26&gp=0.jpg"
+            />
+            <Form
+                onFinish={(values) => {
+                    console.log(values);
+                }}
+            >
+                <Form.Item name="upload" label="upload file">
+                    <UploadFormItem
+                        uploadUrl={api.UPLOAD_OSS}
+                        uploadParams={{ saveDir: 'oss/upload', keepName: false }}
+                        isMulti={false}
+                        listType="text"
+                        showUploadList={false}
+                        fileSize={2}
+                        extList={['.png', 'jpg']}
+                        uploadText="上传文件"
+                        value="https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2771978851,2906984932&fm=26&gp=0.jpg"
+                    />
+                </Form.Item>
+                <Button htmlType="submit">提交</Button>
+            </Form>
             <Divider />
             <Bar
                 scale={{ y: { min: 0, max: 100 } }}
