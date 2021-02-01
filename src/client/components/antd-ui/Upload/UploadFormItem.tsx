@@ -235,7 +235,7 @@ const UploadFormItem: React.FC<IProps> = (props) => {
         if (needHide) {
             return <span>{isDisable && fileList.length <= 0 ? '无' : ''}</span>;
         }
-        if (['picture', 'picture-card'].includes(listType)) {
+        if (listType === 'picture-card') {
             return (
                 <div>
                     <PlusOutlined />

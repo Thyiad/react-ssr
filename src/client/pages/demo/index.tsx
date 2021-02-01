@@ -36,7 +36,7 @@ const DemoPage: FC<RoutePageProps> = (props) => {
             <UploadFormItem
                 uploadUrl={api.UPLOAD_OSS}
                 uploadParams={{ saveDir: 'oss/upload', keepName: false }}
-                isMulti={true}
+                isMulti={false}
                 listType="picture-card"
                 fileSize={2}
                 extList={['.png', 'jpg']}
