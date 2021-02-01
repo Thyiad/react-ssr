@@ -239,7 +239,7 @@ const UploadFormItem: React.FC<IProps> = (props) => {
             return (
                 <div>
                     <PlusOutlined />
-                    <div style={{ marginTop: 8 }}>Upload</div>
+                    <div style={{ marginTop: 8 }}>{uploadText}</div>
                 </div>
             );
         }
