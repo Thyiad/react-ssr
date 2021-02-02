@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { Button, Upload, message, Modal } from 'antd';
 import { PlusOutlined, UploadOutlined } from '@ant-design/icons';
 import { UploadFile, UploadChangeParam, RcFile } from 'antd/lib/upload/interface';
@@ -74,22 +74,23 @@ const UploadFormItem: React.FC<IProps> = (props) => {
         previewTitle: '',
     });
 
-    // @ts-ignore
-    const initFileList: UploadFile<Response>[] = useMemo(() => {
+    const [fileList, setFileList] = useState<UploadFile<Response>[]>([]);
+    const [uploading, setUploading] = useState(false);
+
+    useEffect(() => {
+        let targetFileList = [];
         if (value) {
-            return (Array.isArray(value) ? value : [value]).map((url, index) => ({
+            targetFileList = (Array.isArray(value) ? value : [value]).map((url, index) => ({
                 uid: index.toString(),
                 name: getFileName(url),
                 status: 'done',
                 url,
             }));
+        } else {
+            targetFileList = [];
         }
-        return [];
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    const [fileList, setFileList] = useState<UploadFile<Response>[]>(initFileList);
-    const [uploading, setUploading] = useState(false);
+        setFileList(targetFileList);
+    }, [value]);
 
     const needHide = useMemo(() => {
         return isDisable || (maxCount && fileList.length >= maxCount);
@@ -112,9 +113,10 @@ const UploadFormItem: React.FC<IProps> = (props) => {
             if (index >= 0) {
                 fileList.splice(0, 1);
                 setFileList([...fileList]);
+                onChange && onChange(fileList.map((item) => item.url).filter((item) => item));
             }
         },
-        [fileList],
+        [fileList, onChange],
     );
 
     const onUploadChange = useCallback(
@@ -152,7 +154,7 @@ const UploadFormItem: React.FC<IProps> = (props) => {
                 const fileUrls: string[] = newFileList.map((item) => item.url).filter((item) => !!item);
                 setFileList(newFileList);
 
-                onChange && onChange(isMulti ? fileUrls : fileUrls[0]);
+                onChange && onChange(fileUrls);
                 if (params.file.status === 'error') {
                     if (uploadErr) {
                         uploadErr();

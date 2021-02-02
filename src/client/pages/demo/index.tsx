@@ -41,9 +41,9 @@ const DemoPage: FC<RoutePageProps> = (props) => {
                 fileSize={2}
                 extList={['.png', 'jpg']}
                 uploadText="上传文件"
-                onChange={(e) => {
-                    console.log(e);
-                }}
+                // onChange={(e) => {
+                //     console.log(e);
+                // }}
                 value="https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2771978851,2906984932&fm=26&gp=0.jpg"
             />
             <Form
@@ -57,7 +57,7 @@ const DemoPage: FC<RoutePageProps> = (props) => {
                         uploadParams={{ saveDir: 'oss/upload', keepName: false }}
                         isMulti={false}
                         listType="text"
-                        showUploadList={false}
+                        showUploadList={true}
                         fileSize={2}
                         extList={['.png', 'jpg']}
                         uploadText="上传文件"
