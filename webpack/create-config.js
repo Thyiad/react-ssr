@@ -173,15 +173,21 @@ module.exports = (type, isDev, envConfig) => {
         optimization: isServer
             ? undefined
             : {
-                  // namedModules: true,
+                  // 命名代替数字
+                  // chunkIds: 'named',
                   splitChunks: {
-                      cacheGroups: {
-                          libs: {
-                              test: /node_modules/, // 指定是node_modules下的第三方包
-                              chunks: 'initial',
-                              name: 'vendor', // 打包后的文件名，任意命名
-                          },
-                      },
+                      // async: 仅异步import
+                      // initial: 仅入口处
+                      // all: 全部
+                      chunks: 'all',
+                      // 如果使用以下cacheGroups配置，将会把所有 node_modules 下面的打包到一个文件中
+                      // cacheGroups: {
+                      //     libs: {
+                      //         test: /node_modules/, // 指定是node_modules下的第三方包
+                      //         chunks: 'all',
+                      //         name: 'vendor', // 打包后的文件名，任意命名
+                      //     },
+                      // },
                   },
               },
     };
