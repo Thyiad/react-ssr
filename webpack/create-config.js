@@ -57,7 +57,6 @@ module.exports = (type, isDev, envConfig) => {
     }
     if (isDev) {
         plugins.push(new webpack.HotModuleReplacementPlugin());
-        // plugins.push(new webpack.NamedModulesPlugin());
         plugins.push(
             new WebpackBar({
                 color: !isServer ? '#f56be2' : '#c065f4',
@@ -174,6 +173,7 @@ module.exports = (type, isDev, envConfig) => {
             ? undefined
             : {
                   // 命名代替数字
+                  // chunkIds: 'named',
                   // chunkIds: 'named',
                   splitChunks: {
                       // async: 仅异步import
