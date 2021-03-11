@@ -16,7 +16,9 @@ envConfig.sysType = sysType;
 
 // client
 const clientConfig = createConfig('client', false, envConfig);
-const clientCompile = webpack(clientConfig);
+const clientCompile = webpack(clientConfig, (stats) => {
+    console.log('client_stats', stats);
+});
 
 const dateStartClient = Date.now();
 clientCompile.hooks.done.tapAsync('client_compile_done', (compilation, callback) => {
@@ -35,7 +37,9 @@ if (envConfig.sysType === 'spa') {
 
 // server
 const serverConfig = createConfig('server', false, envConfig);
-const serverCompile = webpack(serverConfig);
+const serverCompile = webpack(serverConfig, (stats) => {
+    console.log('server_stats', stats);
+});
 
 const dateStartServer = Date.now();
 serverCompile.hooks.done.tap('server_compile_done', (compilation, callback) => {

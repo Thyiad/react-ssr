@@ -4,10 +4,7 @@
             "@babel/preset-env",
             {
                 "modules": false,
-                "targets": [
-                    "ios >= 8",
-                    "android >= 4.2"
-                ],
+                "targets": ["ios >= 8", "android >= 4.2"],
                 "useBuiltIns": "usage",
                 "corejs": 3
             }
@@ -16,9 +13,7 @@
         "@babel/preset-typescript"
     ],
     "plugins": [
-        "@babel/plugin-proposal-class-properties",
-        "@babel/plugin-proposal-object-rest-spread",
-        "@babel/plugin-syntax-dynamic-import",
+        "@babel/plugin-transform-runtime",
         "@loadable/babel-plugin",
         [
             "import",
