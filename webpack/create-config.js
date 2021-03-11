@@ -44,7 +44,6 @@ module.exports = (type, isDev, envConfig) => {
     }
     if (isDev) {
         plugins.push(new webpack.HotModuleReplacementPlugin());
-        plugins.push(new webpack.NamedModulesPlugin());
         plugins.push(
             new WebpackBar({
                 color: !isServer ? '#f56be2' : '#c065f4',
@@ -69,8 +68,8 @@ module.exports = (type, isDev, envConfig) => {
             entry: path.resolve(cwd, `src${spaClientFolder}/app`),
             output: {
                 path: path.resolve(cwd, `dist${spaClientFolder}`),
-                filename: `js/[name].[${isDev ? 'hash' : 'contentHash'}].js`,
-                chunkFilename: `chunks/[name].[${isDev ? 'hash' : 'contentHash'}].js`,
+                filename: `js/[name].[${isDev ? 'fullhash' : 'contenthash'}].js`,
+                chunkFilename: `chunks/[name].[${isDev ? 'fullhash' : 'contenthash'}].js`,
                 publicPath: '/',
             },
         },
@@ -79,7 +78,7 @@ module.exports = (type, isDev, envConfig) => {
             entry: path.resolve(cwd, `src/client/app`),
             output: {
                 path: path.resolve(cwd, `dist/client`),
-                filename: `js/[name].[${isDev ? 'hash' : 'contentHash'}].js`,
+                filename: `js/[name].[${isDev ? 'fullhash' : 'contenthash'}].js`,
                 publicPath: isDev ? `http://${envConfig.host}:${envConfig.clientPort}/` : '/',
             },
         },
@@ -161,6 +160,7 @@ module.exports = (type, isDev, envConfig) => {
             : {
                   // 命名代替数字
                   // chunkIds: 'named',
+                  // moduleIds: 'named',
                   splitChunks: {
                       // async: 仅异步import
                       // initial: 仅入口处
