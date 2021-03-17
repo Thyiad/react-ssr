@@ -131,7 +131,7 @@ module.exports = (isServer, isDev) => {
                     loader: 'url-loader',
                     options: {
                         limit: 5 * 1024, // 5kb
-                        name: 'media/[name].[contentHash].[ext]',
+                        name: 'media/[name].[contenthash].[ext]',
                         emitFile: !isServer,
                     },
                 },
@@ -144,7 +144,7 @@ module.exports = (isServer, isDev) => {
                 {
                     loader: 'file-loader',
                     options: {
-                        name: 'media/[name].[contentHash].[ext]',
+                        name: 'media/[name].[contenthash].[ext]',
                         emitFile: !isServer,
                     },
                 },
