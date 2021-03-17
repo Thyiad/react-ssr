@@ -11,6 +11,7 @@ const LoadablePlugin = require('@loadable/webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
 const WebpackBar = require('webpackbar');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const ReactRefreshPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
 /**
  *
@@ -43,7 +44,9 @@ module.exports = (type, isDev, envConfig) => {
         );
     }
     if (isDev) {
-        plugins.push(new webpack.HotModuleReplacementPlugin());
+        if (type === 'client') {
+            plugins.push(new ReactRefreshPlugin());
+        }
         plugins.push(
             new WebpackBar({
                 color: !isServer ? '#f56be2' : '#c065f4',
