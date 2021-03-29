@@ -16,8 +16,14 @@ envConfig.sysType = sysType;
 
 // client
 const clientConfig = createConfig('client', false, envConfig);
-const clientCompile = webpack(clientConfig, (stats) => {
-    console.log('client_stats', stats);
+const clientCompile = webpack(clientConfig, (error, stats) => {
+    if (error) {
+        chalk.red(error);
+    } else if (stats.hasErrors()) {
+        chalk.red('编译client发生了错误');
+        process.stdout.write(stats.toString());
+        process.exit(1);
+    }
 });
 
 const dateStartClient = Date.now();
@@ -37,8 +43,14 @@ if (envConfig.sysType === 'spa') {
 
 // server
 const serverConfig = createConfig('server', false, envConfig);
-const serverCompile = webpack(serverConfig, (stats) => {
-    console.log('server_stats', stats);
+const serverCompile = webpack(serverConfig, (error, stats) => {
+    if (error) {
+        chalk.red(error);
+    } else if (stats.hasErrors()) {
+        chalk.red('编译server发生了错误');
+        process.stdout.write(stats.toString());
+        process.exit(1);
+    }
 });
 
 const dateStartServer = Date.now();

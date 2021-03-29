@@ -87,6 +87,7 @@ module.exports = (type, isDev, envConfig) => {
                 path: path.resolve(cwd, `dist${spaClientFolder}`),
                 filename: `js/[name].[${isDev ? 'fullhash' : 'contenthash'}].js`,
                 chunkFilename: `chunks/[name].[${isDev ? 'fullhash' : 'contenthash'}].js`,
+                assetModuleFilename: 'media/[contenthash][ext][query]',
                 publicPath: '/',
             },
         },
@@ -96,6 +97,8 @@ module.exports = (type, isDev, envConfig) => {
             output: {
                 path: path.resolve(cwd, `dist/client`),
                 filename: `js/[name].[${isDev ? 'fullhash' : 'contenthash'}].js`,
+                chunkFilename: `chunks/[name].[${isDev ? 'fullhash' : 'contenthash'}].js`,
+                assetModuleFilename: 'media/[contenthash][ext][query]',
                 publicPath: isDev ? `http://${envConfig.host}:${envConfig.clientPort}/` : '/',
             },
         },
