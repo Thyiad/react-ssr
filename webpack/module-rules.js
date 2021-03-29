@@ -126,16 +126,15 @@ module.exports = (isServer, isDev) => {
         {
             test: /\.(png|jpg|jpeg|gif|svg|ttf)$/,
             exclude: /node_modules/,
-            use: [
-                {
-                    loader: 'url-loader',
-                    options: {
-                        limit: 5 * 1024, // 5kb
-                        name: 'media/[name].[contenthash].[ext]',
-                        emitFile: !isServer,
-                    },
+            type: 'asset',
+            parser: {
+                dataUrlCondition: {
+                    maxSize: 5 * 1024,
                 },
-            ],
+            },
+            generator: {
+                filename: 'media/[contenthash][ext][query]',
+            },
         },
         {
             test: /\.(json|mp4)$/,

@@ -16,12 +16,20 @@ envConfig.sysType = sysType;
 
 // client
 const clientConfig = createConfig('client', false, envConfig);
-const clientCompile = webpack(clientConfig);
+const clientCompile = webpack(clientConfig, (error, stats) => {
+    if (error) {
+        chalk.red(error);
+    } else if (stats.hasErrors()) {
+        chalk.red('编译server发生了错误');
+        process.stdout.write(stats.toString());
+        process.exit(1);
+    }
+});
 
 const dateStartClient = Date.now();
 clientCompile.hooks.done.tapAsync('client_compile_done', (compilation, callback) => {
     const dateEndClient = Date.now();
-    console.log(chalk.blue(`client_compile_done, timeSpan: ${(dateEndClient - dateStartClient) / 1000}s`));
+    console.log(chalk.blue(`\nclient_compile_done, timeSpan: ${(dateEndClient - dateStartClient) / 1000}s`));
     callback && callback();
 });
 clientCompile.run((err) => {
@@ -40,7 +48,7 @@ const serverCompile = webpack(serverConfig);
 const dateStartServer = Date.now();
 serverCompile.hooks.done.tap('server_compile_done', (compilation, callback) => {
     const dateEndServer = Date.now();
-    console.log(chalk.blue(`server_compile_done, ${(dateEndServer - dateStartServer) / 1000}s`));
+    console.log(chalk.blue(`\nserver_compile_done, ${(dateEndServer - dateStartServer) / 1000}s`));
     callback && callback();
 });
 serverCompile.run((err) => {
