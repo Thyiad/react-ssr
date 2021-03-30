@@ -29,7 +29,7 @@ const clientCompile = webpack(clientConfig, (error, stats) => {
 const dateStartClient = Date.now();
 clientCompile.hooks.done.tapAsync('client_compile_done', (compilation, callback) => {
     const dateEndClient = Date.now();
-    console.log(chalk.blue(`client_compile_done, timeSpan: ${(dateEndClient - dateStartClient) / 1000}s`));
+    console.log(chalk.blue(`\nclient_compile_done, timeSpan: ${(dateEndClient - dateStartClient) / 1000}s`));
     callback && callback();
 });
 clientCompile.run((err) => {
@@ -56,7 +56,7 @@ const serverCompile = webpack(serverConfig, (error, stats) => {
 const dateStartServer = Date.now();
 serverCompile.hooks.done.tap('server_compile_done', (compilation, callback) => {
     const dateEndServer = Date.now();
-    console.log(chalk.blue(`server_compile_done, timeSpan: ${(dateEndServer - dateStartServer) / 1000}s`));
+    console.log(chalk.blue(`\nserver_compile_done, timeSpan: ${(dateEndServer - dateStartServer) / 1000}s`));
     callback && callback();
 });
 serverCompile.run((err) => {

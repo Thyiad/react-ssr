@@ -26,10 +26,10 @@ const dateStartClient = Date.now();
 clientCompile.hooks.done.tapAsync('client_compile_done', (compilation, callback) => {
     if (!loggedClient) {
         const dateEndClient = Date.now();
-        console.log(chalk.blue(`client_compile_done, timeSpan: ${(dateEndClient - dateStartClient) / 1000}s`));
+        console.log(chalk.blue(`\nclient_compile_done, timeSpan: ${(dateEndClient - dateStartClient) / 1000}s`));
         loggedClient = true;
     } else {
-        console.log(chalk.blue(`client_recompile_done`));
+        console.log(chalk.blue(`\nclient_recompile_done`));
     }
     callback && callback();
 });
@@ -53,10 +53,10 @@ const dateStartServer = Date.now();
 serverCompile.hooks.done.tap('server_compile_done', (compilation, callback) => {
     if (!loggedServer) {
         const dateEndServer = Date.now();
-        console.log(chalk.blue(`server_compile_done, timeSpan: ${(dateEndServer - dateStartServer) / 1000}s`));
+        console.log(chalk.blue(`\nserver_compile_done, timeSpan: ${(dateEndServer - dateStartServer) / 1000}s`));
         loggedServer = true;
     } else {
-        console.log(chalk.blue(`server_recompile_done`));
+        console.log(chalk.blue(`\nserver_recompile_done`));
     }
 
     // 手动kill方式
