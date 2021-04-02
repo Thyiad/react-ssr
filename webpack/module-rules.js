@@ -132,7 +132,7 @@ module.exports = (isServer, isDev) => {
                   ],
         },
         {
-            test: /\.(png|jpg|jpeg|gif|svg|ttf)$/,
+            test: /\.(png|jpg|jpeg|gif|svg)$/,
             exclude: /node_modules/,
             type: 'asset',
             parser: {
@@ -145,17 +145,12 @@ module.exports = (isServer, isDev) => {
             },
         },
         {
-            test: /\.(json|mp4)$/,
+            test: /\.(ttf|json|mp4)$/,
             exclude: /node_modules/,
-            use: [
-                {
-                    loader: 'file-loader',
-                    options: {
-                        name: 'media/[name].[contenthash].[ext]',
-                        emitFile: !isServer,
-                    },
-                },
-            ],
+            type: 'asset/resource',
+            generator: {
+                filename: 'media/[contenthash][ext][query]',
+            },
         },
     ];
 };
