@@ -194,6 +194,19 @@ module.exports = (type, isDev, envConfig) => {
                       //     },
                       // },
                   },
+                  minimize: !isDev,
+                  minimizer: isDev
+                      ? undefined
+                      : [
+                            new TerserPlugin({
+                                terserOptions: {
+                                    compress: {
+                                        // 生产环境删除console
+                                        drop_console: true,
+                                    },
+                                },
+                            }),
+                        ],
               },
     };
 };

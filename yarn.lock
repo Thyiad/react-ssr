@@ -5917,7 +5917,7 @@
 
 "js-cookie@^2.2.1":
   "integrity" "sha1-aeEG3F1YBolFYpAqpbrsN0Tpsrg="
-  "resolved" "https://npm.zhonganinfo.com/js-cookie/-/js-cookie-2.2.1.tgz"
+  "resolved" "https://registry.npm.taobao.org/js-cookie/-/js-cookie-2.2.1.tgz"
   "version" "2.2.1"
 
 "js-tokens@^3.0.0 || ^4.0.0", "js-tokens@^4.0.0":
@@ -10774,5 +10774,5 @@
 
 "yocto-queue@^0.1.0":
   "integrity" "sha1-ApTrPe4FAo0x7hpfosVWpqrxChs="
-  "resolved" "https://npm.zhonganinfo.com/yocto-queue/-/yocto-queue-0.1.0.tgz"
+  "resolved" "https://registry.npm.taobao.org/yocto-queue/-/yocto-queue-0.1.0.tgz"
   "version" "0.1.0"
