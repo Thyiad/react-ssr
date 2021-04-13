@@ -5,6 +5,7 @@ import { UploadFile, UploadChangeParam, RcFile } from 'antd/lib/upload/interface
 import lrz from 'lrz';
 import { dataURLtoFile, getBase64, getFileName } from './tool';
 import { Response } from './upload';
+import './index.scss';
 
 interface IProps {
     uploadUrl: string;
@@ -44,6 +45,7 @@ interface IProps {
     showUploadList?: boolean;
     hideUpload?: boolean;
     maxCount?: number;
+    withCredentials?: boolean;
 }
 
 const UploadFormItem: React.FC<IProps> = (props) => {
@@ -59,13 +61,14 @@ const UploadFormItem: React.FC<IProps> = (props) => {
         selectSuc,
         uploadErr,
         showLoading,
-        hideUpload: isDisable,
+        hideUpload,
         maxCount,
         value,
         compressOption,
         isMulti,
         listType,
         showUploadList,
+        withCredentials,
     } = props;
 
     const [modalState, setModalState] = useState({
@@ -91,10 +94,6 @@ const UploadFormItem: React.FC<IProps> = (props) => {
         }
         setFileList(targetFileList);
     }, [value]);
-
-    const needHide = useMemo(() => {
-        return isDisable || (maxCount && fileList.length >= maxCount);
-    }, [isDisable, maxCount, fileList]);
 
     // @ts-ignore
     const headers: { [key: string]: string } = useMemo(() => {
@@ -233,9 +232,13 @@ const UploadFormItem: React.FC<IProps> = (props) => {
         [],
     );
 
+    const needHide = useMemo(() => {
+        return hideUpload || (maxCount && fileList.length >= maxCount);
+    }, [hideUpload, maxCount, fileList]);
+
     const btnDom = useMemo(() => {
         if (needHide) {
-            return <span>{isDisable && fileList.length <= 0 ? '无' : ''}</span>;
+            return <span>{hideUpload && fileList.length <= 0 ? '无' : ''}</span>;
         }
         if (listType === 'picture-card') {
             return (
@@ -251,13 +254,14 @@ const UploadFormItem: React.FC<IProps> = (props) => {
                 {uploadText}
             </Button>
         );
-    }, [btnProps, fileList.length, isDisable, listType, needHide, showLoading, uploadText, uploading]);
+    }, [btnProps, fileList.length, hideUpload, listType, needHide, showLoading, uploadText, uploading]);
 
     return useMemo(() => {
         return (
             <>
                 <Upload
-                    className="upload-item"
+                    className={['upload-item', needHide && fileList.length > 0 ? 'hide-btn' : ''].join(' ')}
+                    disabled={hideUpload}
                     action={uploadUrl}
                     headers={headers}
                     listType={listType}
@@ -269,6 +273,7 @@ const UploadFormItem: React.FC<IProps> = (props) => {
                     data={uploadParams}
                     onPreview={handlePreview}
                     onRemove={handleRemove}
+                    withCredentials={withCredentials}
                 >
                     {btnDom}
                 </Upload>
@@ -299,6 +304,8 @@ const UploadFormItem: React.FC<IProps> = (props) => {
         modalState.previewImage,
         handleCancel,
         btnDom,
+        withCredentials,
+        needHide,
     ]);
 };
 
