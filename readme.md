@@ -64,6 +64,18 @@
 -   [x] 使用 nodemon，有时候端口不会被释放
         已改为 spawn+kill('SIGINT') 的方式
 
+### husky 6.0
+
+husky6 必须安装在根目录下
+
+```bash
+npm install husky --save-dev
+npx husky install   # 如果要安装到子目录中，需要  husky install frontend/.husky
+npm set-script prepare "husky install"  # 如果是子目录，需要在子目录中运行： npm set-script prepare "cd .. && husky install frontend/.husky"
+npx husky add .husky/pre-commit "pretty-quick --staged" # 如果是子目录，需要在具体命令前加上 cd frontend，比如.husky/commit-msg
+npx husky add .husky/commit-msg "commitlint -E HUSKY_GIT_PARAMS"
+```
+
 ### 预览
 
 ![login](./preview-login.jpg)
