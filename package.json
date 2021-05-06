@@ -12,7 +12,8 @@
         "test": "echo \"Error: no test specified\" && exit 1",
         "lint": "eslint src --fix --ext .ts,.tsx",
         "lint:report": "eslint --ext .tsx,.ts src/client/constants -f checkstyle -o report_zacc_eslint_js.xml; exit 0",
-        "lint:html": "eslint --ext .tsx,.ts src/client/constants -f node_modules/eslint-html-reporter/reporter.js -o report.html"
+        "lint:html": "eslint --ext .tsx,.ts src/client/constants -f node_modules/eslint-html-reporter/reporter.js -o report.html",
+        "prepare": "husky install ./.husky"
     },
     "dependencies": {
         "@babel/runtime": "^7.14.0",
