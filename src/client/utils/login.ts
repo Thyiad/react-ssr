@@ -3,10 +3,10 @@ import { dmBridge, dmCookie, dmEnv, dmTools, dmUrl, MinProgramInterfaceType } fr
 import { resetAccessKey } from '@client/utils/axios';
 import { checkLogin } from '@client/models/User';
 import { BIZ_ORIGIN, SSO_ENV_MAPPING } from '@client/constants/keyword';
-
 import { DEPLOY_ENV, LOGIN_COOKIE_KEY } from '@client/constants/index';
+import DmSSO, { SSOMode, SSOEnv } from '@dm/sso';
 
-let sso: any = null;
+let sso: DmSSO = null;
 
 type MinProgramsJumpType = 'navigateTo' | 'redirectTo';
 
@@ -90,13 +90,11 @@ export const login = async (
         callback && callback();
     };
     if (sso === null) {
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        const DmSSO = require('@dm/sso').default;
         sso = new DmSSO({
             type: 1, // 0,默认密码登录，默认OTP登录
-            mode: 'multi' as any, // 有无tab,multi,single
+            mode: SSOMode.MULTI, // 有无tab,multi,single
             color: '#13c8a1', // 更换主色调，默认众安绿色：#13c8a1
-            env: SSO_ENV_MAPPING[DEPLOY_ENV] as any,
+            env: SSO_ENV_MAPPING[DEPLOY_ENV] as SSOEnv,
             showClose: !(params && params.showClose === false),
             // closeCallback() {
             //   timeout = setTimeout(() => {
@@ -109,8 +107,8 @@ export const login = async (
             // },
             loginCallback(_, res) {
                 if (DEPLOY_ENV === 'dev') {
-                    if (res.value && res.value.accessKey) {
-                        dmCookie.set(LOGIN_COOKIE_KEY, res.value.accessKey, 60 * 30);
+                    if (res.accessKey) {
+                        dmCookie.set(LOGIN_COOKIE_KEY, res.accessKey, 60 * 30);
                     }
                 }
                 // clearTimeout(timeout);
