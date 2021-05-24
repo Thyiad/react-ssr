@@ -18,7 +18,7 @@ envConfig.sysType = sysType;
 const clientConfig = createConfig('client', false, envConfig);
 const clientCompile = webpack(clientConfig, (error, stats) => {
     if (error) {
-        chalk.red(error);
+        console.log(chalk.red(error));
     } else if (stats.hasErrors()) {
         chalk.red('编译client发生了错误');
         process.stdout.write(stats.toString());
