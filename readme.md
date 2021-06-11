@@ -1,5 +1,6 @@
 ### 说明
 
+-   最低 node 版本：12.13.0
 -   默认 rem（750px/100）
 -   husky、quick prettie、commitlint 验证提交
 -   zarm
