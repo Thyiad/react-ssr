@@ -40,17 +40,13 @@ export const getMatchRoute = (pathname?: string, routes?: RouteProps[]) => {
         pathname = thyEnv.canUseWindow() ? window.location.pathname : '';
     }
     routes = routes || rootRoutes;
-    const findedRoute = routes?.find((route) => matchPath(pathname, route));
-    if (findedRoute) {
-        if (findedRoute.routes) {
-            const nextFindedRoute = getMatchRoute(pathname, findedRoute.routes);
-            if (nextFindedRoute) {
-                return nextFindedRoute;
-            }
-        }
+    const findedRoute = routes?.find((route) => matchPath(pathname || '', route));
+    if (!findedRoute || !findedRoute.routes) {
         return findedRoute;
     }
-    return null;
+
+    const nextFindedRoute = getMatchRoute(pathname, findedRoute.routes);
+    return nextFindedRoute || findedRoute;
 };
 
 /**
