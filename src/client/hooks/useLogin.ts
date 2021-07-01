@@ -21,7 +21,7 @@ export const useLoginFn = () => {
             return;
         }
         if (loginStatus.value) {
-            actions.global.setLoginStatus(true);
+            actions.global.setKeyValue('isLogin', true);
         } else {
             actions.global.setKeyValue('isSearchLoginStatus', false);
         }
