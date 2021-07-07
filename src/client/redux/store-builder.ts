@@ -62,7 +62,7 @@ export const buildActionReducers = (
         Object.keys(currentReducer['actions']).forEach((actionKey: string) => {
             currentActions[actionKey] = (...args: any[]) => {
                 const action = currentReducer['actions'][actionKey].apply(null, args);
-                return dispatch(action);
+                return _dispatch(action);
             };
         });
         reducerActions = {
