@@ -29,6 +29,31 @@ let reducerHandle: IReducers;
 export const buildActionReducers = (
     dispatch: Dispatch<IAction>,
 ): { actions: ReducerActions; reducerHandle: IReducers } => {
+    const _dispatch = (actionResult: any) => {
+        const resultType = Object.prototype.toString.call(actionResult);
+        switch (resultType) {
+            // 普通对象
+            case '[object Object]':
+                dispatch(actionResult);
+                break;
+            // 普通函数、异步函数
+            case '[object Function]':
+            case '[object AsyncFunction]':
+                // 函数内自己dispatch
+                const funResult = actionResult(_dispatch);
+                // 返回对象外层dispatch
+                return _dispatch(funResult);
+                break;
+            // Promise
+            case '[object Promise]':
+                return actionResult.then((res) => {
+                    _dispatch(res);
+                });
+                break;
+            default:
+                break;
+        }
+    };
     Object.keys(reducers).forEach((kindKey) => {
         // @ts-ignore
         // 这一块ts提示不好搞，所以直接注掉了
@@ -37,7 +62,7 @@ export const buildActionReducers = (
         Object.keys(currentReducer['actions']).forEach((actionKey: string) => {
             currentActions[actionKey] = (...args: any[]) => {
                 const action = currentReducer['actions'][actionKey].apply(null, args);
-                dispatch(action);
+                return dispatch(action);
             };
         });
         reducerActions = {
