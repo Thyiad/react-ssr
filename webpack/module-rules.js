@@ -10,6 +10,7 @@ const threadLoader = require('thread-loader');
 const getCssLoaders = (options) => {
     return [
         // cache-loader 在大开销loaders才开启，否则几乎无性能提升
+        // webpack5 中使用 cache 配置
         // {
         //     loader: 'cache-loader',
         // },

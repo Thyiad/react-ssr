@@ -176,10 +176,26 @@ module.exports = (type, isDev, envConfig) => {
             : undefined,
         devtool: isDev ? 'inline-source-map' : undefined,
         // devtool: isDev ? 'cheap-module-source-map' : 'source-map',
+        // webpack5的默认值：dev->memory，prd->禁用
+        cache: isDev
+            ? {
+                  type: 'filesystem',
+                  // 默认缓存在这个目录
+                  // cacheDirectory: path.resolve(cwd, 'node_modules/.cache/webpack'),
+                  buildDependencies: {
+                      // 如果配置文件更改，使缓存失效
+                      config: [
+                          path.resolve(cwd, 'webpack/create-config.js'),
+                          path.resolve(cwd, 'webpack/module-rules.js'),
+                      ],
+                  },
+              }
+            : false,
         optimization: isServer
             ? undefined
             : {
                   // 命名代替数字
+                  // chunkIds的默认值：deterministic->根据模块名称生成简短的hash值
                   // chunkIds: 'named',
                   splitChunks: {
                       // async: 仅异步import
@@ -189,7 +205,7 @@ module.exports = (type, isDev, envConfig) => {
                       // 如果使用以下cacheGroups配置，将会把所有 node_modules 下面的打包到一个文件中
                       // cacheGroups: {
                       //     libs: {
-                      //         test: /node_modules/, // 指定是node_modules下的第三方包
+                      //         test: /[\\/]node_modules[\\/]/, // 指定是node_modules下的第三方包
                       //         chunks: 'all',
                       //         name: 'vendor', // 打包后的文件名，任意命名
                       //     },
