@@ -166,8 +166,7 @@ module.exports = (type, isDev, envConfig) => {
         cache: isDev
             ? {
                   type: 'filesystem',
-                  // 默认缓存在这个目录
-                  // cacheDirectory: path.resolve(cwd, 'node_modules/.cache/webpack'),
+                  cacheDirectory: path.resolve(cwd, 'node_modules/.cache/webpack', type),
                   buildDependencies: {
                       // 如果配置文件更改，使缓存失效
                       config: [
