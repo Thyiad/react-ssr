@@ -188,6 +188,7 @@ module.exports = (type, isDev, envConfig) => {
                       // all: 全部
                       chunks: 'all',
                       // 如果使用以下cacheGroups配置，将会把所有 node_modules 下面的打包到一个文件中
+                      // webpack5 默认打包 vendor
                       // cacheGroups: {
                       //     libs: {
                       //         test: /[\\/]node_modules[\\/]/, // 指定是node_modules下的第三方包
