@@ -4,3 +4,4 @@ logs
 report_zacc_eslint_js.xml
 report.html
 webpack/env-config.local.js
+package-lock.json
