@@ -1,19 +1,18 @@
 import React, { FC, createContext, useReducer, Dispatch, useMemo, PropsWithChildren } from 'react';
 import { buildActionReducers, getInitState, reducer, ReducerActions } from './store-builder';
 import { IState, IAction } from './data';
-import { Context } from 'koa';
 
 export interface StoreContext {
     state: IState;
     dispatch: Dispatch<IAction>;
     actions: ReducerActions;
-    context?: Context;
+    context?: any;
 }
 
 export const Store = createContext<any>({ state: getInitState() });
 
 export interface StoreProviderProps {
-    context?: Context;
+    context?: any;
 }
 
 export const Provider: FC<StoreProviderProps> = (props: PropsWithChildren<StoreProviderProps>) => {

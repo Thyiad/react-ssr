@@ -12,18 +12,17 @@ import { BASE_NAME, CTX_SSR_DATA } from '@client/constants';
 const statsFile = `${config.baseDir}/dist/client/loadable-stats.json`;
 let extractor;
 
-let cacheHtmlDic: { [key: string]: string } = {};
-const maxCacheCount = 500;
+const htmlCache = new Map<string, string>();
 
 export const clearCacheHtml = () => {
-    const len = Object.keys(cacheHtmlDic).length;
-    cacheHtmlDic = {};
+    const len = Object.keys(htmlCache).length;
+    htmlCache.clear();
     return len;
 };
 
 export const renderHtml = async (ctx: Context, router: RouteProps): Promise<string> => {
-    if (cacheHtmlDic[ctx.URL.pathname]) {
-        return cacheHtmlDic[ctx.URL.pathname];
+    if (config.cacheHtml && htmlCache.has(ctx.href)) {
+        return htmlCache.get(ctx.href);
     }
 
     if (config.isDev) {
@@ -68,9 +67,15 @@ export const renderHtml = async (ctx: Context, router: RouteProps): Promise<stri
         styleTags,
     };
     const templateStr = artTemplate.render(IndexTemplate, renderData);
-    const cacheKeys = Object.keys(cacheHtmlDic);
-    if (cacheKeys.length > maxCacheCount) {
-        delete cacheHtmlDic[cacheKeys[0]];
+    if (config.cacheHtml) {
+        htmlCache.set(ctx.href, templateStr);
+        const gtLength = htmlCache.size - config.maxCacheCount;
+        if (gtLength > 0) {
+            const delKeys = Array.from(htmlCache.keys()).slice(0, gtLength);
+            delKeys.forEach((delKey) => {
+                htmlCache.delete(delKey);
+            });
+        }
     }
     return templateStr;
 };

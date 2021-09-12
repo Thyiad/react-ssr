@@ -1,8 +1,8 @@
 import { IState, IAction } from '../data';
-import { UserModel } from '@/models/User';
+import { UserItem } from '@/types/user';
 
 export const actions = {
-    setcurrentUser: (currentUser: UserModel): IAction => {
+    setcurrentUser: (currentUser: UserItem): IAction => {
         return {
             type: 'setcurrentUser',
             payload: currentUser,
@@ -11,7 +11,7 @@ export const actions = {
 };
 
 export const reducers = {
-    setcurrentUser: (state: IState, action: IAction<UserModel>): IState => {
+    setcurrentUser: (state: IState, action: IAction<UserItem>): IState => {
         return {
             ...state,
             currentUser: action.payload,

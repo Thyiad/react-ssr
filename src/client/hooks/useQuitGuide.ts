@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { dmTools } from '@dm/utils';
+import { thyEnv } from '@thyiad/util';
 import { QUIT_GUIDE_HASH } from '@client/constants/keyword';
 
 let isShow = false;
@@ -9,7 +9,7 @@ let isShow = false;
  */
 export const useQuitGuide = (cb: () => void) => {
     useEffect(() => {
-        if (!dmTools.isClient()) {
+        if (!thyEnv.canUseWindow()) {
             return;
         }
 

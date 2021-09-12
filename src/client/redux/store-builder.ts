@@ -1,18 +1,16 @@
 import { Dispatch } from 'react';
 import reducers from './reducers/index';
 import { IState, IAction, IReducers } from './data';
-import { Context } from 'koa';
-import { CTX_SSR_DATA } from '@client/constants';
-import { canUseWindow } from '@client/utils';
+import { CTX_SSR_DATA } from '@/constants';
+import { thyEnv } from '@thyiad/util';
 
 const initState: IState = {
-    isLogin: false,
-    isSearchLoginStatus: true,
+    currentUser: undefined,
 };
 
-export const getInitState = (ctx?: Context): IState => {
+export const getInitState = (ctx?: any): IState => {
     const ctxSsrData: IState = ctx ? ctx[CTX_SSR_DATA] : null;
-    const winSsrData: IState = canUseWindow() ? window.ssrData : null;
+    const winSsrData: IState | null | undefined = thyEnv.canUseWindow() ? window.ssrData : null;
     return {
         ...initState,
         ...ctxSsrData,
@@ -27,7 +25,6 @@ export type ReducerActions = { [key in ReducerKinds]: typeof reducers[key]['acti
 // buildReducers
 let reducerActions: ReducerActions;
 let reducerHandle: IReducers;
-
 export const buildActionReducers = (
     dispatch: Dispatch<IAction>,
 ): { actions: ReducerActions; reducerHandle: IReducers } => {
@@ -56,7 +53,6 @@ export const buildActionReducers = (
                 break;
         }
     };
-
     Object.keys(reducers).forEach((kindKey) => {
         // @ts-ignore
         // 这一块ts提示不好搞，所以直接注掉了
@@ -64,8 +60,8 @@ export const buildActionReducers = (
         const currentActions: { [key: string]: any } = {};
         Object.keys(currentReducer['actions']).forEach((actionKey: string) => {
             currentActions[actionKey] = (...args: any[]) => {
-                const actionResult = currentReducer['actions'][actionKey].apply(null, args);
-                return _dispatch(actionResult);
+                const action = currentReducer['actions'][actionKey].apply(null, args);
+                return _dispatch(action);
             };
         });
         reducerActions = {

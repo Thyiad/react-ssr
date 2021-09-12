@@ -1,9 +1,8 @@
-import { dmTools } from '@dm/utils';
-
+import { thyEnv } from '@thyiad/util';
 import { addGlobalClassName } from './common';
 
 export const pageLoaded = async () => {
-    if (dmTools.isClient()) {
+    if (thyEnv.canUseWindow()) {
         addGlobalClassName();
     }
 };

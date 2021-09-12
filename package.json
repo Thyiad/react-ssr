@@ -17,11 +17,10 @@
     },
     "dependencies": {
         "@babel/runtime": "^7.15.3",
-        "@dm/sso": "^3.0.2",
-        "@dm/utils": "^0.3.53",
         "@koa/router": "^10.1.0",
         "@loadable/component": "^5.15.0",
         "@loadable/server": "^5.15.1",
+        "@thyiad/util": "^1.1.24",
         "art-template": "^4.13.2",
         "axios": "^0.21.1",
         "koa": "^2.13.1",
@@ -35,6 +34,7 @@
         "react-helmet": "^6.1.0",
         "react-router-dom": "^5.2.0",
         "react-use": "^17.2.4",
+        "smoothscroll-polyfill": "^0.4.4",
         "zarm": "^2.9.7"
     },
     "devDependencies": {

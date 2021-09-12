@@ -1,9 +1,7 @@
-import { UserModel } from '@/models/User';
+import { UserItem } from '@/types/user';
 
 export interface IState {
-    /** 是否登录 */
-    isLogin?: boolean;
-    isSearchLoginStatus: boolean;
+    currentUser?: UserItem;
 }
 
 export interface IAction<T = any> {

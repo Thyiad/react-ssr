@@ -3,21 +3,17 @@ import { BrowserRouter, StaticRouter, Switch, useHistory } from 'react-router-do
 import { Provider, StoreProviderProps } from '@/redux/store';
 import routes from '@/route';
 import RouteWithSubRoutes from '@/components/RouteWithSubRoutes';
-import '@/assets/scss/common.scss';
-import '@/app.scss';
 import { BASE_NAME } from '@client/constants';
 import { LocaleProvider } from 'zarm';
 import locale from 'zarm/lib/locale-provider/locale/zh_CN';
-import { useLoginFn } from '@client/hooks/useLogin';
-import ilog from '@client/utils/ilog';
+import '@/assets/scss/common.scss';
+import '@/app.scss';
 
 export const AppBody: FC = () => {
-    useLoginFn();
     const history = useHistory();
     useEffect(() => {
-        ilog.pushData();
         history.listen((e) => {
-            ilog.pushData();
+            // 此处做路由监听
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

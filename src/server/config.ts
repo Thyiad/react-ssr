@@ -5,6 +5,8 @@ const isDev = process.env.NODE_ENV === 'development';
 const config = {
     isDev,
     useRem: true,
+    cacheHtml: true,
+    maxCacheCount: 100,
     baseDir: process.cwd(),
     port: isDev ? envConfig.serverPort : 8080,
     deployEnv: isDev ? 'dev' : process.env.DEPLOY_ENV || 'prd',

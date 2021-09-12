@@ -1,14 +1,24 @@
 import loadable from '@loadable/component';
 import * as Init from '@/models/Init';
+import SubRouteWrapper from './components/SubRouteWrapper';
 
-const NotFound = loadable(() => import(/* webpackChunkName: "404" */ './pages/404/index'));
-const PageError = loadable(() => import(/* webpackChunkName: "500" */ './pages/500/index'));
-const Demo = loadable(() => import(/* webpackChunkName: "demo" */ './pages/demo/index'));
+const NotFound = loadable(() => import('./pages/404/index'));
+const NoPermission = loadable(() => import('./pages/403/index'));
+const PageError = loadable(() => import('./pages/500/index'));
+const EmptyPage = loadable(() => import('./pages/empty/index'));
+const DemoPage = loadable(() => import('./pages/demo/index'));
 
 /**
  * 系统路由：403、404等等
  */
 const sysPages: RouteProps[] = [
+    {
+        title: '403',
+        path: '/403',
+        name: '403',
+        exact: true,
+        component: NoPermission,
+    },
     {
         title: '404',
         path: '/404',
@@ -46,20 +56,36 @@ const routes: RouteProps[] = [
         name: 'demo',
         path: '/demo',
         exact: true,
-        component: Demo,
+        component: DemoPage,
         isSSR: true,
         getInitialProps: Init.getDemoInitData,
     },
     {
-        title: '页面发生了错误',
-        name: '500',
-        path: '/500',
-        exact: true,
-        component: PageError,
+        title: '嵌套页面',
+        path: '/subs',
+        name: 'subs',
+        exact: false,
+        component: SubRouteWrapper,
+        routes: [
+            {
+                title: '嵌套子页面1',
+                name: 'child1',
+                path: '/subs/child1',
+                exact: true,
+                component: EmptyPage,
+            },
+            {
+                title: '嵌套子页面2',
+                name: 'child2',
+                path: '/subs/child2',
+                exact: true,
+                component: EmptyPage,
+            },
+        ],
     },
     {
-        title: '页面找不到了',
-        name: '404',
+        title: '',
+        name: 'pageNotFound',
         path: '*',
         exact: true,
         redirect: '/404',
