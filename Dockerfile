@@ -1,4 +1,4 @@
-FROM base-registry.zhonganinfo.com/env/node:12.14.0
+FROM base-registry.zhonganinfo.com/env/node-nginx:12.14.0
 
 WORKDIR /root/app
 
