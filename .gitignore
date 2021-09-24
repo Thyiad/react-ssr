@@ -4,3 +4,5 @@ dist_base
 logs
 report_zacc_eslint_js.xml
 webpack/env-config.local.js
+package-lock.json
+yarn.lock
