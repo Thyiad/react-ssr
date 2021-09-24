@@ -1,4 +1,4 @@
-export interface TableItem {
+export interface TableItem extends BaseModel {
     name: string;
     phone: string;
     age: string;

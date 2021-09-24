@@ -74,7 +74,7 @@ declare global {
     }
 
     interface BaseModel {
-        _id?: string;
+        _id: string;
         createdAt?: string;
         updatedAt?: string;
         isDeleted?: boolean;
