@@ -43,7 +43,15 @@ if (envConfig.sysType === 'spa') {
 
 // server
 const serverConfig = createConfig('server', false, envConfig);
-const serverCompile = webpack(serverConfig);
+const serverCompile = webpack(serverConfig, (error, stats) => {
+    if (error) {
+        console.log(chalk.red(error));
+    } else if (stats.hasErrors()) {
+        chalk.red('编译server发生了错误');
+        process.stdout.write(stats.toString());
+        process.exit(1);
+    }
+});
 
 const dateStartServer = Date.now();
 serverCompile.hooks.done.tap('server_compile_done', (compilation, callback) => {

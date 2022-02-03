@@ -134,24 +134,30 @@ module.exports = (type, isDev, envConfig) => {
         watch: isDev,
         devServer: isDev
             ? {
-                  stats: 'errors-only', //'errors-warnings',
-                  clientLogLevel: 'silent',
-                  contentBase: path.resolve(cwd, `src${spaClientFolder}`),
                   historyApiFallback: true,
                   compress: true,
                   host: envConfig.host,
                   port: envConfig.clientPort,
                   hot: true,
-                  //   hot: `${envConfig.sysType}-${type}` === 'ssr-server' ? false : true,
                   open: false,
-                  quiet: true,
-                  overlay: true,
-                  watchOptions: {
-                      ignored: /node_modules/, // 监听过多文件会占用cpu、内存，so，可以忽略掉部分文件
-                      aggregateTimeout: 200, // 默认200，文件变更后延时多久rebuild
-                      poll: false, // 默认false，如果不采用watch，那么可以采用poll（轮询）
+                  client: {
+                      logging: 'info',
+                      overlay: true,
                   },
-                  writeToDisk: true,
+                  watchFiles: {
+                      paths: [path.resolve(cwd, `src${spaClientFolder}/**/*`)],
+                      options: {
+                          ignored: /node_modules/, // 监听过多文件会占用cpu、内存，so，可以忽略掉部分文件
+                          usePolling: false,
+                      },
+                  },
+                  devMiddleware: {
+                      stats: 'errors-only', //'errors-warnings',
+                      writeToDisk: true,
+                  },
+                  static: {
+                      directory: path.resolve(cwd, `dist`),
+                  },
                   headers: {
                       'Access-Control-Allow-Credentials': true,
                       'Access-Control-Allow-Headers': 'X-Requested-With,ownerId,Content-Type',
