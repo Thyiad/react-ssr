@@ -1,5 +1,5 @@
 import React, { FC, useEffect } from 'react';
-import { BrowserRouter, StaticRouter, Switch, useHistory } from 'react-router-dom';
+import { BrowserRouter, Switch, useHistory } from 'react-router-dom';
 import { Provider, StoreProviderProps } from '@/redux/store';
 import routes from '@/route';
 import RouteWithSubRoutes from '@/components/RouteWithSubRoutes';

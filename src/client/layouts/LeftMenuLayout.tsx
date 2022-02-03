@@ -1,5 +1,5 @@
 import React, { FC, useState, useEffect, useMemo, useCallback, useRef } from 'react';
-import { useHistory, Switch, useParams, useLocation, matchPath } from 'react-router-dom';
+import { useHistory, Switch } from 'react-router-dom';
 import { Layout, Menu } from 'antd';
 import { useRedux } from '@/hooks/useRedux';
 import PageLoading from '@/components/PageLoading';

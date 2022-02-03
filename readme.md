@@ -76,6 +76,14 @@ npx husky add .husky/pre-commit "npx --no-install pretty-quick --staged" # 如�
 npx husky add .husky/commit-msg "npx --no-install commitlint --edit $1"
 ```
 
+### chalk
+
+-   chalk 暂保持在 4.0，[原因](https://github.com/chalk/chalk/releases/tag/v5.0.0)：
+    > This package is now pure ESM. Please [read this](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c).
+    > If you use TypeScript, you will want to stay on Chalk 4 until TypeScript 4.6 is out. [Why](https://github.com/microsoft/TypeScript/issues/46452).
+-   同上，clean-webpack-plugin 也暂保持在 3.0
+-   react-router-v6 改动有点大，有些系统还用了微服务，这里暂不做升级
+
 ### 预览
 
 ![login](./preview-login.jpg)
