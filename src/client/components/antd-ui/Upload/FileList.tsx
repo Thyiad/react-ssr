@@ -163,8 +163,9 @@ const FileList: React.FC<IProps> = (props) => {
             <Upload
                 action={uploadUrl}
                 headers={headers}
-                onChange={onChange}
                 fileList={fileList}
+                // @ts-ignore
+                onChange={onChange}
                 // @ts-ignore
                 beforeUpload={beforeUpload}
                 showUploadList
