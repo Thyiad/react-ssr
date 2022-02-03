@@ -83,6 +83,7 @@ npx husky add .husky/commit-msg "npx --no-install commitlint --edit $1"
     > If you use TypeScript, you will want to stay on Chalk 4 until TypeScript 4.6 is out. [Why](https://github.com/microsoft/TypeScript/issues/46452).
 -   同上，clean-webpack-plugin 也暂保持在 3.0
 -   react-router-v6 改动有点大，有些系统还用了微服务，这里暂不做升级
+    > 官方升级指南：https://reactrouter.com/docs/en/v6/upgrading/v5#introduction
 
 ### 预览
 
