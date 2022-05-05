@@ -19,7 +19,15 @@ envConfig.sysType = sysType;
 // 编译client
 const clientConfig = createConfig('client', true, envConfig);
 // const clientCompile = webpack(smp.wrap(clientConfig));
-const clientCompile = webpack(clientConfig);
+const clientCompile = webpack(clientConfig, (error, stats) => {
+    if (error) {
+        console.log(chalk.red(error));
+    } else if (stats.hasErrors()) {
+        chalk.red('编译client发生了错误');
+        process.stdout.write(stats.toString());
+        process.exit(1);
+    }
+});
 
 let loggedClient = false;
 const dateStartClient = Date.now();
@@ -33,8 +41,8 @@ clientCompile.hooks.done.tapAsync('client_compile_done', (compilation, callback)
     }
     callback && callback();
 });
-const clientDevServer = new webpackDevServer(clientCompile, clientConfig.devServer);
-clientDevServer.listen(clientConfig.devServer.port, (err) => {
+const clientDevServer = new webpackDevServer(clientConfig.devServer, clientCompile);
+clientDevServer.startCallback((err) => {
     if (err) {
         console.log(chalk.red(err));
     }
@@ -72,28 +80,6 @@ serverCompile.hooks.done.tap('server_compile_done', (compilation, callback) => {
         console.error(`server error: ${data}`);
     });
     console.log(chalk.blue(`server has started at ${envConfig.serverPort}`));
-
-    // // nodemon方式
-    // if (!serverChildProcess) {
-    //     serverChildProcess = childProcess.spawn('nodemon', [
-    //         '--watch',
-    //         path.resolve(cwd, `dist/server`),
-    //         '--ignore',
-    //         '*hot-update.json',
-    //         '--ignore',
-    //         '*hot-update.js',
-    //         '--ignore',
-    //         'loadable-stats.json',
-    //         path.resolve(cwd, `dist/server/main.js`),
-    //     ]);
-    //     serverChildProcess.stdout.on('data', (data) => {
-    //         console.log(`server out: ${data}`);
-    //     });
-    //     serverChildProcess.stderr.on('data', (data) => {
-    //         console.error(`server error: ${data}`);
-    //     });
-    //     console.log(chalk.blue(`server has started at ${envConfig.serverPort}`));
-    // }
     callback && callback();
 });
 serverCompile.watch(serverConfig.devServer.watchOptions, (err) => {

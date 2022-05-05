@@ -133,11 +133,12 @@ const UploadBtn: React.FC<IProps> = (props: IProps) => {
             <Upload
                 action={uploadUrl}
                 headers={headers}
-                onChange={onChange}
                 fileList={fileList}
-                data={uploadParams}
+                // @ts-ignore
+                onChange={onChange}
                 // @ts-ignore
                 beforeUpload={beforeUpload}
+                data={uploadParams}
                 showUploadList={false}
             >
                 <Button loading={showLoading && uploading} icon={<UploadOutlined />} {...btnProps}>
