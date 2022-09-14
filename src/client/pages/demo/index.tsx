@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { Form, Divider, Button } from 'antd';
 import { UploadBtn, UploadFormItem, Bar, Line, Radar, IconFont } from '@/components/antd-ui/index';
 import { iconFontKeys } from '@/components/antd-ui/IconFont/index';
@@ -14,6 +14,8 @@ const DemoPage: FC<RoutePageProps> = (props) => {
         { x: '李四2', y: 60 },
         { x: '王五3', y: 30 },
     ];
+
+    const [uploadValue, setUploadValue] = useState<string[]>([]);
 
     return (
         <div style={{ padding: 24 }}>
@@ -38,7 +40,7 @@ const DemoPage: FC<RoutePageProps> = (props) => {
                 uploadParams={{ saveDir: 'oss/upload', keepName: false }}
                 isMulti={false}
                 listType="picture-card"
-                fileSize={2}
+                fileSize={6}
                 extList={['.png', 'jpg']}
                 uploadText="上传文件"
                 // onChange={(e) => {
@@ -55,13 +57,13 @@ const DemoPage: FC<RoutePageProps> = (props) => {
                     <UploadFormItem
                         uploadUrl={api.UPLOAD_OSS}
                         uploadParams={{ saveDir: 'oss/upload', keepName: false }}
-                        isMulti={false}
+                        isMulti={true}
+                        selectMulti
                         listType="text"
                         showUploadList={true}
-                        fileSize={2}
+                        fileSize={6}
                         extList={['.png', 'jpg']}
                         uploadText="上传文件"
-                        value="https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2771978851,2906984932&fm=26&gp=0.jpg"
                     />
                 </Form.Item>
                 <Button htmlType="submit">提交</Button>

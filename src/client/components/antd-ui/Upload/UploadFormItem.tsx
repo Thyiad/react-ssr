@@ -5,7 +5,7 @@ import { UploadFile, UploadChangeParam, RcFile } from 'antd/lib/upload/interface
 import lrz from 'lrz';
 import { dataURLtoFile, getBase64, getFileName } from './tool';
 import { Response } from './upload';
-import './index.scss';
+import './index.css';
 
 interface IProps {
     uploadUrl: string;
@@ -35,17 +35,31 @@ interface IProps {
         minSize: number;
         extList: string[];
     };
+    /**
+     * 是否限制图片尺寸
+     */
+    imageSize?: {
+        width?: number;
+        height?: number;
+    };
 
     value?: string | string[];
     onChange?: (fileValue: string | string[]) => void;
 
     /** muti向上抛数组，否则抛string */
     isMulti: boolean;
+    selectMulti?: boolean;
     listType: 'picture' | 'picture-card' | 'text';
     showUploadList?: boolean;
     hideUpload?: boolean;
     maxCount?: number;
     withCredentials?: boolean;
+
+    /** 成功响应时的数据格式 */
+    responseFormat?: {
+        code: number | string;
+        data: string;
+    };
 }
 
 const UploadFormItem: React.FC<IProps> = (props) => {
@@ -65,10 +79,13 @@ const UploadFormItem: React.FC<IProps> = (props) => {
         maxCount,
         value,
         compressOption,
+        imageSize,
         isMulti,
         listType,
         showUploadList,
         withCredentials,
+        responseFormat,
+        selectMulti,
     } = props;
 
     const [modalState, setModalState] = useState({
@@ -110,7 +127,7 @@ const UploadFormItem: React.FC<IProps> = (props) => {
         (file) => {
             const index = fileList.findIndex((item) => item.uid === file.uid);
             if (index >= 0) {
-                fileList.splice(0, 1);
+                fileList.splice(index, 1);
                 setFileList([...fileList]);
                 onChange && onChange(fileList.map((item) => item.url).filter((item) => item));
             }
@@ -126,8 +143,15 @@ const UploadFormItem: React.FC<IProps> = (props) => {
                 return;
             }
             if (!isMulti) {
-                if (params.file.status === 'done' && params.file.response && params.file.response.code === 2000) {
-                    const resData = params.file.response.data;
+                if (params.file.status !== 'removed') {
+                    setFileList([params.file]);
+                }
+                if (
+                    params.file.status === 'done' &&
+                    params.file.response &&
+                    params.file.response.code === responseFormat!.code
+                ) {
+                    const resData = params.file.response[responseFormat!.data];
                     if (onChange) {
                         onChange(Array.isArray(resData) ? resData[0] : resData);
                     }
@@ -137,35 +161,42 @@ const UploadFormItem: React.FC<IProps> = (props) => {
                         uploadErr();
                     }
                 }
-                setFileList([params.file]);
             } else {
-                const newFileList = params.fileList
-                    .map((file) => {
-                        if (file.response && file.response.code === 2000) {
-                            const resData = file.response.data;
-                            const serverUrl = Array.isArray(resData) ? resData[0] : resData;
-                            file.url = serverUrl;
-                        }
-                        return file;
-                    })
-                    .filter((file) => !!file.status);
-                // @ts-ignore
-                const fileUrls: string[] = newFileList.map((item) => item.url).filter((item) => !!item);
-                setFileList(newFileList);
+                if (params.file.status !== 'removed') {
+                    setFileList(params.fileList);
+                }
+                if (
+                    params.file.status === 'done' &&
+                    params.file.response &&
+                    params.file.response.code === responseFormat!.code
+                ) {
+                    const resData = params.file.response[responseFormat!.data];
+                    const serverUrl = Array.isArray(resData) ? resData[0] : resData;
+                    params.file.url = serverUrl;
 
-                onChange && onChange(fileUrls);
-                if (params.file.status === 'error') {
+                    // 上传成功
+                    // 其他的都完毕后才onChange：都有status并且status !== 'uploading'
+                    const notUploadingList = params.fileList.filter(
+                        (file) => file.status && file.status !== 'uploading',
+                    );
+                    if (notUploadingList.length === params.fileList.length) {
+                        const doneList = notUploadingList.filter((file) => file.status === 'done');
+                        // @ts-ignore
+                        const fileUrls: string[] = doneList.map((item) => item.url).filter((item) => !!item);
+                        onChange && onChange(fileUrls);
+                    }
+                } else if (params.file.status === 'error') {
                     if (uploadErr) {
                         uploadErr();
                     }
                 }
             }
         },
-        [handleRemove, isMulti, onChange, uploadErr],
+        [handleRemove, isMulti, onChange, responseFormat, uploadErr],
     );
 
     const beforeUpload = useCallback(
-        (file: RcFile) => {
+        async (file: RcFile) => {
             if (Array.isArray(extList) && extList.length > 0) {
                 const extValid = extList.some((ext) => file.name.endsWith(ext));
                 if (!extValid) {
@@ -183,17 +214,35 @@ const UploadFormItem: React.FC<IProps> = (props) => {
                 }
             }
 
+            if (imageSize && (imageSize.width || imageSize.height)) {
+                await new Promise((resolve, reject) => {
+                    const img = new Image();
+                    const _URL = window.URL || window.webkitURL;
+                    img.src = _URL.createObjectURL(file);
+                    img.onload = function () {
+                        if (
+                            (imageSize.width && imageSize.width !== img.width) ||
+                            (imageSize.height && imageSize.height !== img.height)
+                        ) {
+                            message.error(`图片的尺寸不对，请重新上传`);
+                            reject(false);
+                        }
+                        resolve(true);
+                    };
+                });
+            }
+
             if (
                 compressOption &&
                 compressOption.isCompress &&
                 file.size > compressOption.minSize &&
                 compressOption.extList.some((ext) => file.name.endsWith(ext))
             ) {
-                return new Promise((resolve, reject) => {
+                file = await new Promise((resolve, reject) => {
                     lrz(file)
                         .then((rst: any) => {
-                            const newFile = dataURLtoFile(rst.base64, rst.origin.name);
                             // @ts-ignore
+                            const newFile: RcFile = dataURLtoFile(rst.base64, rst.origin.name);
                             newFile.uid = file.uid;
                             resolve(newFile);
                         })
@@ -206,9 +255,9 @@ const UploadFormItem: React.FC<IProps> = (props) => {
             }
 
             selectSuc && selectSuc(file);
-            return true;
+            return file;
         },
-        [extList, fileSize, compressOption, selectSuc, handleRemove],
+        [extList, fileSize, imageSize, compressOption, selectSuc, handleRemove],
     );
 
     const handlePreview = useCallback(async (file) => {
@@ -265,7 +314,6 @@ const UploadFormItem: React.FC<IProps> = (props) => {
                     action={uploadUrl}
                     headers={headers}
                     listType={listType}
-                    // @ts-ignore
                     fileList={fileList}
                     // @ts-ignore
                     onChange={onUploadChange}
@@ -276,6 +324,7 @@ const UploadFormItem: React.FC<IProps> = (props) => {
                     onPreview={handlePreview}
                     onRemove={handleRemove}
                     withCredentials={withCredentials}
+                    multiple={selectMulti}
                 >
                     {btnDom}
                 </Upload>
@@ -291,23 +340,25 @@ const UploadFormItem: React.FC<IProps> = (props) => {
             </>
         );
     }, [
+        needHide,
+        fileList,
+        hideUpload,
         uploadUrl,
         headers,
         listType,
         onUploadChange,
-        fileList,
         beforeUpload,
         showUploadList,
         uploadParams,
         handlePreview,
         handleRemove,
+        withCredentials,
+        btnDom,
         modalState.previewVisible,
         modalState.previewTitle,
         modalState.previewImage,
         handleCancel,
-        btnDom,
-        withCredentials,
-        needHide,
+        selectMulti,
     ]);
 };
 
@@ -320,11 +371,15 @@ UploadFormItem.defaultProps = {
     showLoading: false,
     compressOption: {
         isCompress: true,
-        minSize: 102400,
+        minSize: 1024 * 1024 * 0.1,
         extList: ['.jpg', '.jpeg', '.png', '.gif', '.bmp'],
     },
     hideUpload: false,
     maxCount: 5,
+    responseFormat: {
+        code: 2000,
+        data: 'data',
+    },
 };
 
 export default UploadFormItem;
