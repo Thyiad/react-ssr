@@ -9,11 +9,6 @@ const threadLoader = require('thread-loader');
 /** options: isDev, useCssModule */
 const getCssLoaders = (options) => {
     return [
-        // cache-loader 在大开销loaders才开启，否则几乎无性能提升
-        // webpack5 中使用 cache 配置
-        // {
-        //     loader: 'cache-loader',
-        // },
         // thread-loader 无法和 less、sass一起使用：各种报错
         {
             loader: options.isDev ? 'style-loader' : miniCssExtract.loader,
@@ -64,9 +59,6 @@ module.exports = (isServer, isDev) => {
             test: /\.(js|jsx|ts|tsx)$/,
             exclude: /node_modules/,
             use: [
-                // {
-                //     loader: 'cache-loader',
-                // },
                 {
                     loader: 'thread-loader',
                     options: workerPool,
@@ -100,7 +92,7 @@ module.exports = (isServer, isDev) => {
         },
         {
             test: /\.less$/,
-            include: /node_modules/,
+            // include: /node_modules/,
             use: isServer
                 ? 'null-loader'
                 : [
@@ -115,23 +107,23 @@ module.exports = (isServer, isDev) => {
                       },
                   ],
         },
-        {
-            test: /\.less$/,
-            exclude: /node_modules/,
-            use: isServer
-                ? 'null-loader'
-                : [
-                      ...getCssLoaders({ useCssModule: true, isDev: isDev }), // 如果本地不需要css modules, 可以合并为同一个less配置项
-                      {
-                          loader: 'less-loader',
-                          options: {
-                              lessOptions: {
-                                  javascriptEnabled: true,
-                              },
-                          },
-                      },
-                  ],
-        },
+        // {
+        //     test: /\.less$/,
+        //     exclude: /node_modules/,
+        //     use: isServer ?
+        //         'null-loader' :
+        //         [
+        //             ...getCssLoaders({ useCssModule: true, isDev: isDev }), // 如果本地不需要css modules, 可以合并为同一个less配置项
+        //             {
+        //                 loader: 'less-loader',
+        //                 options: {
+        //                     lessOptions: {
+        //                         javascriptEnabled: true,
+        //                     },
+        //                 },
+        //             },
+        //         ],
+        // },
         {
             test: /\.(png|jpg|jpeg|gif|svg)$/,
             exclude: /node_modules/,

@@ -1,5 +1,4 @@
 import React, { FC, useRef, useMemo, useCallback, useState } from 'react';
-import ProTable, { ProColumns, ActionType, RequestData } from '@ant-design/pro-table';
 import { Avatar, Button, Select, FormInstance, Form } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { thyUI, thyReq } from '@thyiad/util';
@@ -7,7 +6,8 @@ import { TableItem, TableListParams } from './table';
 import * as api from '@client/constants/api';
 import './index.scss';
 import { EditDialogProps, TableActionType, TableDialogTitleDic } from '@client/constants/enum';
-import { DrawerForm, ProFormSelect, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
+import type { ActionType, ProColumns, RequestData } from '@ant-design/pro-components';
+import { ProTable, DrawerForm, ProFormSelect, ProFormText, ProFormTextArea } from '@ant-design/pro-components';
 
 const TablePage: FC<RoutePageProps> = (props) => {
     const actionRef = useRef<ActionType>();

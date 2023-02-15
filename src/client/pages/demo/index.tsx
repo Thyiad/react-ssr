@@ -1,9 +1,10 @@
 import React, { FC, useState } from 'react';
 import { Form, Divider, Button } from 'antd';
-import { UploadBtn, UploadFormItem, Bar, Line, Radar, IconFont } from '@/components/antd-ui/index';
+import { UploadBtn, UploadFormItem, IconFont } from '@/components/antd-ui/index';
 import { iconFontKeys } from '@/components/antd-ui/IconFont/index';
 import * as api from '@client/constants/api';
 import { thyUI, UITypes } from '@thyiad/util/lib/index';
+import ChartDemo from './chart';
 
 const DemoPage: FC<RoutePageProps> = (props) => {
     const barData = [
@@ -69,28 +70,7 @@ const DemoPage: FC<RoutePageProps> = (props) => {
                 <Button htmlType="submit">提交</Button>
             </Form>
             <Divider />
-            <Bar
-                scale={{ y: { min: 0, max: 100 } }}
-                width={barData.length * 100 + 80}
-                height={300}
-                barWidth={50}
-                data={barData}
-                toolTipItemTpl="通过率: {value}%"
-            />
-            <Line
-                width={barData.length * 100 + 80}
-                height={300}
-                scale={{ y: { min: 0, max: 100 } }}
-                data={barData}
-                toolTipItemTpl="通过率: {value}%"
-            />
-            <Radar
-                width={300}
-                height={300}
-                scale={{ y: { min: 0, max: 100 } }}
-                data={barData}
-                toolTipItemTpl="通过率: {value}%"
-            />
+            <ChartDemo />
             <Divider />
             <div>
                 {iconFontKeys.map((item) => (

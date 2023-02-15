@@ -89,3 +89,10 @@ npx husky add .husky/commit-msg "npx --no-install commitlint --edit $1"
 
 ![login](./preview-login.jpg)
 ![home](./preview.jpg)
+
+### 升级到 antd5.0+react-router-6.0
+
+-   [x] 先升级 webpack 等依赖库到最新版本
+-   [ ] 升级 react 到 18
+-   [ ] 升级到 antd5
+-   [ ] 升级 react-router 到 6.0
