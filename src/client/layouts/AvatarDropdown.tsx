@@ -21,27 +21,27 @@ const AvatarDropdown: FC<AvatarDropdownProps> = (props) => {
         }
     }, []);
 
-    const dropdownMenu = useMemo(() => {
-        return (
-            <Menu onClick={onMenuClick}>
-                <Menu.Item key="logout">
-                    <LogoutOutlined />
-                    退出登录
-                </Menu.Item>
-            </Menu>
-        );
-    }, [onMenuClick]);
-
     return useMemo(() => {
         return (
-            <Dropdown overlay={dropdownMenu}>
+            <Dropdown
+                menu={{
+                    items: [
+                        {
+                            key: 'logout',
+                            icon: <LogoutOutlined />,
+                            label: '退出登录',
+                        },
+                    ],
+                    onClick: onMenuClick,
+                }}
+            >
                 <span className="avatar-dropdown">
                     <Avatar size="small" src={state.currentUser?.avatar} alt="" />
                     <span style={{ marginLeft: 8, color: nameColor }}>{state.currentUser?.name}</span>
                 </span>
             </Dropdown>
         );
-    }, [dropdownMenu, state.currentUser, nameColor]);
+    }, [state.currentUser, nameColor, onMenuClick]);
 };
 
 export default AvatarDropdown;

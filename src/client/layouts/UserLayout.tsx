@@ -1,8 +1,7 @@
 import React, { FC, useMemo } from 'react';
-import { Link, Switch } from 'react-router-dom';
+import { Link, Outlet, Route, Routes } from 'react-router-dom';
 import CommonFooter from './CommonFooter';
 import systemInfo from '@client/constants/systemInfo';
-import RouteWithSubRoutes from '@/components/RouteWithSubRoutes';
 import './UserLayout.scss';
 import logo from '@/assets/img/logo.png';
 
@@ -28,16 +27,12 @@ const UserLayout: FC<RoutePageProps> = (props) => {
                         </div>
                         <div className="desc">{login.desc}</div>
                     </div>
-                    <Switch>
-                        {routes?.map((route) => (
-                            <RouteWithSubRoutes key={route.name} {...route} />
-                        ))}
-                    </Switch>
+                    <Outlet />
                 </div>
                 <CommonFooter />
             </div>
         );
-    }, [routes]);
+    }, []);
 };
 
 export default UserLayout;

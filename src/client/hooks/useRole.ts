@@ -1,14 +1,14 @@
 import { useEffect, useRef } from 'react';
-import { History } from 'history';
 import { getMatchRoute } from '@/utils/index';
+import { NavigateFunction, Location } from 'react-router-dom';
 
-const checkRole = (history: History, pathname: string, curRole?: string): void => {
+const checkRole = (navigate: NavigateFunction, pathname: string, curRole?: string): void => {
     const findedRoute = getMatchRoute(pathname);
     if (!findedRoute || !findedRoute.roles || !curRole) {
         return;
     }
     if (!findedRoute.roles.includes(curRole)) {
-        history.replace('/403');
+        navigate('/403', { replace: true });
     }
 };
 
@@ -17,15 +17,12 @@ interface UseRoleRes {
     checkRole: typeof checkRole;
 }
 
-export const useRole = (history: History, curRole?: string): UseRoleRes => {
+export const useRole = (navigate: NavigateFunction, location: Location, curRole?: string): UseRoleRes => {
     const isFirstRender = useRef(true);
 
     useEffect(() => {
-        const unRegister = history.listen((e) => {
-            checkRole(history, e.pathname, curRole);
-        });
-        return unRegister;
-    }, [history, curRole]);
+        checkRole(navigate, location.pathname, curRole);
+    }, [navigate, location, curRole]);
 
     return { isFirstRender, checkRole };
 };

@@ -1,5 +1,5 @@
 import React, { FC, useState, useCallback, useMemo } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { login } from '@/models/User';
 import { thyUrl, thyCookie } from '@thyiad/util';
 import { LOGIN_COOKIE_KEY, LOGIN_ROLE_KEY } from '@client/constants/index';
@@ -10,7 +10,7 @@ import './index.scss';
 const Login: FC<RoutePageProps> = (props) => {
     const { target } = thyUrl.getQuery();
     const [isLogining, setIsLogining] = useState(false);
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const handleLogin = useCallback(
         (values: any) => {
@@ -26,7 +26,7 @@ const Login: FC<RoutePageProps> = (props) => {
                     if (/^http/.test(targetUrl)) {
                         window.location.href = targetUrl;
                     } else {
-                        history.push(targetUrl);
+                        navigate(targetUrl);
                     }
                     setIsLogining(false);
                 })
@@ -34,7 +34,7 @@ const Login: FC<RoutePageProps> = (props) => {
                     setIsLogining(false);
                 });
         },
-        [history, target],
+        [navigate, target],
     );
 
     return useMemo(() => {

@@ -1,9 +1,9 @@
 import React, { FC, useState, useEffect, useMemo, useCallback, useRef } from 'react';
-import { useHistory, Switch } from 'react-router-dom';
+import { useNavigate, Routes, Route, useLocation, Outlet, Link } from 'react-router-dom';
 import { Layout, Menu } from 'antd';
 import { useRedux } from '@/hooks/useRedux';
 import PageLoading from '@/components/PageLoading';
-import RouteWithSubRoutes from '@/components/RouteWithSubRoutes';
+import { RouteElement } from '@client/components/RouterV6';
 import { thyCookie, thyEnv } from '@thyiad/util';
 import { getMatchRoute } from '@/utils/index';
 import { LOGIN_COOKIE_KEY } from '@client/constants/index';
@@ -19,16 +19,19 @@ const { Header, Sider, Content } = Layout;
 
 import './LeftMenuLayout.scss';
 import logo from '@/assets/img/logo.png';
+import { renderRoute } from '@client/utils/ui';
 
 /**
  * 左侧菜单layout
  * @param props
  */
 const LeftMenuLayout: FC<RoutePageProps> = (props) => {
-    const history = useHistory();
     const { routes } = props;
     const { state, actions } = useRedux();
-    const { isFirstRender, checkRole } = useRole(history, state.currentUser?.role);
+
+    const navigate = useNavigate();
+    const location = useLocation();
+    const { isFirstRender, checkRole } = useRole(navigate, location, state.currentUser?.role);
 
     const [collapsed, setCollapsed] = useState(false);
 
@@ -56,29 +59,20 @@ const LeftMenuLayout: FC<RoutePageProps> = (props) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const onMenuClick = useCallback(
-        (event: any) => {
-            const { key } = event;
-
-            history.push(key);
-        },
-        [history],
-    );
-
     const renderMenu = useCallback(
-        (item: RouteProps) => {
+        (item: RouteProps, parentPathList: string[]) => {
             if (item.hideInMenu || (item.roles && !item.roles.includes(state.currentUser?.role))) {
                 return null;
             }
             return Array.isArray(item.routes) && item.routes.length > 0 ? (
                 <Menu.SubMenu key={item.path} icon={item.icon} title={item.title}>
                     {item.routes.map((child) => {
-                        return renderMenu(child);
+                        return renderMenu(child, [...parentPathList, item.relativePath || item.path]);
                     })}
                 </Menu.SubMenu>
             ) : (
                 <Menu.Item key={item.path} icon={item.icon}>
-                    {item.title}
+                    <Link to={[...parentPathList, item.relativePath || item.path].join('/')}>{item.title}</Link>
                 </Menu.Item>
             );
         },
@@ -92,7 +86,7 @@ const LeftMenuLayout: FC<RoutePageProps> = (props) => {
         }
 
         if (isFirstRender.current) {
-            checkRole(history, window.location.pathname, state.currentUser?.role);
+            checkRole(navigate, window.location.pathname, state.currentUser?.role);
             isFirstRender.current = false;
         }
 
@@ -104,9 +98,9 @@ const LeftMenuLayout: FC<RoutePageProps> = (props) => {
                             <img src={logo} alt="" />
                         </a>
                     </div>
-                    <Menu theme="dark" mode="inline" defaultSelectedKeys={[initActiveMenu]} onClick={onMenuClick}>
+                    <Menu theme="dark" mode="inline" defaultSelectedKeys={[initActiveMenu]}>
                         {routes.map((item) => {
-                            return renderMenu(item);
+                            return renderMenu(item, []);
                         })}
                     </Menu>
                 </Sider>
@@ -125,28 +119,14 @@ const LeftMenuLayout: FC<RoutePageProps> = (props) => {
                     </Header>
                     <Content className="site-layout-content">
                         <div className="site-layout-content-wrapper">
-                            <Switch>
-                                {routes?.map((route) => (
-                                    <RouteWithSubRoutes key={route.name} {...route} />
-                                ))}
-                            </Switch>
+                            <Outlet />
                         </div>
                         <CommonFooter />
                     </Content>
                 </Layout>
             </Layout>
         );
-    }, [
-        state.currentUser,
-        isFirstRender,
-        collapsed,
-        initActiveMenu,
-        onMenuClick,
-        routes,
-        checkRole,
-        history,
-        renderMenu,
-    ]);
+    }, [state.currentUser, isFirstRender, collapsed, initActiveMenu, routes, checkRole, renderMenu, navigate]);
 };
 
 export default LeftMenuLayout;

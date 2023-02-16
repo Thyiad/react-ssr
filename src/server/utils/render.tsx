@@ -1,5 +1,5 @@
 import { Context } from 'koa';
-import { StaticRouter } from 'react-router-dom';
+import { StaticRouter } from 'react-router-dom/server';
 import { AppProvider } from '@client/components/AppContainer';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
@@ -44,11 +44,11 @@ export const renderHtml = async (ctx: Context, router: RouteProps): Promise<stri
 
     const jsx = router.isSSR
         ? extractor.collectChunks(
-              <StaticRouter location={ctx.url} context={{}}>
+              <StaticRouter location={ctx.url}>
                   <AppProvider context={ctx} />
               </StaticRouter>,
           )
-        : extractor.collectChunks(<StaticRouter location={ctx.url} context={{}} />);
+        : extractor.collectChunks(<StaticRouter location={ctx.url} />);
 
     const html = renderToString(jsx);
     const scriptTags = extractor.getScriptTags(); // or extractor.getScriptElements();

@@ -1,9 +1,8 @@
 import React, { FC, useEffect, useMemo, useCallback } from 'react';
-import { Switch, useHistory } from 'react-router-dom';
+import { Outlet, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { Layout, Menu } from 'antd';
 import { useRedux } from '@/hooks/useRedux';
 import PageLoading from '@/components/PageLoading';
-import RouteWithSubRoutes from '@/components/RouteWithSubRoutes';
 import { thyCookie, thyEnv } from '@thyiad/util';
 import { getMatchRoute } from '@/utils/index';
 import { LOGIN_COOKIE_KEY } from '@client/constants/index';
@@ -18,12 +17,15 @@ const { Header, Content } = Layout;
 
 import './TopMenuLayout.scss';
 import logo from '@/assets/img/logo.png';
+import { renderRoute } from '@client/utils/ui';
 
 const TopMenuLayout: FC<RoutePageProps> = (props) => {
-    const history = useHistory();
     const { routes } = props;
     const { state, actions } = useRedux();
-    const { isFirstRender, checkRole } = useRole(history, state.currentUser?.role);
+
+    const navigate = useNavigate();
+    const location = useLocation();
+    const { isFirstRender, checkRole } = useRole(navigate, location, state.currentUser?.role);
 
     useEffect(() => {
         const accessKey = thyCookie.get(LOGIN_COOKIE_KEY);
@@ -52,9 +54,9 @@ const TopMenuLayout: FC<RoutePageProps> = (props) => {
         (event: any) => {
             const { key } = event;
 
-            history.push(key);
+            navigate(key);
         },
-        [history],
+        [navigate],
     );
 
     const renderMenu = useCallback(
@@ -84,7 +86,7 @@ const TopMenuLayout: FC<RoutePageProps> = (props) => {
         }
 
         if (isFirstRender.current) {
-            checkRole(history, window.location.pathname, state.currentUser?.role);
+            checkRole(navigate, window.location.pathname, state.currentUser?.role);
             isFirstRender.current = false;
         }
 
@@ -112,17 +114,13 @@ const TopMenuLayout: FC<RoutePageProps> = (props) => {
                 </Header>
                 <Content className="top-menu-layout-content">
                     <div className="site-layout-content-wrapper">
-                        <Switch>
-                            {routes?.map((route) => (
-                                <RouteWithSubRoutes key={route.name} {...route} />
-                            ))}
-                        </Switch>
+                        <Outlet />
                     </div>
                     <CommonFooter />
                 </Content>
             </Layout>
         );
-    }, [state.currentUser, isFirstRender, onMenuClick, initActiveMenu, routes, checkRole, history, renderMenu]);
+    }, [state.currentUser, isFirstRender, onMenuClick, initActiveMenu, routes, checkRole, renderMenu, navigate]);
 };
 
 export default TopMenuLayout;

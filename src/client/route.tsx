@@ -5,7 +5,7 @@ import { MenuUnfoldOutlined, MenuFoldOutlined, TableOutlined } from '@ant-design
 import UserLayout from './layouts/UserLayout';
 import LeftMenuLayout from './layouts/LeftMenuLayout';
 import TopMenuLayout from './layouts/TopMenuLayout';
-import SubRouteWrapper from './components/SubRouteWrapper';
+import { SubRouteWrapper } from './components/RouterV6';
 import * as Init from '@/utils/getInitialProps';
 
 const Login = loadable(() => import(/* webpackChunkName: "login" */ './pages/login/index'));
@@ -47,14 +47,14 @@ const sysPages: RouteProps[] = [
 const userPages: RouteProps[] = [
     {
         title: '',
-        path: '/user',
+        path: '/user/*',
         name: 'userLayout',
         exact: false,
         component: UserLayout,
         routes: [
             {
                 title: '',
-                path: '/user',
+                path: '',
                 name: 'userRedirect',
                 exact: true,
                 redirect: '/user/login',
@@ -62,7 +62,7 @@ const userPages: RouteProps[] = [
             },
             {
                 title: '登录',
-                path: '/user/login',
+                path: 'login',
                 name: 'login',
                 exact: true,
                 component: Login,
@@ -76,7 +76,7 @@ const routes: RouteProps[] = [
     ...userPages,
     {
         title: '',
-        path: '/',
+        path: '/*',
         name: 'homeLayout',
         exact: false,
         component: LeftMenuLayout,
@@ -84,7 +84,7 @@ const routes: RouteProps[] = [
             {
                 title: '首页',
                 name: 'home',
-                path: '/',
+                path: '',
                 exact: true,
                 redirect: '/table',
                 hideInMenu: true,
@@ -92,7 +92,7 @@ const routes: RouteProps[] = [
             {
                 title: '列表示例',
                 name: 'table',
-                path: '/table',
+                path: 'table',
                 exact: true,
                 component: Table,
                 icon: <TableOutlined />,
@@ -102,23 +102,16 @@ const routes: RouteProps[] = [
             {
                 title: '无限嵌套',
                 name: 'subs',
-                path: '/subs',
+                path: 'subs/*',
+                relativePath: 'subs',
                 exact: false,
                 component: SubRouteWrapper,
                 icon: <TableOutlined />,
                 routes: [
                     {
-                        title: '',
-                        name: 'sub_',
-                        path: '/subs',
-                        exact: true,
-                        redirect: '/subs/child1',
-                        hideInMenu: true,
-                    },
-                    {
                         title: '嵌套子页面1',
                         name: 'child1',
-                        path: '/subs/child1',
+                        path: 'child1',
                         exact: true,
                         component: EmptyPage,
                         icon: <TableOutlined />,
@@ -126,17 +119,26 @@ const routes: RouteProps[] = [
                     {
                         title: '嵌套子页面2',
                         name: 'child2',
-                        path: '/subs/child2',
+                        path: 'child2',
                         exact: true,
                         component: EmptyPage,
                         icon: <TableOutlined />,
+                    },
+                    {
+                        title: '',
+                        name: 'homeNotFound',
+                        path: '*',
+                        exact: true,
+                        redirect: '/404',
+                        component: NotFound,
+                        hideInMenu: true,
                     },
                 ],
             },
             {
                 title: 'demo',
                 name: 'demo',
-                path: '/demo',
+                path: 'demo',
                 exact: true,
                 component: DemoPage,
                 icon: <TableOutlined />,

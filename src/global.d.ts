@@ -27,7 +27,11 @@ declare global {
         icon?: React.ReactNode;
         /** 路由 */
         path: string;
-        /** 是否严格匹配 */
+        relativePath?: string;
+        /**
+         * 是否严格匹配
+         * react router v6 中已废弃
+         */
         exact?: boolean;
         /** 如果是跳转，此处配置跳转的路由 */
         redirect?: string;
