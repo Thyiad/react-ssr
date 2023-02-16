@@ -23,7 +23,8 @@
         "allowSyntheticDefaultImports": true,
         "esModuleInterop": true,
         "skipLibCheck": true,
-        "forceConsistentCasingInFileNames": true
+        "forceConsistentCasingInFileNames": true,
+        "lib": ["DOM"]
     },
     "include": ["src"],
     "exclude": ["webpack", "node_modules/**"]

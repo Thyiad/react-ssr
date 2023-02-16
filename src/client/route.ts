@@ -1,6 +1,6 @@
 import loadable from '@loadable/component';
 import * as Init from '@/models/Init';
-import SubRouteWrapper from './components/SubRouteWrapper';
+import { SubRouteWrapper } from './components/RouterV6';
 
 const NotFound = loadable(() => import('./pages/404/index'));
 const NoPermission = loadable(() => import('./pages/403/index'));
@@ -62,7 +62,7 @@ const routes: RouteProps[] = [
     },
     {
         title: '嵌套页面',
-        path: '/subs',
+        path: '/subs/*',
         name: 'subs',
         exact: false,
         component: SubRouteWrapper,
@@ -70,16 +70,24 @@ const routes: RouteProps[] = [
             {
                 title: '嵌套子页面1',
                 name: 'child1',
-                path: '/subs/child1',
+                path: 'child1',
                 exact: true,
                 component: EmptyPage,
             },
             {
                 title: '嵌套子页面2',
                 name: 'child2',
-                path: '/subs/child2',
+                path: 'child2',
                 exact: true,
                 component: EmptyPage,
+            },
+            {
+                title: '',
+                name: 'pageNotFound',
+                path: '*',
+                exact: true,
+                redirect: '/404',
+                component: NotFound,
             },
         ],
     },

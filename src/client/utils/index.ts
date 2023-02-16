@@ -106,18 +106,40 @@ export const initThyiadUtil = () => {
  * 通过pathname检索对应路由
  * @param pathname
  */
-export const getMatchRoute = (pathname?: string, routes?: RouteProps[]): any => {
-    if (!pathname) {
-        pathname = thyEnv.canUseWindow() ? window.location.pathname : '';
-    }
+export const getMatchRoute = (pathname?: string, routes?: RouteProps[]): RouteProps => {
+    pathname = pathname || (thyEnv.canUseWindow() ? window.location.pathname : '');
     routes = routes || rootRoutes;
-    const findedRoute = routes?.find((route) => matchPath(pathname || '', route));
+    const findedRoute = routes?.find((route) => matchPath(route.path, pathname));
     if (!findedRoute || !findedRoute.routes) {
         return findedRoute;
     }
 
     const nextFindedRoute = getMatchRoute(pathname, findedRoute.routes);
     return nextFindedRoute || findedRoute;
+};
+
+/**
+ * 通过pathname检索路由列表
+ * @param pathname
+ * @param routes
+ * @param returnRouteList
+ * @returns
+ */
+export const getMatchRouteList = (pathname?: string, routes?: RouteProps[], returnRouteList?: RouteProps[]) => {
+    pathname = pathname || (thyEnv.canUseWindow() ? window.location.pathname : '');
+    returnRouteList = returnRouteList || [];
+    routes = routes || rootRoutes;
+
+    const findedRoute = routes?.find((route) => matchPath(route.path, pathname));
+    findedRoute && returnRouteList.push(findedRoute);
+
+    if (!findedRoute || !findedRoute.routes) {
+        return returnRouteList;
+    }
+
+    const nextFindedRoute = getMatchRoute(pathname, findedRoute.routes);
+    nextFindedRoute && returnRouteList.push(nextFindedRoute);
+    return returnRouteList;
 };
 
 /**

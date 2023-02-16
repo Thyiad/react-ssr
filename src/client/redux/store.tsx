@@ -15,7 +15,7 @@ export interface StoreProviderProps {
     context?: any;
 }
 
-export const Provider: FC<StoreProviderProps> = (props: PropsWithChildren<StoreProviderProps>) => {
+export const Provider: FC<PropsWithChildren<StoreProviderProps>> = (props: PropsWithChildren<StoreProviderProps>) => {
     const { context, children } = props;
     const [state, dispatch] = useReducer(reducer, getInitState(context));
     const actions = useMemo(() => {
