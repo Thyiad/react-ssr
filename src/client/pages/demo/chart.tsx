@@ -1,5 +1,6 @@
 import React, { FC, useState, useEffect } from 'react';
 import { Column } from '@ant-design/charts';
+import { thyEnv } from '@thyiad/util';
 
 const ChartDemo: FC = () => {
     const data = [

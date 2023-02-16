@@ -3,7 +3,6 @@ import { useNavigate, Routes, Route, useLocation, Outlet, Link } from 'react-rou
 import { Layout, Menu } from 'antd';
 import { useRedux } from '@/hooks/useRedux';
 import PageLoading from '@/components/PageLoading';
-import { RouteElement } from '@client/components/RouterV6';
 import { thyCookie, thyEnv } from '@thyiad/util';
 import { getMatchRoute } from '@/utils/index';
 import { LOGIN_COOKIE_KEY } from '@client/constants/index';
@@ -19,7 +18,6 @@ const { Header, Sider, Content } = Layout;
 
 import './LeftMenuLayout.scss';
 import logo from '@/assets/img/logo.png';
-import { renderRoute } from '@client/utils/ui';
 
 /**
  * 左侧菜单layout

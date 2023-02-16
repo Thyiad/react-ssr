@@ -7,7 +7,7 @@ import '@/app.scss';
 import { getMatchRoute, initThyiadUtil } from '@/utils/index';
 import { ConfigProvider } from 'antd';
 import zhCN from 'antd/lib/locale/zh_CN';
-import { renderRoute } from '@client/utils/ui';
+import { renderRoute } from './RouterV6';
 
 initThyiadUtil();
 

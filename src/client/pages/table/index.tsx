@@ -208,7 +208,7 @@ const TablePage: FC<RoutePageProps> = (props) => {
                     pagination={{ defaultPageSize: 10 }}
                 />
                 <DrawerForm<Partial<TableItem>>
-                    visible={dialogTable.visible}
+                    open={dialogTable.visible}
                     title={`${TableDialogTitleDic[dialogTable.type]}商户`}
                     drawerProps={{
                         onClose: () => {

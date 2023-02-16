@@ -3,7 +3,7 @@ import { Form, Divider, Button } from 'antd';
 import { UploadBtn, UploadFormItem, IconFont } from '@/components/antd-ui/index';
 import { iconFontKeys } from '@/components/antd-ui/IconFont/index';
 import * as api from '@client/constants/api';
-import { thyUI, UITypes } from '@thyiad/util/lib/index';
+import { thyEnv, thyUI, UITypes } from '@thyiad/util/lib/index';
 import ChartDemo from './chart';
 
 const DemoPage: FC<RoutePageProps> = (props) => {
@@ -17,6 +17,10 @@ const DemoPage: FC<RoutePageProps> = (props) => {
     ];
 
     const [uploadValue, setUploadValue] = useState<string[]>([]);
+
+    if (!thyEnv.canUseWindow()) {
+        return <div></div>;
+    }
 
     return (
         <div style={{ padding: 24 }}>

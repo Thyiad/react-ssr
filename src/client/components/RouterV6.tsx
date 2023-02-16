@@ -6,12 +6,6 @@ interface RouteElementProps {
     route: RouteProps;
 }
 
-/**
- * 渲染路由的包装组件
- * 包含redirect和路由页面
- * @param props
- * @returns
- */
 export const RouteElement: React.FC<RouteElementProps> = (props: RouteElementProps) => {
     const { route } = props;
 
@@ -26,6 +20,14 @@ export const RouteElement: React.FC<RouteElementProps> = (props: RouteElementPro
             </Helmet>
             {route.component && <route.component routes={route.routes} />}
         </>
+    );
+};
+
+export const renderRoute = (route: RouteProps) => {
+    return (
+        <Route path={route.path} key={route.name} element={<RouteElement route={route} />}>
+            {route.routes?.map((childRoute) => renderRoute(childRoute))}
+        </Route>
     );
 };
 

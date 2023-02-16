@@ -17,7 +17,6 @@ const { Header, Content } = Layout;
 
 import './TopMenuLayout.scss';
 import logo from '@/assets/img/logo.png';
-import { renderRoute } from '@client/utils/ui';
 
 const TopMenuLayout: FC<RoutePageProps> = (props) => {
     const { routes } = props;

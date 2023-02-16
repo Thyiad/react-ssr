@@ -2,8 +2,8 @@ import React, { ReactNode } from 'react';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { message, notification, Modal } from 'antd';
 import { UITypes } from '@thyiad/util';
-import { Route } from 'react-router-dom';
-import { RouteElement } from '@client/components/RouterV6';
+import { Route, Navigate, Outlet } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
 /**
  * 顶部加载中提示，不阻塞操作
@@ -84,12 +84,4 @@ export const confirm = (msg: string, ok?: () => void, cancel?: () => void, conte
             }
         },
     });
-};
-
-export const renderRoute = (route: RouteProps) => {
-    return (
-        <Route path={route.path} key={route.name} element={<RouteElement route={route} />}>
-            {route.routes?.map((childRoute) => renderRoute(childRoute))}
-        </Route>
-    );
 };
