@@ -13,6 +13,7 @@ const WebpackBar = require('webpackbar');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const ReactRefreshPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+const ReactRefreshTypeScript = require('react-refresh-typescript');
 
 /**
  *
@@ -60,6 +61,7 @@ module.exports = (type, isDev, envConfig) => {
     if (isDev) {
         if (type === 'client') {
             plugins.push(new ReactRefreshPlugin());
+            // plugins.push(new ReactRefreshTypeScript());
         }
         plugins.push(
             new WebpackBar({

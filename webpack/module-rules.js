@@ -5,6 +5,7 @@ const cssnano = require('cssnano');
 const pix2rem = require('postcss-pxtorem');
 const sass = require('sass');
 const threadLoader = require('thread-loader');
+const ReactRefreshTypeScript = require('react-refresh-typescript');
 
 /** options: isDev, useCssModule */
 const getCssLoaders = (options) => {
@@ -52,21 +53,28 @@ module.exports = (isServer, isDev) => {
             include: /node_modules(\/|\\)(\@thyiad(\/|\\)antd-ui).*/,
             use: {
                 loader: 'ts-loader',
-                options: { allowTsInNodeModules: true },
+                options: {
+                    allowTsInNodeModules: true,
+                    // getCustomTransformers: () => ({
+                    //     before: [isDev && !isServer && ReactRefreshTypeScript()].filter(Boolean),
+                    // }),
+                    // transpileOnly: isDev && !isServer,
+                },
             },
         },
         {
             test: /\.(js|jsx|ts|tsx)$/,
             exclude: /node_modules/,
             use: [
-                {
-                    loader: 'thread-loader',
-                    options: workerPool,
-                },
+                // {
+                //     loader: 'thread-loader',
+                //     options: workerPool,
+                // },
                 {
                     loader: 'babel-loader',
                     options: {
-                        cacheDirectory: true,
+                        // cacheDirectory: true,
+                        plugins: [isDev && !isServer && require.resolve('react-refresh/babel')].filter(Boolean),
                     },
                 },
             ],
