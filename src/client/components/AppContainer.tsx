@@ -2,6 +2,7 @@ import React, { FC, useCallback, useEffect } from 'react';
 import { BrowserRouter, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { Provider, StoreProviderProps } from '@/redux/store';
 import routes from '@/route';
+import 'antd/dist/reset.css';
 import '@/assets/scss/common.scss';
 import '@/app.scss';
 import { getMatchRoute, initThyiadUtil } from '@/utils/index';

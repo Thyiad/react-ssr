@@ -3,7 +3,7 @@ import { msgLoading, toast, alert, confirm } from './ui';
 import { LOGIN_COOKIE_KEY, REQUEST_HEADER_TOKEN_NAME } from '@client/constants/index';
 import { LOGIN_PATHNAME } from '@client/constants/url';
 import rootRoutes from '../route';
-import { matchPath, matchRoutes } from 'react-router-dom';
+import { matchPath } from 'react-router-dom';
 
 export const initThyiadUtil = () => {
     initImplements({

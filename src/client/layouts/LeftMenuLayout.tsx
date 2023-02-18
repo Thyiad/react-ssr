@@ -97,7 +97,7 @@ const LeftMenuLayout: FC<RoutePageProps> = (props) => {
                         </a>
                     </div>
                     <Menu theme="dark" mode="inline" defaultSelectedKeys={[initActiveMenu]}>
-                        {routes.map((item) => {
+                        {routes?.map((item) => {
                             return renderMenu(item, []);
                         })}
                     </Menu>

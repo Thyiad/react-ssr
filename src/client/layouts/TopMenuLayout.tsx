@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useMemo, useCallback } from 'react';
-import { Outlet, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { Outlet, Route, Routes, useLocation, useNavigate, Link } from 'react-router-dom';
 import { Layout, Menu } from 'antd';
 import { useRedux } from '@/hooks/useRedux';
 import PageLoading from '@/components/PageLoading';
@@ -49,29 +49,20 @@ const TopMenuLayout: FC<RoutePageProps> = (props) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const onMenuClick = useCallback(
-        (event: any) => {
-            const { key } = event;
-
-            navigate(key);
-        },
-        [navigate],
-    );
-
     const renderMenu = useCallback(
-        (item: RouteProps) => {
+        (item: RouteProps, parentPathList: string[]) => {
             if (item.hideInMenu || (item.roles && !item.roles.includes(state.currentUser?.role))) {
                 return null;
             }
             return Array.isArray(item.routes) && item.routes.length > 0 ? (
                 <Menu.SubMenu key={item.path} icon={item.icon} title={item.title}>
                     {item.routes.map((child) => {
-                        return renderMenu(child);
+                        return renderMenu(child, [...parentPathList, item.relativePath || item.path]);
                     })}
                 </Menu.SubMenu>
             ) : (
                 <Menu.Item key={item.path} icon={item.icon}>
-                    {item.title}
+                    <Link to={[...parentPathList, item.relativePath || item.path].join('/')}>{item.title}</Link>
                 </Menu.Item>
             );
         },
@@ -99,14 +90,13 @@ const TopMenuLayout: FC<RoutePageProps> = (props) => {
                         </a>
                     </div>
                     <Menu
-                        onClick={onMenuClick}
                         theme="dark"
                         mode="horizontal"
                         defaultSelectedKeys={[initActiveMenu]}
                         style={{ lineHeight: '64px', flex: 1, overflow: 'hidden' }}
                     >
                         {routes?.map((item) => {
-                            return renderMenu(item);
+                            return renderMenu(item, []);
                         })}
                     </Menu>
                     <AvatarDropdown nameColor="#fff" />
@@ -119,7 +109,7 @@ const TopMenuLayout: FC<RoutePageProps> = (props) => {
                 </Content>
             </Layout>
         );
-    }, [state.currentUser, isFirstRender, onMenuClick, initActiveMenu, routes, checkRole, renderMenu, navigate]);
+    }, [state.currentUser, isFirstRender, initActiveMenu, routes, checkRole, renderMenu, navigate]);
 };
 
 export default TopMenuLayout;
