@@ -86,7 +86,7 @@ const routes: RouteProps[] = [
                 name: 'pageNotFound',
                 path: '*',
                 exact: true,
-                redirect: '/404',
+                // redirect: '/404',
                 component: NotFound,
             },
         ],
@@ -96,7 +96,7 @@ const routes: RouteProps[] = [
         name: 'pageNotFound',
         path: '*',
         exact: true,
-        redirect: '/404',
+        // redirect: '/404',
         component: NotFound,
     },
 ];
