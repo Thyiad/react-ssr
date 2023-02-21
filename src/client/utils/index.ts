@@ -35,15 +35,42 @@ export const initThyiadUtil = () => {
  * 通过pathname检索对应路由
  * @param pathname
  */
-export const getMatchRoute = (pathname?: string, routes?: RouteProps[]): RouteProps => {
+export const getMatchRoute = (
+    pathname?: string,
+    routes?: RouteProps[],
+    parentRoute?: RouteProps,
+    returnRouteList?: RouteProps[],
+): RouteProps => {
     pathname = pathname || (thyEnv.canUseWindow() ? window.location.pathname : '');
     routes = routes || rootRoutes;
     const findedRoute = routes?.find((route) => matchPath(route.path, pathname));
+    if (findedRoute && returnRouteList) {
+        returnRouteList.push(findedRoute);
+    }
     if (!findedRoute || !findedRoute.routes) {
         return findedRoute;
     }
 
-    const nextFindedRoute = getMatchRoute(pathname, findedRoute.routes);
+    const nextFindedRoute = getMatchRoute(
+        pathname,
+        findedRoute.routes.map((r) => {
+            return {
+                ...r,
+                path: [
+                    parentRoute?.relativePath || parentRoute?.path,
+                    findedRoute.relativePath || findedRoute.path,
+                    r.path,
+                ]
+                    .filter((p) => p)
+                    .join('/')
+                    .replace(/\/\//g, '/'),
+            };
+        }),
+        findedRoute,
+    );
+    if (nextFindedRoute && returnRouteList) {
+        returnRouteList.push(nextFindedRoute);
+    }
     return nextFindedRoute || findedRoute;
 };
 
@@ -54,7 +81,12 @@ export const getMatchRoute = (pathname?: string, routes?: RouteProps[]): RoutePr
  * @param returnRouteList
  * @returns
  */
-export const getMatchRouteList = (pathname?: string, routes?: RouteProps[], returnRouteList?: RouteProps[]) => {
+export const getMatchRouteList = (
+    pathname?: string,
+    routes?: RouteProps[],
+    returnRouteList?: RouteProps[],
+    parentRoute?: RouteProps,
+) => {
     pathname = pathname || (thyEnv.canUseWindow() ? window.location.pathname : '');
     returnRouteList = returnRouteList || [];
     routes = routes || rootRoutes;
@@ -66,8 +98,25 @@ export const getMatchRouteList = (pathname?: string, routes?: RouteProps[], retu
         return returnRouteList;
     }
 
-    const nextFindedRoute = getMatchRoute(pathname, findedRoute.routes);
-    nextFindedRoute && returnRouteList.push(nextFindedRoute);
+    getMatchRoute(
+        pathname,
+        findedRoute.routes.map((r) => {
+            return {
+                ...r,
+                path: [
+                    parentRoute?.relativePath || parentRoute?.path,
+                    findedRoute.relativePath || findedRoute.path,
+                    r.path,
+                ]
+                    .filter((p) => p)
+                    .join('/')
+                    .replace(/\/\//g, '/'),
+            };
+        }),
+        findedRoute,
+        returnRouteList,
+    );
+
     return returnRouteList;
 };
 
