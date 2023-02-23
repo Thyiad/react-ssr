@@ -5,7 +5,7 @@ import { useRedux } from '@/hooks/useRedux';
 import PageLoading from '@/components/PageLoading';
 import { thyCookie, thyEnv } from '@thyiad/util';
 import { getMatchRoute, getMatchRouteList } from '@/utils/index';
-import { LOGIN_COOKIE_KEY } from '@client/constants/index';
+import { LOGIN_COOKIE_KEY } from '@client/constants/key';
 import { LOGIN_PATHNAME } from '@client/constants/url';
 import systemInfo from '@client/constants/systemInfo';
 import { fetchCurrentUser } from '@/models/User';

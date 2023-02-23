@@ -2,7 +2,7 @@ import React, { FC, useState, useCallback, useMemo } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { login } from '@/models/User';
 import { thyUrl, thyCookie } from '@thyiad/util';
-import { LOGIN_COOKIE_KEY, LOGIN_ROLE_KEY } from '@client/constants/index';
+import { LOGIN_COOKIE_KEY, LOGIN_ROLE_KEY } from '@client/constants/key';
 import { Form, Input, Button } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import './index.scss';
