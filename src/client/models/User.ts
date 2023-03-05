@@ -1,5 +1,5 @@
 import * as api from '@client/constants/api';
-import { LOGIN_COOKIE_KEY } from '@client/constants/index';
+import { LOGIN_COOKIE_KEY } from '@client/constants/key';
 import { LOGIN_PATHNAME } from '@client/constants/url';
 import { thyReq } from '@thyiad/util';
 import { UserItem } from '@/types/user';

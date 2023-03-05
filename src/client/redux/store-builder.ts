@@ -2,7 +2,7 @@ import { Dispatch } from 'react';
 import reducers from './reducers/index';
 import { IState, IAction, IReducers } from './data';
 import { Context } from 'koa';
-import { CTX_SSR_DATA } from '@client/constants';
+import { CTX_SSR_DATA } from '@client/constants/key';
 import { thyEnv } from '@thyiad/util';
 
 const initState: IState = {
@@ -20,7 +20,7 @@ export const getInitState = (ctx?: Context): IState => {
 };
 
 export type ReducerKinds = keyof typeof reducers;
-export type ReducerActions = { [key in ReducerKinds]: typeof reducers[key]['actions'] };
+export type ReducerActions = { [key in ReducerKinds]: (typeof reducers)[key]['actions'] };
 
 // buildActions
 // buildReducers

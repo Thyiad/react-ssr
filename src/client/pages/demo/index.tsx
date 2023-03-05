@@ -23,7 +23,7 @@ const DemoPage: FC<RoutePageProps> = (props) => {
     }
 
     return (
-        <div style={{ padding: 24 }}>
+        <div className="page">
             <h3>上传文件</h3>
             <UploadBtn
                 uploadUrl={api.UPLOAD_OSS}

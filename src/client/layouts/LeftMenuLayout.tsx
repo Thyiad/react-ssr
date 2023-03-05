@@ -1,11 +1,11 @@
 import React, { FC, useState, useEffect, useMemo, useCallback, useRef } from 'react';
-import { useNavigate, Routes, Route, useLocation, Outlet, Link } from 'react-router-dom';
-import { Layout, Menu } from 'antd';
+import { useNavigate, Routes, Route, useLocation, Outlet, Link, NavLink } from 'react-router-dom';
+import { Breadcrumb, Layout, Menu } from 'antd';
 import { useRedux } from '@/hooks/useRedux';
 import PageLoading from '@/components/PageLoading';
 import { thyCookie, thyEnv } from '@thyiad/util';
-import { getMatchRoute } from '@/utils/index';
-import { LOGIN_COOKIE_KEY } from '@client/constants/index';
+import { getMatchRoute, getMatchRouteList } from '@/utils/index';
+import { LOGIN_COOKIE_KEY } from '@client/constants/key';
 import { LOGIN_PATHNAME } from '@client/constants/url';
 import systemInfo from '@client/constants/systemInfo';
 import { fetchCurrentUser } from '@/models/User';
@@ -44,6 +44,23 @@ const LeftMenuLayout: FC<RoutePageProps> = (props) => {
         return '';
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    const breadcrumbList = useMemo(() => {
+        const matchRouteList = getMatchRouteList(location.pathname);
+        const breadList = matchRouteList.map((item, index) => {
+            const currentRouteList = matchRouteList.slice(0, index + 1);
+            const targetPath = currentRouteList
+                .map((r) => r.relativePath || r.path)
+                .join('/')
+                .replace(/\/\//g, '/');
+
+            return {
+                title: item.title,
+                path: index + 1 === matchRouteList.length ? '' : targetPath,
+            };
+        });
+        return breadList;
+    }, [location]);
 
     useEffect(() => {
         const accessKey = thyCookie.get(LOGIN_COOKIE_KEY);
@@ -90,7 +107,7 @@ const LeftMenuLayout: FC<RoutePageProps> = (props) => {
 
         return (
             <Layout className="left-menu-layout">
-                <Sider trigger={null} collapsible collapsed={collapsed} width={150}>
+                <Sider trigger={null} collapsible collapsed={collapsed} width={208}>
                     <div className="sider-logo">
                         <a href="/">
                             <img src={logo} alt="" />
@@ -116,6 +133,15 @@ const LeftMenuLayout: FC<RoutePageProps> = (props) => {
                         <AvatarDropdown />
                     </Header>
                     <Content className="site-layout-content">
+                        <div className="site-layout-content-bc">
+                            <Breadcrumb>
+                                {breadcrumbList.map((b) => (
+                                    <Breadcrumb.Item key={b.path}>
+                                        {b.path ? <Link to={b.path}>{b.title}</Link> : <span>{b.title}</span>}
+                                    </Breadcrumb.Item>
+                                ))}
+                            </Breadcrumb>
+                        </div>
                         <div className="site-layout-content-wrapper">
                             <Outlet />
                         </div>
@@ -124,7 +150,17 @@ const LeftMenuLayout: FC<RoutePageProps> = (props) => {
                 </Layout>
             </Layout>
         );
-    }, [state.currentUser, isFirstRender, collapsed, initActiveMenu, routes, checkRole, renderMenu, navigate]);
+    }, [
+        state.currentUser,
+        isFirstRender,
+        collapsed,
+        initActiveMenu,
+        routes,
+        checkRole,
+        renderMenu,
+        navigate,
+        breadcrumbList,
+    ]);
 };
 
 export default LeftMenuLayout;

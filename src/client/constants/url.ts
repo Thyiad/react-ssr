@@ -1,4 +1,4 @@
-import * as config from './index';
+import * as config from './key';
 import * as api from './api';
 
 /**

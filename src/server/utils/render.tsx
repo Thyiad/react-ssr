@@ -7,7 +7,7 @@ import { IndexTemplate, RemScript } from '@server/utils/template';
 import artTemplate from 'art-template';
 import { ChunkExtractor } from '@loadable/server';
 import config from '@server/config';
-import { CTX_SSR_DATA } from '@client/constants';
+import { CTX_SSR_DATA } from '@client/constants/key';
 
 const statsFile = `${process.cwd()}/dist/client/loadable-stats.json`;
 let extractor;

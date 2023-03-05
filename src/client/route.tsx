@@ -75,8 +75,9 @@ const routes: RouteProps[] = [
     ...sysPages,
     ...userPages,
     {
-        title: '',
+        title: '首页',
         path: '/*',
+        relativePath: '/',
         name: 'homeLayout',
         exact: false,
         component: LeftMenuLayout,
