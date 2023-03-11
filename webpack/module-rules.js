@@ -5,7 +5,7 @@ const cssnano = require('cssnano');
 const pix2rem = require('postcss-pxtorem');
 const sass = require('sass');
 const threadLoader = require('thread-loader');
-const ReactRefreshTypeScript = require('react-refresh-typescript');
+// const ReactRefreshTypeScript = require('react-refresh-typescript');
 
 /** options: isDev, useCssModule */
 const getCssLoaders = (options) => {

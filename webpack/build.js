@@ -27,16 +27,21 @@ const clientCompile = webpack(clientConfig, (error, stats) => {
 });
 
 const dateStartClient = Date.now();
-clientCompile.hooks.done.tapAsync('client_compile_done', (compilation, callback) => {
+clientCompile.hooks.done.tap('client_compile_done', (compilation, callback) => {
     const dateEndClient = Date.now();
     console.log(chalk.blue(`\nclient_compile_done, timeSpan: ${(dateEndClient - dateStartClient) / 1000}s`));
     callback && callback();
-});
-clientCompile.run((err) => {
-    if (err) {
-        console.log(chalk.red(err));
+    if (envConfig.sysType === 'spa') {
+        setTimeout(() => {
+            process.exit(0);
+        });
     }
 });
+// clientCompile.run((err) => {
+//     if (err) {
+//         console.log(chalk.red(err));
+//     }
+// });
 if (envConfig.sysType === 'spa') {
     return;
 }
