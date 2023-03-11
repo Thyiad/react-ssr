@@ -23,7 +23,7 @@
         "@loadable/component": "^5.15.3",
         "@loadable/server": "^5.15.3",
         "@thyiad/antd-ui": "^1.0.2",
-        "@thyiad/util": "^1.1.28",
+        "@thyiad/util": "^1.1.30",
         "antd": "^5.2.3",
         "art-template": "^4.13.2",
         "koa": "^2.14.1",

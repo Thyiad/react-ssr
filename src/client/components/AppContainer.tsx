@@ -10,6 +10,10 @@ import { ConfigProvider } from 'antd';
 import zhCN from 'antd/lib/locale/zh_CN';
 import { renderRoute } from './RouterV6';
 import { BrowserTip } from './antd-ui';
+import dayjs from 'dayjs';
+import 'dayjs/locale/zh-cn';
+
+dayjs.locale('zh-cn');
 
 initThyiadUtil();
 
