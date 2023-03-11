@@ -130,6 +130,12 @@ module.exports = (type, isDev, envConfig) => {
         module: {
             rules: moduleRules(isServer, isDev),
         },
+        // 实验特性，参见：https://webpack.docschina.org/configuration/experiments/
+        experiments: isServer
+            ? undefined
+            : {
+                  lazyCompilation: true,
+              },
         plugins,
         watch: isDev,
         devServer: isDev
