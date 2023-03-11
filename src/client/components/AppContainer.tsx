@@ -9,6 +9,7 @@ import { getMatchRoute, initThyiadUtil } from '@/utils/index';
 import { ConfigProvider } from 'antd';
 import zhCN from 'antd/lib/locale/zh_CN';
 import { renderRoute } from './RouterV6';
+import { BrowserTip } from './antd-ui';
 
 initThyiadUtil();
 
@@ -28,6 +29,7 @@ export const AppProvider: FC<StoreProviderProps> = (props: StoreProviderProps) =
     return (
         <Provider context={props.context}>
             <AppBody />
+            <BrowserTip />
         </Provider>
     );
 };

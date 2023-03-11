@@ -1,0 +1,27 @@
+.browser-tip-wrapper {
+}
+
+.browser-tip-wrapper .browser-list {
+    margin-top: 16px;
+    display: flex;
+}
+
+.browser-tip-wrapper .browser-list .browser-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.browser-tip-wrapper .browser-list .browser-item .browser-logo {
+    width: 100px;
+    height: 100px;
+    display: block;
+}
+
+.browser-tip-wrapper .browser-list .browser-item .browser-name {
+}
+
+.browser-tip-wrapper .browser-list .browser-item .browser-btn {
+    margin-top: 3px;
+}
