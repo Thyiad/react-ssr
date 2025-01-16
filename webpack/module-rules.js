@@ -5,7 +5,9 @@ const cssnano = require('cssnano');
 const pix2rem = require('postcss-pxtorem');
 const sass = require('sass');
 const threadLoader = require('thread-loader');
-// const ReactRefreshTypeScript = require('react-refresh-typescript');
+const ReactRefreshTypeScript = require('react-refresh-typescript');
+const tailwindcss = require('tailwindcss');
+const autoprefixer = require('autoprefixer');
 
 /** options: isDev, useCssModule */
 const getCssLoaders = (options) => {
@@ -28,6 +30,8 @@ const getCssLoaders = (options) => {
                         postcssImport(),
                         // pix2rem({ propList: ['*'], rootValue: 100, exclude: /node_modules/i }),
                         postcssPresetEnv(),
+                        tailwindcss(),
+                        autoprefixer(),
                     ];
                     if (!options.isDev) {
                         targetPlugins.push(cssnano());
@@ -93,6 +97,7 @@ module.exports = (isServer, isDev) => {
                       {
                           loader: 'sass-loader',
                           options: {
+                              api: 'modern-compiler',
                               implementation: sass,
                           },
                       },
@@ -100,7 +105,7 @@ module.exports = (isServer, isDev) => {
         },
         {
             test: /\.less$/,
-            // include: /node_modules/,
+            include: /node_modules/,
             use: isServer
                 ? 'null-loader'
                 : [
@@ -115,23 +120,23 @@ module.exports = (isServer, isDev) => {
                       },
                   ],
         },
-        // {
-        //     test: /\.less$/,
-        //     exclude: /node_modules/,
-        //     use: isServer ?
-        //         'null-loader' :
-        //         [
-        //             ...getCssLoaders({ useCssModule: true, isDev: isDev }), // 如果本地不需要css modules, 可以合并为同一个less配置项
-        //             {
-        //                 loader: 'less-loader',
-        //                 options: {
-        //                     lessOptions: {
-        //                         javascriptEnabled: true,
-        //                     },
-        //                 },
-        //             },
-        //         ],
-        // },
+        {
+            test: /\.less$/,
+            exclude: /node_modules/,
+            use: isServer
+                ? 'null-loader'
+                : [
+                      ...getCssLoaders({ useCssModule: true, isDev: isDev }), // 如果本地不需要css modules, 可以合并为同一个less配置项
+                      {
+                          loader: 'less-loader',
+                          options: {
+                              lessOptions: {
+                                  javascriptEnabled: true,
+                              },
+                          },
+                      },
+                  ],
+        },
         {
             test: /\.(png|jpg|jpeg|gif|svg)$/,
             exclude: /node_modules/,
