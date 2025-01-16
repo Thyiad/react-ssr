@@ -13,7 +13,7 @@ const WebpackBar = require('webpackbar');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const ReactRefreshPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
-// const ReactRefreshTypeScript = require('react-refresh-typescript');
+const ReactRefreshTypeScript = require('react-refresh-typescript');
 
 /**
  *
@@ -147,14 +147,11 @@ module.exports = (type, isDev, envConfig) => {
         module: {
             rules: moduleRules(isServer, isDev),
         },
+        // // 实验特性，参见：https://webpack.docschina.org/configuration/experiments/
+        // experiments: (!isServer && isDev) ? {
+        //     lazyCompilation: true,
+        // } : undefined,
         plugins,
-        // 实验特性，参见：https://webpack.docschina.org/configuration/experiments/
-        experiments:
-            !isServer && isDev
-                ? {
-                      lazyCompilation: true,
-                  }
-                : undefined,
         watch: isDev,
         devServer: isDev
             ? {
@@ -177,7 +174,7 @@ module.exports = (type, isDev, envConfig) => {
                   },
                   devMiddleware: {
                       stats: 'errors-only', //'errors-warnings',
-                      writeToDisk: true,
+                      //   writeToDisk: true,
                   },
                   static: {
                       directory: path.resolve(cwd, `dist`),

@@ -9,8 +9,10 @@ import { loggerMiddle } from './middleware/logger';
 import logger from './utils/logger';
 import router from './routes';
 
-const app = new Koa();
+// @ts-ignore
+process.env.document = { scripts: {} };
 
+const app = new Koa();
 render(app, {
     root: path.join(process.cwd(), 'src/server/view'),
     extname: '.art',
