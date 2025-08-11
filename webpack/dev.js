@@ -25,7 +25,7 @@ const clientCompile = webpack(clientConfig, (error, stats) => {
     } else if (stats.hasErrors()) {
         chalk.red('编译client发生了错误');
         process.stdout.write(stats.toString());
-        process.exit(1);
+        // process.exit(1);
     }
 });
 
