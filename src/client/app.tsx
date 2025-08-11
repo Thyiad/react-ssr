@@ -4,14 +4,17 @@ import { createRoot, hydrateRoot } from 'react-dom/client';
 import { AppBrowser } from '@/components/AppContainer';
 import { loadableReady } from '@loadable/component';
 
+const container = document.getElementById('root');
 if (process.env.SYS_TYPE === 'ssr') {
     loadableReady(() => {
-        // hydrate(<AppBrowser />, document.getElementById('root'));
-        hydrateRoot(document.getElementById('root'), <AppBrowser />);
+        hydrateRoot(container!, <AppBrowser />);
     });
 } else {
-    // render(<AppBrowser />, document.getElementById('root'));
-    const container = document.getElementById('root');
-    const root = createRoot(container);
+    const root = createRoot(container!);
     root.render(<AppBrowser />);
+}
+
+// 启用 Hot Module Replacement
+if (process.env.NODE_ENV === 'development' && module.hot) {
+    module.hot.accept();
 }

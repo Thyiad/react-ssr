@@ -38,6 +38,8 @@ module.exports = (type, isDev, envConfig) => {
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify(nodeEnv),
             'process.env.SYS_TYPE': JSON.stringify(envConfig.sysType),
+            // React Refresh 需要的环境变量
+            __react_refresh__: isDev && type === 'client',
         }),
     ];
     if (envConfig.isDll) {
@@ -60,7 +62,14 @@ module.exports = (type, isDev, envConfig) => {
     }
     if (isDev) {
         if (type === 'client') {
-            plugins.push(new ReactRefreshPlugin());
+            // 确保 HMR 插件在 React Refresh 之前
+            plugins.push(new webpack.HotModuleReplacementPlugin());
+            plugins.push(
+                new ReactRefreshPlugin({
+                    overlay: false, // 禁用错误覆盖层，使用 webpack-dev-server 的
+                    exclude: [/node_modules/, /bootstrap\.tsx$/],
+                }),
+            );
             // plugins.push(new ReactRefreshTypeScript());
         }
         plugins.push(
@@ -119,6 +128,7 @@ module.exports = (type, isDev, envConfig) => {
     return {
         target: curConfig.target,
         mode: isDev ? 'development' : 'production',
+        stats: isDev ? 'errors-warnings' : 'normal',
         entry: curConfig.entry,
         output: curConfig.output,
         resolve: {
@@ -163,10 +173,15 @@ module.exports = (type, isDev, envConfig) => {
                   host: envConfig.host,
                   port: envConfig.clientPort,
                   hot: true,
+                  liveReload: false, // 禁用 liveReload，使用 HMR
                   open: false,
                   client: {
                       logging: 'info',
-                      overlay: true,
+                      overlay: {
+                          errors: true,
+                          warnings: false,
+                      },
+                      webSocketURL: 'auto://0.0.0.0:0/ws', // 确保 WebSocket 连接正确
                   },
                   watchFiles: {
                       paths: [path.resolve(cwd, `src${spaClientFolder}/**/*`)],

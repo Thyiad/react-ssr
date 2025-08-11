@@ -6,11 +6,21 @@
                 "modules": false,
                 "targets": ["ios >= 8", "android >= 4.2"],
                 "useBuiltIns": "usage",
-                "corejs": "3.29"
+                "corejs": "3.31"
             }
         ],
-        "@babel/preset-react",
+        [
+            "@babel/preset-react",
+            {
+                "runtime": "automatic"
+            }
+        ],
         "@babel/preset-typescript"
     ],
-    "plugins": ["@babel/plugin-proposal-class-properties", "@babel/plugin-transform-runtime", "@loadable/babel-plugin"]
+    "plugins": ["@babel/plugin-proposal-class-properties", "@babel/plugin-transform-runtime", "@loadable/babel-plugin"],
+    "env": {
+        "development": {
+            "plugins": ["react-refresh/babel"]
+        }
+    }
 }
