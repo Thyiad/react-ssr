@@ -60,7 +60,6 @@
         "@loadable/webpack-plugin": "^5.15.2",
         "@pmmmwh/react-refresh-webpack-plugin": "^0.5.11",
         "@thyiad/script": "^0.0.13",
-        "@types/chalk": "^2.2.0",
         "@types/koa": "^2.13.5",
         "@types/koa__router": "^12.0.0",
         "@types/koa-bodyparser": "^4.3.10",
