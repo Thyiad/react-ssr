@@ -39,7 +39,7 @@ module.exports = (type, isDev, envConfig) => {
             'process.env.NODE_ENV': JSON.stringify(nodeEnv),
             'process.env.SYS_TYPE': JSON.stringify(envConfig.sysType),
             // React Refresh 需要的环境变量
-            __react_refresh__: isDev && type === 'client',
+            __react_refresh__: JSON.stringify(isDev && type === 'client'),
         }),
     ];
     if (envConfig.isDll) {
@@ -62,7 +62,6 @@ module.exports = (type, isDev, envConfig) => {
     }
     if (isDev) {
         if (type === 'client') {
-            // 确保 HMR 插件在 React Refresh 之前
             plugins.push(new webpack.HotModuleReplacementPlugin());
             plugins.push(
                 new ReactRefreshPlugin({

@@ -9,6 +9,10 @@ const childProcess = require('child_process');
 const envConfig = require('./env-config');
 const cwd = process.cwd();
 
+// 确保开发环境变量正确设置
+process.env.NODE_ENV = 'development';
+process.env.BABEL_ENV = 'development';
+
 const sysType = process.argv[2];
 if (!['ssr', 'spa'].includes(sysType)) {
     console.log(chalk.red('sysType参数未指定，必须为以下之一：ssr、spa'));

@@ -77,8 +77,8 @@ module.exports = (isServer, isDev) => {
                 {
                     loader: 'babel-loader',
                     options: {
-                        // cacheDirectory: true,
-                        plugins: [isDev && !isServer && require.resolve('react-refresh/babel')].filter(Boolean),
+                        cacheDirectory: true,
+                        envName: isDev ? 'development' : 'production',
                     },
                 },
             ],
