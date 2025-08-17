@@ -141,17 +141,17 @@ module.exports = (type, isDev, envConfig) => {
         },
         externals: isServer
             ? [
-                  nodeExternals({
-                      allowlist: [
-                          /\.(eot|woff|woff2|ttf|otf)$/,
-                          /\.(svg|png|jpg|jpeg|gif|ico)$/,
-                          /\.(mp4|mp3|ogg|swf|webp)$/,
-                          /\.(css|scss|sass|sss|less)$/,
-                          /antd\/.*?\/style.*?/,
-                          /\@thyiad\/antd-ui/,
-                      ].filter((x) => x),
-                  }),
-              ]
+                nodeExternals({
+                    allowlist: [
+                        /\.(eot|woff|woff2|ttf|otf)$/,
+                        /\.(svg|png|jpg|jpeg|gif|ico)$/,
+                        /\.(mp4|mp3|ogg|swf|webp)$/,
+                        /\.(css|scss|sass|sss|less)$/,
+                        /antd\/.*?\/style.*?/,
+                        /\@thyiad\/antd-ui/,
+                    ].filter((x) => x),
+                }),
+            ]
             : [],
         module: {
             rules: moduleRules(isServer, isDev),
@@ -164,93 +164,94 @@ module.exports = (type, isDev, envConfig) => {
         watch: isDev,
         devServer: isDev
             ? {
-                  historyApiFallback: true,
-                  compress: true,
-                  host: envConfig.host,
-                  port: envConfig.clientPort,
-                  hot: true,
-                  liveReload: false, // 禁用 liveReload，使用 HMR
-                  open: false,
-                  client: {
-                      logging: 'info',
-                      overlay: {
-                          errors: true,
-                          warnings: false,
-                      },
-                      webSocketURL: 'auto://0.0.0.0:0/ws', // 确保 WebSocket 连接正确
-                  },
-                  watchFiles: {
-                      paths: [path.resolve(cwd, `src${spaClientFolder}/**/*`)],
-                      options: {
-                          ignored: /node_modules(?!(\/|\\)(\@thyiad(\/|\\)antd-ui)).*/, // 监听过多文件会占用cpu、内存，so，可以忽略掉部分文件
-                          usePolling: false,
-                      },
-                  },
-                  devMiddleware: {
-                      stats: 'errors-only', //'errors-warnings',
-                      //   writeToDisk: true,
-                  },
-                  static: {
-                      directory: path.resolve(cwd, `dist`),
-                  },
-                  headers: {
-                      'Access-Control-Allow-Credentials': true,
-                      'Access-Control-Allow-Headers': 'X-Requested-With,ownerId,Content-Type',
-                      'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
-                      'Access-Control-Allow-Origin': '*',
-                  },
-              }
+                historyApiFallback: true,
+                compress: true,
+                host: envConfig.host,
+                port: envConfig.clientPort,
+                hot: true,
+                liveReload: false, // 禁用 liveReload，使用 HMR
+                open: false,
+                client: {
+                    logging: 'info',
+                    overlay: {
+                        errors: true,
+                        warnings: false,
+                        runtimeErrors: false, // 禁用运行时错误覆盖层
+                    },
+                    webSocketURL: 'auto://0.0.0.0:0/ws', // 确保 WebSocket 连接正确
+                },
+                watchFiles: {
+                    paths: [path.resolve(cwd, `src${spaClientFolder}/**/*`)],
+                    options: {
+                        ignored: /node_modules(?!(\/|\\)(\@thyiad(\/|\\)antd-ui)).*/, // 监听过多文件会占用cpu、内存，so，可以忽略掉部分文件
+                        usePolling: false,
+                    },
+                },
+                devMiddleware: {
+                    stats: 'errors-only', //'errors-warnings',
+                    //   writeToDisk: true,
+                },
+                static: {
+                    directory: path.resolve(cwd, `dist`),
+                },
+                headers: {
+                    'Access-Control-Allow-Credentials': true,
+                    'Access-Control-Allow-Headers': 'X-Requested-With,ownerId,Content-Type',
+                    'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
+                    'Access-Control-Allow-Origin': '*',
+                },
+            }
             : undefined,
         devtool: isDev ? 'inline-source-map' : undefined,
         // devtool: isDev ? 'cheap-module-source-map' : 'source-map',
         // webpack5的默认值：dev->memory，prd->禁用
         cache: isDev
             ? {
-                  type: 'filesystem',
-                  cacheDirectory: path.resolve(cwd, 'node_modules/.cache/webpack', type),
-                  buildDependencies: {
-                      // 如果配置文件更改，使缓存失效
-                      config: [
-                          path.resolve(cwd, 'webpack/create-config.js'),
-                          path.resolve(cwd, 'webpack/module-rules.js'),
-                      ],
-                  },
-              }
+                type: 'filesystem',
+                cacheDirectory: path.resolve(cwd, 'node_modules/.cache/webpack', type),
+                buildDependencies: {
+                    // 如果配置文件更改，使缓存失效
+                    config: [
+                        path.resolve(cwd, 'webpack/create-config.js'),
+                        path.resolve(cwd, 'webpack/module-rules.js'),
+                    ],
+                },
+            }
             : false,
         optimization: isServer
             ? undefined
             : {
-                  // 命名代替数字
-                  // chunkIds的默认值：deterministic->根据模块名称生成简短的hash值
-                  // chunkIds: 'named',
-                  splitChunks: {
-                      // async: 仅异步import
-                      // initial: 仅入口处
-                      // all: 全部
-                      chunks: 'all',
-                      // 如果使用以下cacheGroups配置，将会把所有 node_modules 下面的打包到一个文件中
-                      // webpack5 默认打包 vendor
-                      // cacheGroups: {
-                      //     libs: {
-                      //         test: /[\\/]node_modules[\\/]/, // 指定是node_modules下的第三方包
-                      //         chunks: 'all',
-                      //         name: 'vendor', // 打包后的文件名，任意命名
-                      //     },
-                      // },
-                  },
-                  minimize: !isDev,
-                  minimizer: isDev
-                      ? undefined
-                      : [
-                            new TerserPlugin({
-                                terserOptions: {
-                                    compress: {
-                                        // 生产环境删除console
-                                        drop_console: true,
-                                    },
+                // 命名代替数字
+                // chunkIds的默认值：deterministic->根据模块名称生成简短的hash值
+                // chunkIds: 'named',
+                splitChunks: {
+                    // async: 仅异步import
+                    // initial: 仅入口处
+                    // all: 全部
+                    chunks: 'all',
+                    // 如果使用以下cacheGroups配置，将会把所有 node_modules 下面的打包到一个文件中
+                    // webpack5 默认打包 vendor
+                    // cacheGroups: {
+                    //     libs: {
+                    //         test: /[\\/]node_modules[\\/]/, // 指定是node_modules下的第三方包
+                    //         chunks: 'all',
+                    //         name: 'vendor', // 打包后的文件名，任意命名
+                    //     },
+                    // },
+                },
+                minimize: !isDev,
+                minimizer: isDev
+                    ? undefined
+                    : [
+                        new TerserPlugin({
+                            terserOptions: {
+                                compress: {
+                                    // 生产环境删除console
+                                    drop_console: true,
                                 },
-                            }),
-                        ],
-              },
+                            },
+                        }),
+                    ],
+            },
     };
 };
