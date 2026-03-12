@@ -23,19 +23,15 @@ envConfig.sysType = sysType;
 // 编译client
 const clientConfig = createConfig('client', true, envConfig);
 // const clientCompile = webpack(smp.wrap(clientConfig));
-const clientCompile = webpack(clientConfig, (error, stats) => {
-    if (error) {
-        console.log(chalk.red(error));
-    } else if (stats.hasErrors()) {
-        chalk.red('编译client发生了错误');
-        process.stdout.write(stats.toString());
-        // process.exit(1);
-    }
-});
+const clientCompile = webpack(clientConfig);
 
 let loggedClient = false;
 const dateStartClient = Date.now();
-clientCompile.hooks.done.tapAsync('client_compile_done', (compilation, callback) => {
+clientCompile.hooks.done.tapAsync('client_compile_done', (stats, callback) => {
+    if (stats.hasErrors()) {
+        console.log(chalk.red('编译client发生了错误'));
+        process.stdout.write(stats.toString({ colors: true, errors: true }));
+    }
     if (!loggedClient) {
         const dateEndClient = Date.now();
         console.log(chalk.blue(`\nclient_compile_done, timeSpan: ${(dateEndClient - dateStartClient) / 1000}s`));
